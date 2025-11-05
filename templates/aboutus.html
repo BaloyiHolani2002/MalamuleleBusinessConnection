@@ -57,6 +57,14 @@
             color: #2874a6;
             font-size: 24px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .logo-text {
@@ -177,7 +185,8 @@
 
         .about-image img {
             width: 100%;
-            height: auto;
+            height: 400px;
+            object-fit: cover;
             display: block;
             transition: transform 0.5s;
         }
@@ -189,7 +198,7 @@
         /* Team Section */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
@@ -207,8 +216,10 @@
         }
 
         .member-image {
-            height: 250px;
+            height: 300px;
             overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
         }
 
         .member-image img {
@@ -218,115 +229,110 @@
             transition: transform 0.5s;
         }
 
+        .member-image .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .member-image .initials {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+        }
+
         .team-member:hover .member-image img {
             transform: scale(1.1);
         }
 
         .member-info {
-            padding: 20px;
+            padding: 25px;
             text-align: center;
         }
 
         .member-info h4 {
             color: #1a5276;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 1.3rem;
         }
 
         .member-info .role {
             color: #2874a6;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .member-info .email {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+
+        .member-info p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         /* Contact Section */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-        }
-
         .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .contact-item {
             display: flex;
             align-items: flex-start;
             gap: 15px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .contact-icon {
             background: #1a5276;
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
             flex-shrink: 0;
         }
 
         .contact-details h4 {
             color: #1a5276;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
         }
 
-        .contact-form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
+        .contact-details p {
             color: #555;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-
-        .form-control:focus {
-            border-color: #2874a6;
-            outline: none;
-        }
-
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .btn {
-            display: inline-block;
-            background: #2874a6;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn:hover {
-            background: #1a5276;
+            margin-bottom: 5px;
         }
 
         /* Footer */
@@ -415,7 +421,7 @@
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .about-content, .contact-container {
+            .about-content {
                 grid-template-columns: 1fr;
             }
             
@@ -425,6 +431,10 @@
             
             .section-title h2 {
                 font-size: 2rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             }
         }
 
@@ -449,6 +459,10 @@
             .section {
                 padding: 60px 0;
             }
+            
+            .member-image {
+                height: 250px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -465,6 +479,18 @@
             .section-title h2 {
                 font-size: 1.8rem;
             }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-item {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -474,15 +500,18 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo-container">
-                    <div class="logo">BC</div>
+                    <div class="logo">
+                        <!-- Logo with fallback to initials -->
+                      <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image" onerror="this.style.display='none'; this.parentNode.innerHTML='BC';">
+                    </div>
                     <div class="logo-text">Business<span>Connect</span></div>
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="aboutus.html" class="active">About Us</a></li>
-                        <li><a href="contactus.html">Contact Us</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/aboutus" class="active">About Us</a></li>
+                        <li><a href="/contactus">Contact Us</a></li>
                     </ul>
                 </nav>
             </div>
@@ -524,44 +553,104 @@
                 <p>Meet the dedicated professionals behind Business Connect</p>
             </div>
             <div class="team-grid">
+                <!-- Katiego Hope Papala -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Katiego Hope Papala">
+                        <img src="/static/images/Papla.png" alt="Katiego Hope Papala" 
+     onerror="this.style.display='none'; document.getElementById('katiego-placeholder').style.display='flex';">
+                        <div class="initials" id="katiego-placeholder" style="display: none;">KP</div>
                     </div>
                     <div class="member-info">
                         <h4>Katiego Hope Papala</h4>
                         <div class="role">Project Manager</div>
-                        <p>Oversees project planning and ensures successful delivery.</p>
+                        <div class="email">katiego.papala@businessconnect.co.za</div>
+                        <p>Oversees project planning and ensures successful delivery of the Business Connect platform.</p>
                     </div>
                 </div>
+
+                <!-- Nyiko Baloi -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Nyiko Baloi">
+                        <img src="/static/images/B.png" alt="Nyiko Baloi" 
+     onerror="this.style.display='none'; document.getElementById('nyiko-placeholder').style.display='flex';">
+                        <div class="initials" id="nyiko-placeholder" style="display: none;">NB</div>
                     </div>
                     <div class="member-info">
                         <h4>Nyiko Baloi</h4>
                         <div class="role">Business Analyst</div>
-                        <p>Gathers requirements and ensures the solution meets stakeholder needs.</p>
+                        <div class="email">nyiko.baloi@businessconnect.co.za</div>
+                        <p>Gathers requirements and ensures the solution meets stakeholder needs and business objectives.</p>
                     </div>
                 </div>
+
+                <!-- Holani Baloyi -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Holani Baloyi">
+                        <img src="/static/images/Baloyi.png" alt="Holani Baloyi" 
+     onerror="this.style.display='none'; document.getElementById('holani-placeholder').style.display='flex';">
+                        <div class="initials" id="holani-placeholder" style="display: none;">HB</div>
                     </div>
                     <div class="member-info">
                         <h4>Holani Baloyi</h4>
                         <div class="role">Full-Stack Developer</div>
-                        <p>Designs and develops both frontend and backend of the system.</p>
+                        <div class="email">holani.baloyi@businessconnect.co.za</div>
+                        <p>Designs and develops both frontend and backend components of the Business Connect system.</p>
                     </div>
                 </div>
+
+                <!-- Xitsundzuxo Maluleke -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Xitsundzuxo Maluleke">
+                        <img src="/static/images/Malaluke.png" alt="Xitsundzuxo Maluleke" 
+     onerror="this.style.display='none'; document.getElementById('xitsundzuxo-placeholder').style.display='flex';">
+                        <div class="initials" id="xitsundzuxo-placeholder" style="display: none;">XM</div>
                     </div>
                     <div class="member-info">
                         <h4>Xitsundzuxo Maluleke</h4>
                         <div class="role">System Tester</div>
-                        <p>Responsible for testing and quality assurance of the platform.</p>
+                        <div class="email">xitsundzuxo.maluleke@businessconnect.co.za</div>
+                        <p>Responsible for testing and quality assurance to ensure the platform works flawlessly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Our Team</h2>
+                <p>Get in touch with our team members for specific inquiries</p>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>General Inquiries</h4>
+                        <p>info@businessconnect.co.za</p>
+                        <p>For general questions about our platform and services</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Technical Support</h4>
+                        <p>support@businessconnect.co.za</p>
+                        <p>For technical issues and platform assistance</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Partnerships</h4>
+                        <p>partnerships@businessconnect.co.za</p>
+                        <p>For business collaborations and partnership opportunities</p>
                     </div>
                 </div>
             </div>
@@ -585,10 +674,10 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="aboutus.html">About Us</a></li>
-                        <li><a href="contactus.html">Contact Us</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/aboutus">About Us</a></li>
+                        <li><a href="/contactus">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -605,25 +694,26 @@
     </footer>
 
     <script>
-        // Simple form validation for contact form
+        // Handle image loading errors and show initials placeholder
         document.addEventListener('DOMContentLoaded', function() {
-            const contactForm = document.getElementById('contactForm');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const message = document.getElementById('message').value;
-                    
-                    if (name && email && message) {
-                        alert('Thank you for your message! We will get back to you soon.');
-                        contactForm.reset();
-                    } else {
-                        alert('Please fill in all required fields.');
+            console.log('Team member images loading...');
+            
+            // Check if images are loading properly
+            const images = document.querySelectorAll('.member-image img');
+            images.forEach(img => {
+                console.log('Checking image:', img.src);
+                
+                // Force check if image loaded
+                if (img.complete && img.naturalHeight === 0) {
+                    console.log('Image failed to load:', img.src);
+                    img.style.display = 'none';
+                    const placeholderId = img.alt.toLowerCase().replace(' ', '-') + '-placeholder';
+                    const placeholder = document.getElementById(placeholderId);
+                    if (placeholder) {
+                        placeholder.style.display = 'flex';
                     }
-                });
-            }
+                }
+            });
         });
     </script>
 </body>

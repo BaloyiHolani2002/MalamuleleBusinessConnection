@@ -1,13 +1,26 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_from_directory
 from datetime import datetime, timedelta, date
 import psycopg2
 import os
 import hashlib
 import secrets
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.permanent_session_lifetime = timedelta(days=7)
+
+# Configuration for file uploads
+app.config['UPLOAD_FOLDER'] = 'static/images'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Ensure upload directory exists
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Simple password hashing (without bcrypt)
 def hash_password(password):
@@ -32,7 +45,7 @@ def init_db():
             host="localhost",
             database="postgres",
             user="postgres",
-            password="Maxelo@2023"
+            password="Admin123"
         )
         default_conn.autocommit = True
         default_cur = default_conn.cursor()
@@ -62,7 +75,8 @@ def init_db():
             password VARCHAR(255) NOT NULL,
             phone_num VARCHAR(50),
             user_type VARCHAR(50),
-            reg_date DATE DEFAULT CURRENT_DATE
+            reg_date DATE DEFAULT CURRENT_DATE,
+            profile_picture VARCHAR(255)
         )
         """)
 
@@ -195,6 +209,14 @@ with app.app_context():
 def index():
     return render_template('index.html')
 
+@app.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html')
+
+@app.route('/contactus')
+def contactus():
+    return render_template('contactus.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -238,7 +260,7 @@ def login():
             if 'conn' in locals():
                 conn.close()
     
-    return render_template('userdeshboard.html')
+    return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -306,6 +328,11 @@ def logout():
     flash('You have been logged out successfully', 'success')
     return redirect(url_for('index'))
 
+# Serve static files (images)
+@app.route('/static/images/<filename>')
+def serve_image(filename):
+    return send_from_directory('static/images', filename)
+
 # API route for AJAX login
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -354,4 +381,8 @@ def api_login():
             conn.close()
 
 if __name__ == '__main__':
+    # Create static directories if they don't exist
+    os.makedirs('static/images', exist_ok=True)
+    os.makedirs('templates', exist_ok=True)
+    
     app.run(debug=True, host='0.0.0.0', port=5000)
