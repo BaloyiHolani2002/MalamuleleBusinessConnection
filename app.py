@@ -32,7 +32,6 @@ def init_db():
             host="localhost",
             database="postgres",
             user="postgres",
-            password="Admin123"
         )
         default_conn.autocommit = True
         default_cur = default_conn.cursor()
