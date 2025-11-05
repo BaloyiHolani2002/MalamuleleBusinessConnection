@@ -219,13 +219,19 @@ def login():
             
             if user and check_password(user[4], password):  # user[4] is password field
                 session.permanent = bool(remember_me)
-                session['user_id'] = user[0]  # user[0] is user_id
-                session['email'] = user[3]    # user[3] is email
-                session['name'] = user[1]     # user[1] is name
-                session['user_type'] = user[6] # user[6] is user_type
-                
+                session['user_id'] = user[0]   # user_id
+                session['name'] = user[1]      # name
+                session['email'] = user[3]     # email
+                session['user_type'] = user[6] # user_type
+
                 flash('Login successful!', 'success')
-                return redirect(url_for('index'))
+
+                # ✅ Redirect based on role
+                if user[6] == 'admin':
+                    return redirect(url_for('userAdmindeshboard'))
+                else:
+                    return redirect(url_for('userCustomerdeshboard'))
+            
             else:
                 flash('Invalid email or password', 'error')
                 
@@ -237,8 +243,80 @@ def login():
                 cur.close()
             if 'conn' in locals():
                 conn.close()
-    
-    return render_template('userdeshboard.html')
+
+    return render_template('login.html')
+
+@app.route('/admin/dashboard')
+def userAdmindeshboard():
+    return render_template('userAdmindeshboard.html')
+
+@app.route('/customer/dashboard')
+def userCustomerdeshboard():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    user_id = session['user_id']
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Get user details
+    cur.execute('SELECT name, surname, email, phone_num FROM "User" WHERE user_id = %s', (user_id,))
+    user = cur.fetchone()
+
+    # Get bookings
+    cur.execute("""
+        SELECT B.booking_id, R.room_type, A.accom_type, B.check_in_date, B.check_out_date, B.total_amount, B.status
+        FROM Booking B
+        JOIN Room R ON B.room_id = R.room_id
+        JOIN Accommodation A ON R.accom_id = A.accom_id
+        WHERE B.user_id = %s
+        ORDER BY B.booking_date DESC
+    """, (user_id,))
+    bookings = cur.fetchall()
+
+    # Get unread notifications
+    cur.execute("""
+        SELECT title, message, created_date 
+        FROM Notification
+        WHERE user_id = %s AND is_read = FALSE
+        ORDER BY created_date DESC
+    """, (user_id,))
+    notifications = cur.fetchall()
+
+    # Get available rooms with related service and business owner info
+    cur.execute("""
+        SELECT R.room_id, R.room_type, R.price_per_night, A.accom_type, A.amenities,
+               S.service_category, S.range_price, BO.title, BO.location
+        FROM Room R
+        JOIN Accommodation A ON R.accom_id = A.accom_id
+        JOIN Service S ON A.service_id = S.service_id
+        JOIN BusinessOwner BO ON S.owner_id = BO.owner_id
+        WHERE R.avail_status = 'available' AND S.is_active = TRUE
+        ORDER BY BO.title, A.accom_type
+    """)
+    available_rooms = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template(
+        'userCustomerdeshboard.html', 
+        user=user, 
+        bookings=bookings, 
+        notifications=notifications,
+        available_rooms=available_rooms
+    )
+
+@app.route('/book/<int:room_id>')
+def book_room(room_id):
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    # You can add booking logic here (e.g., show booking form or directly book)
+    flash(f"Booking page for room ID {room_id} coming soon!", "info")
+    return redirect(url_for('userCustomerdeshboard'))
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
