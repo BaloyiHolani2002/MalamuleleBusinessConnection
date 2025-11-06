@@ -46,32 +46,55 @@
             gap: 15px;
         }
 
-        .logo {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #2874a6;
-            font-size: 24px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
+        /* Logo Styles */
+.logo {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 8px; /* Slightly rounded corners for square */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #2874a6;
+    font-size: 24px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+   
+    padding: 2px; /* Space between border and image */
+}
 
-        .logo-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+.logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Changed to contain to show full logo */
+    display: block;
+    border-radius: 5px; /* Slightly less than container for inner border effect */
+    background: white; /* Background in case image has transparency */
+}
 
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
-        }
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.business-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.connect-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+
 
         .logo-text span {
             color: #ffd700;
@@ -505,16 +528,16 @@
                 <div class="logo-container">
                     <div class="logo">
                         <!-- Logo with fallback to initials -->
-                        <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
-                            onerror="this.style.display='none'; this.parentNode.innerHTML='BC';">
+              <a href="{{ url_for('home') }}">             <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                            onerror="this.style.display='none'; this.parentNode.innerHTML='BC';"></a>
                     </div>
-                    <div class="logo-text">Business<span>Connect</span></div>
+                    <div class="logo-text">Business Connect </div>
                 </div>
                 <nav>
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
                         <li><a href="{{ url_for('services') }}">Services</a></li>
-                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                     
                         <li><a href="{{ url_for('about') }}">About</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact</a></li>
                     </ul>
@@ -554,7 +577,7 @@
                         incorporating global best practices in technology and user experience.</p>
                 </div>
                 <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"
+                    <img src="/static/images/bslogo.png"
                         alt="Business Connect Team">
                 </div>
             </div>
@@ -576,9 +599,9 @@
                         <div class="initials" id="katiego-placeholder" style="display: none;">KP</div>
                     </div>
                     <div class="member-info">
-                        <h4>Katiego Hope Papala</h4>
+                        <h4>KATLEGO HOPE PAPALA</h4>
                         <div class="role">Project Manager</div>
-                        <div class="email">katiego.papala@businessconnect.co.za</div>
+                        <div class="email">katlegohope708@gmail.com</div>
                         <p>Oversees project planning and ensures successful delivery of the Business Connect platform.
                         </p>
                     </div>
@@ -587,14 +610,14 @@
                 <!-- Nyiko Baloi -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/static/images/B.png" alt="Nyiko Baloi"
+                        <img src="/static/images/Baloi.png" alt="Nyiko Baloi"
                             onerror="this.style.display='none'; document.getElementById('nyiko-placeholder').style.display='flex';">
                         <div class="initials" id="nyiko-placeholder" style="display: none;">NB</div>
                     </div>
                     <div class="member-info">
-                        <h4>Nyiko Baloi</h4>
+                        <h4>NYIKO BALOI</h4>
                         <div class="role">Business Analyst</div>
-                        <div class="email">nyiko.baloi@businessconnect.co.za</div>
+                        <div class="email">nyikobaloi0@gmail.com</div>
                         <p>Gathers requirements and ensures the solution meets stakeholder needs and business
                             objectives.</p>
                     </div>
@@ -608,9 +631,9 @@
                         <div class="initials" id="holani-placeholder" style="display: none;">HB</div>
                     </div>
                     <div class="member-info">
-                        <h4>Holani Baloyi</h4>
+                        <h4>HOLANI BALOYI</h4>
                         <div class="role">Full-Stack Developer</div>
-                        <div class="email">holani.baloyi@businessconnect.co.za</div>
+                        <div class="email">holanibaloyi786@bgmail.com</div>
                         <p>Designs and develops both frontend and backend components of the Business Connect system.</p>
                     </div>
                 </div>
@@ -623,9 +646,9 @@
                         <div class="initials" id="xitsundzuxo-placeholder" style="display: none;">XM</div>
                     </div>
                     <div class="member-info">
-                        <h4>Xitsundzuxo Maluleke</h4>
+                        <h4>XITSISUNDZUXO MALULEKE</h4>
                         <div class="role">System Tester</div>
-                        <div class="email">xitsundzuxo.maluleke@businessconnect.co.za</div>
+                        <div class="email">xitsundzuxomaluleke909@gmail.com</div>
                         <p>Responsible for testing and quality assurance to ensure the platform works flawlessly.</p>
                     </div>
                 </div>
