@@ -4,8 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Business Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset and Base Styles */
+        /* Base Styles */
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --gray-light: #bdc3c7;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,127 +33,305 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
-        }
-
-        .login-container {
-            display: flex;
-            max-width: 1000px;
-            width: 100%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            min-height: 600px;
+            padding: 2px;
         }
 
-        /* Left Side - Branding */
-        .brand-section {
-            flex: 1;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            color: white;
-            padding: 3rem 2rem;
-            display: flex;
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            cursor: pointer;
+            padding: 5px;
         }
 
-        .brand-logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            margin: 3px 0;
+            transition: var(--transition);
+            border-radius: 2px;
         }
 
-        .brand-tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-        }
-
-        .brand-features {
+        .nav-links {
+            display: flex;
             list-style: none;
-            text-align: left;
-            margin-top: 2rem;
+            gap: 2rem;
         }
 
-        .brand-features li {
-            margin-bottom: 1rem;
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--warning);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--warning);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #c0392b;
+        }
+
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, var(--secondary), var(--primary));
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding: 80px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .nav-links li {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 12px 15px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+            
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Overlay */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .feature-icon {
-            font-size: 1.2rem;
-        }
-
-        /* Right Side - Login Form */
-        .login-section {
-            flex: 1;
-            padding: 3rem 2rem;
-            display: flex;
-            flex-direction: column;
             justify-content: center;
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+        }
+
+        /* Login Container */
+        .login-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
         }
 
         .login-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 30px;
             text-align: center;
-            margin-bottom: 2rem;
         }
 
         .login-header h1 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 28px;
+            margin-bottom: 10px;
         }
 
         .login-header p {
-            color: #666;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .login-section {
+            padding: 30px;
         }
 
         /* Form Styles */
         .login-form {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
+            max-width: 100%;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
         }
 
         .form-control {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e1e8ed;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: #f8f9fa;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius);
+            font-size: 16px;
+            transition: var(--transition);
         }
 
         .form-control:focus {
             outline: none;
-            border-color: #3498db;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-control.error {
+            border-color: var(--danger);
         }
 
         .password-input {
@@ -142,177 +340,79 @@
 
         .toggle-password {
             position: absolute;
-            right: 1rem;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #666;
             cursor: pointer;
+            font-size: 18px;
+            color: var(--gray);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
         }
 
         .form-options {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
         .remember-me {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            font-size: 14px;
         }
 
         .remember-me input {
-            width: auto;
+            margin-right: 8px;
         }
 
         .forgot-password {
-            color: #3498db;
+            color: var(--primary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 14px;
         }
 
         .forgot-password:hover {
             text-decoration: underline;
         }
 
-        /* Button Styles */
-        .btn {
+        /* Button */
+        .btn-form {
+            display: block;
             width: 100%;
-            padding: 0.75rem;
+            padding: 14px;
+            background: var(--primary);
+            color: var(--white);
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
+            transition: var(--transition);
             text-align: center;
         }
 
-        .btn-primary {
-            background: #3498db;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #2980b9;
+        .btn-form:hover {
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: var(--shadow);
         }
 
-        .btn-google {
-            background: white;
-            color: #333;
-            border: 2px solid #e1e8ed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+        .btn-form:disabled {
+            background: var(--gray-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
-        .btn-google:hover {
-            border-color: #db4437;
-            box-shadow: 0 5px 15px rgba(219, 68, 55, 0.1);
-        }
-
-        .google-icon {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Divider */
-        .divider {
-            text-align: center;
-            margin: 1.5rem 0;
-            position: relative;
-            color: #666;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #e1e8ed;
-            z-index: 1;
-        }
-
-        .divider span {
-            background: white;
-            padding: 0 1rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Sign Up Link */
-        .signup-link {
-            text-align: center;
-            margin-top: 2rem;
-            color: #666;
-        }
-
-        .signup-link a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* Alert Messages */
-        .alert {
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        .alert-error {
-            background: #fee;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        .alert-success {
-            background: #e8f5e8;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        /* Flash Messages */
-        .flash-messages {
-            margin-bottom: 1rem;
-        }
-
-        .flash-message {
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .flash-success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        .flash-error {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        /* Loading State */
         .btn-loading {
             position: relative;
             color: transparent;
@@ -325,10 +425,11 @@
             height: 20px;
             top: 50%;
             left: 50%;
-            margin: -10px 0 0 -10px;
-            border: 2px solid #ffffff;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: transparent;
+            border-top-color: var(--white);
             animation: spin 1s ease-in-out infinite;
         }
 
@@ -336,216 +437,294 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Alert Messages */
+        .alert {
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-error {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .alert-success {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-message {
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .flash-success {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        .flash-error {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        /* Sign Up Link */
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
-            .login-container {
-                flex-direction: column;
-                max-width: 400px;
+            .nav-container {
+                flex-direction: row;
+                gap: 1rem;
             }
 
-            .brand-section {
-                padding: 2rem 1rem;
+            .auth-buttons {
+                display: flex;
+                gap: 0.5rem;
             }
 
             .login-section {
-                padding: 2rem 1rem;
-            }
-
-            .form-options {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
+                padding: 20px;
             }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 0.5rem;
+            .auth-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
             }
 
-            .login-container {
-                border-radius: 10px;
+            .auth-buttons .btn {
+                width: 100%;
             }
-
-            .brand-logo {
-                font-size: 2rem;
+            
+            .login-header {
+                padding: 20px;
             }
-
+            
             .login-header h1 {
-                font-size: 1.5rem;
+                font-size: 24px;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <!-- Left Side - Branding -->
-        <div class="brand-section">
-            <div class="brand-logo">Business Connect</div>
-            <div class="brand-tagline">Connecting Malamulele with Trusted Local Services</div>
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <a href="{{ url_for('home') }}">
+                        <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                            onerror="this.style.display='none'; this.parentNode.innerHTML='BC'; this.parentNode.style.display='flex'; this.parentNode.style.alignItems='center'; this.parentNode.style.justifyContent='center';">
+                    </a>
+                </div>
+                <div class="logo-text">Business Connect</div>
+            </div>
             
-            <ul class="brand-features">
-                <li>
-                    <span class="feature-icon">🏠</span>
-                    <span>Find local accommodation & guest houses</span>
-                </li>
-                <li>
-                    <span class="feature-icon">🔧</span>
-                    <span>Connect with trusted service providers</span>
-                </li>
-                <li>
-                    <span class="feature-icon">⚡</span>
-                    <span>Book services & manage availability</span>
-                </li>
-                <li>
-                    <span class="feature-icon">🌟</span>
-                    <span>Support local business growth</span>
-                </li>
-            </ul>
+            <!-- Hamburger Menu -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <nav id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('services') }}">Services</a></li>
+                    <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-buttons" id="authButtons">
+                <a href="/login" class="btn btn-primary">Login</a>
+                <a href="/signup" class="btn btn-outline">Sign Up</a>
+            </div>
         </div>
+    </header>
 
-        <!-- Right Side - Login Form -->
-        <div class="login-section">
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="login-container">
             <div class="login-header">
                 <h1>Welcome Back</h1>
                 <p>Sign in to your Business Connect account</p>
             </div>
 
-            <!-- Flash Messages -->
-            <div class="flash-messages">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="flash-message flash-{{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-            </div>
-
-            <!-- Alert Messages -->
-            <div class="alert alert-error" id="errorAlert">
-                Invalid email or password. Please try again
-            </div>
-
-            <div class="alert alert-success" id="successAlert">
-                Login successful! Redirecting...
-            </div>
-
-            <form class="login-form" id="loginForm" method="POST" action="/login">
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email"
-                        class="form-control" 
-                        placeholder="Enter your email"
-                        required
-                        value="{{ request.form.email if request.form.email }}"
-                    >
+            <div class="login-section">
+                <!-- Flash Messages -->
+                <div class="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="flash-message flash-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
                 </div>
 
-                <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="password-input">
+                <!-- Alert Messages -->
+                <div class="alert alert-error" id="errorAlert"></div>
+                <div class="alert alert-success" id="successAlert"></div>
+
+                <form class="login-form" id="loginForm" method="POST" action="/login">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
                         <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
+                            type="email" 
+                            id="email" 
+                            name="email"
                             class="form-control" 
-                            placeholder="Enter your password"
+                            placeholder="Enter your email address"
                             required
+                            value="{{ request.form.email if request.form.email }}"
                         >
-                        <button type="button" class="toggle-password" id="togglePassword">
-                            👁️
-                        </button>
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password *</label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password"
+                                class="form-control" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                👁️
+                            </button>
+                        </div>
+                        <div class="error-message" id="passwordError">Please enter your password</div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember_me" name="remember_me">
+                            Remember me
+                        </label>
+                        <a href="/forgot-password" class="forgot-password">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="btn-form" id="loginBtn">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="signup-link">
+                    Don't have an account? <a href="/signup">Sign up here</a>
                 </div>
-
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="remember_me" name="remember_me">
-                        Remember me
-                    </label>
-                    <a href="/forgot-password" class="forgot-password">
-                        Forgot password?
-                    </a>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="loginBtn">
-                    Sign In
-                </button>
-            </form>
-
-
-
-            <div class="signup-link">
-                Don't have an account? <a href="/signup">Sign up here</a>
             </div>
         </div>
     </div>
 
     <script>
-        // DOM Elements
+        // Mobile sidebar functionality
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Close menu when clicking on links
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+
+        // DOM Elements for form
         const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const togglePassword = document.getElementById('togglePassword');
         const loginBtn = document.getElementById('loginBtn');
-        const googleSignIn = document.getElementById('googleSignIn');
         const errorAlert = document.getElementById('errorAlert');
         const successAlert = document.getElementById('successAlert');
 
+        // Form Validation State
+        let formIsValid = false;
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            validateForm(); // Run initial validation
+        });
+
+        // Event Listeners
+        loginForm.addEventListener('submit', handleLogin);
+        
+        // Real-time validation
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('blur', validatePassword);
+
         // Toggle Password Visibility
         togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️' : '🔒';
-        });
-
-        // Form Submission - Traditional POST
-        loginForm.addEventListener('submit', function(e) {
-            // Basic validation
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            if (!email || !password) {
-                e.preventDefault();
-                showError('Please fill in all fields');
-                return;
-            }
-
-            if (!isValidEmail(email)) {
-                e.preventDefault();
-                showError('Please enter a valid email address');
-                return;
-            }
-
-            // Show loading state
-            setLoadingState(true);
-            
-            // Form will submit normally via POST to Flask
-        });
-
-        // Google Sign-In
-        googleSignIn.addEventListener('click', function() {
-            setLoadingState(true, this);
-            
-            // Simulate Google Sign-In - Replace with actual Google OAuth integration
-            setTimeout(() => {
-                showSuccess('Google Sign-In successful! Redirecting...');
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 2000);
-            }, 1500);
+            togglePasswordVisibility(passwordInput, this);
         });
 
         // Utility Functions
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
+        function togglePasswordVisibility(input, button) {
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            button.textContent = type === 'password' ? '👁️' : '🔒';
         }
 
         function showError(message) {
@@ -553,7 +732,6 @@
             errorAlert.style.display = 'block';
             successAlert.style.display = 'none';
             
-            // Auto-hide error after 5 seconds
             setTimeout(() => {
                 errorAlert.style.display = 'none';
             }, 5000);
@@ -573,6 +751,62 @@
                 button.disabled = false;
                 button.classList.remove('btn-loading');
             }
+        }
+
+        // Validation Functions
+        function validateEmail() {
+            const email = emailInput.value.trim();
+            const isValid = isValidEmail(email);
+            
+            toggleError(emailInput, 'emailError', isValid, 'Please enter a valid email address');
+            validateForm();
+            return isValid;
+        }
+
+        function validatePassword() {
+            const password = passwordInput.value.trim();
+            const isValid = password.length >= 1;
+            
+            toggleError(passwordInput, 'passwordError', isValid, 'Please enter your password');
+            validateForm();
+            return isValid;
+        }
+
+        function validateForm() {
+            formIsValid = validateEmail() && validatePassword();
+            loginBtn.disabled = !formIsValid;
+            return formIsValid;
+        }
+
+        function toggleError(input, errorId, isValid, errorMessage) {
+            const errorElement = document.getElementById(errorId);
+            
+            if (!isValid && input.value.trim() !== '') {
+                input.classList.add('error');
+                errorElement.textContent = errorMessage;
+                errorElement.style.display = 'block';
+            } else {
+                input.classList.remove('error');
+                errorElement.style.display = 'none';
+            }
+        }
+
+        // Validation Helpers
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Form Submission
+        function handleLogin(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                showError('Please fix the errors in the form before submitting.');
+                return;
+            }
+
+            // Show loading state
+            setLoadingState(true);
         }
 
         // Enter key to submit form
