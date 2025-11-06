@@ -18,6 +18,16 @@ def services():
 def listings():
     return render_template('listings.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+
+
 # ------------------- ABOUT PAGE -------------------
 @app.route('/about')
 def about():
