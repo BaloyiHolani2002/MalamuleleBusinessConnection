@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +31,7 @@
             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -56,7 +57,7 @@
             font-weight: bold;
             color: #2874a6;
             font-size: 24px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .logo-text {
@@ -83,9 +84,10 @@
             border-radius: 4px;
         }
 
-        nav a:hover, nav a.active {
+        nav a:hover,
+        nav a.active {
             color: #ffd700;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Hero Section */
@@ -101,7 +103,7 @@
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .hero p {
@@ -172,13 +174,13 @@
             padding: 25px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .contact-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .contact-icon {
@@ -210,7 +212,7 @@
             margin-top: 30px;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .map-container iframe {
@@ -285,7 +287,7 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             border-radius: 50%;
             transition: background 0.3s;
@@ -298,7 +300,7 @@
         .copyright {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #e0e0e0;
             font-size: 14px;
         }
@@ -308,7 +310,7 @@
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .section-title h2 {
                 font-size: 2rem;
             }
@@ -319,23 +321,23 @@
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             nav ul {
                 gap: 15px;
             }
-            
+
             .hero {
                 padding: 60px 0;
             }
-            
+
             .hero h1 {
                 font-size: 2rem;
             }
-            
+
             .section {
                 padding: 60px 0;
             }
-            
+
             .contact-info {
                 grid-template-columns: 1fr;
             }
@@ -347,31 +349,33 @@
                 gap: 10px;
                 text-align: center;
             }
-            
+
             .hero h1 {
                 font-size: 1.8rem;
             }
-            
+
             .section-title h2 {
                 font-size: 1.8rem;
             }
-            
+
             .contact-item {
                 padding: 20px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="logo-container">
-                 <div class="logo">
-                    <!-- Replace this with your actual logo image -->
-                    <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image" onerror="this.style.display='none'">
-                </div>
+                    <div class="logo">
+                        <!-- Replace this with your actual logo image -->
+                        <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                            onerror="this.style.display='none'">
+                    </div>
                     <div class="logo-text">Business<span>Connect</span></div>
                 </div>
                 <nav>
@@ -445,7 +449,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </section>
 
@@ -455,7 +459,8 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>Business Connect</h3>
-                    <p>Connecting Malamulele's community with trusted local services and accommodations through innovative digital solutions.</p>
+                    <p>Connecting Malamulele's community with trusted local services and accommodations through
+                        innovative digital solutions.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -466,10 +471,11 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="aboutus.html">About Us</a></li>
-                        <li><a href="contactus.html">Contact Us</a></li>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('services') }}">Services</a></li>
+                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -485,4 +491,5 @@
         </div>
     </footer>
 </body>
+
 </html>

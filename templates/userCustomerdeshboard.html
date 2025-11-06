@@ -2,114 +2,357 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer Dashboard</title>
+    <title>Customer Dashboard - Business Connect</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .service-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .service-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .service-image {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+    </style>
 </head>
-<body class="bg-light">
-
-<nav class="navbar navbar-dark bg-dark px-4">
-    <span class="navbar-brand">Customer Dashboard</span>
-    <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
-</nav>
-
-<div class="container py-4">
-
-    <!-- User Profile Card -->
-    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">Your Profile</div>
-        <div class="card-body">
-            <p><strong>Name:</strong> {{ user[0] }} {{ user[1] }}</p>
-            <p><strong>Email:</strong> {{ user[2] }}</p>
-            <p><strong>Phone:</strong> {{ user[3] }}</p>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-handshake"></i> Business Connect
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                <a class="nav-link" href="/services"><i class="fas fa-concierge-bell"></i> Services</a>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user"></i> {{ user[0] }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/customer/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- Notifications -->
-    <div class="card mb-4">
-        <div class="card-header bg-warning">Notifications</div>
-        <div class="card-body">
-            {% if notifications %}
-                <ul>
-                    {% for notif in notifications %}
-                    <li><strong>{{ notif[0] }}</strong> - {{ notif[1] }} <br><small>{{ notif[2] }}</small></li>
-                    <hr>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-muted">No new notifications.</p>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Bookings Table -->
-    <div class="card">
-        <div class="card-header bg-success text-white">Your Bookings</div>
-        <div class="card-body">
-            {% if bookings %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Room Type</th>
-                        <th>Accommodation</th>
-                        <th>Check-In</th>
-                        <th>Check-Out</th>
-                        <th>Total Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for b in bookings %}
-                    <tr>
-                        <td>{{ b[0] }}</td>
-                        <td>{{ b[1] }}</td>
-                        <td>{{ b[2] }}</td>
-                        <td>{{ b[3] }}</td>
-                        <td>{{ b[4] }}</td>
-                        <td>R {{ b[5] }}</td>
-                        <td><span class="badge bg-info">{{ b[6] }}</span></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-                <p class="text-muted">You have no bookings yet.</p>
-            {% endif %}
-        </div>
-    </div>
-    
-
-    <!-- Available Rooms Section -->
-<div class="card mt-4">
-    <div class="card-header bg-info text-white">Available Rooms & Services</div>
-    <div class="card-body">
-        {% if available_rooms %}
-        <div class="row">
-            {% for room in available_rooms %}
-            <div class="col-md-6 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ room[7] }} - {{ room[5] }}</h5>
-                        <p><strong>Accommodation:</strong> {{ room[3] }}</p>
-                        <p><strong>Room Type:</strong> {{ room[1] }}</p>
-                        <p><strong>Price per Night:</strong> R {{ room[2] }}</p>
-                        <p><strong>Amenities:</strong> {{ room[4] }}</p>
-                        <p><strong>Service Price Range:</strong> R {{ room[6] }}</p>
-                        <p><strong>Location:</strong> {{ room[8] }}</p>
-                        <a href="{{ url_for('book_room', room_id=room[0]) }}" class="btn btn-success">Book Now</a>
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1>Welcome back, {{ user[0] }}!</h1>
+                    <p class="lead mb-0">Manage your bookings and discover local services</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="btn-group">
+                        <a href="/services" class="btn btn-light btn-lg">
+                            <i class="fas fa-search"></i> Find Services
+                        </a>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-        {% else %}
-            <p class="text-muted">No rooms/services available at the moment.</p>
-        {% endif %}
     </div>
-</div>
 
+    <div class="container">
+        <!-- Quick Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stat-card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4>{{ bookings|length }}</h4>
+                                <p class="mb-0">Total Bookings</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-calendar-check fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4>{{ notifications|length }}</h4>
+                                <p class="mb-0">Notifications</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-bell fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4>{{ available_rooms|length }}</h4>
+                                <p class="mb-0">Available Services</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-building fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4>
+                                    {% set pending_bookings = bookings|selectattr("6", "equalto", "pending")|list %}
+                                    {{ pending_bookings|length }}
+                                </h4>
+                                <p class="mb-0">Pending</p>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-clock fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <div class="row">
+            <!-- Notifications Column -->
+            <div class="col-lg-4">
+                <!-- Notifications Card -->
+                <div class="card mb-4">
+                    <div class="card-header bg-warning d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-bell"></i> Notifications</span>
+                        {% if notifications %}
+                        <button class="btn btn-sm btn-outline-light" onclick="markAllRead()">
+                            Mark All Read
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if notifications %}
+                            <div class="list-group list-group-flush">
+                                {% for notif in notifications %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ notif[0] }}</h6>
+                                        <small>{{ notif[2].strftime('%Y-%m-%d') if notif[2] }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ notif[1] }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted text-center">No new notifications</p>
+                        {% endif %}
+                    </div>
+                </div>
 
+                <!-- Profile Card -->
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-user"></i> Your Profile
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> {{ user[0] }} {{ user[1] }}</p>
+                        <p><strong>Email:</strong> {{ user[2] }}</p>
+                        <p><strong>Phone:</strong> {{ user[3] or 'Not provided' }}</p>
+                        <div class="d-grid gap-2">
+                            <a href="/services" class="btn btn-outline-primary">
+                                <i class="fas fa-search"></i> Browse Services
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Column -->
+            <div class="col-lg-8">
+                <!-- Bookings Card -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-calendar-check"></i> Your Bookings</span>
+                        <span class="badge bg-light text-dark">{{ bookings|length }} bookings</span>
+                    </div>
+                    <div class="card-body">
+                        {% if bookings %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Room Type</th>
+                                        <th>Accommodation</th>
+                                        <th>Check-In</th>
+                                        <th>Check-Out</th>
+                                        <th>Guests</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for b in bookings %}
+                                    <tr>
+                                        <td>#{{ b[0] }}</td>
+                                        <td>{{ b[1] }}</td>
+                                        <td>{{ b[2] }}</td>
+                                        <td>{{ b[3] }}</td>
+                                        <td>{{ b[4] }}</td>
+                                        <td>{{ b[7] }}</td>
+                                        <td>R {{ "%.2f"|format(b[5]) }}</td>
+                                        <td>
+                                            <span class="badge 
+                                                {% if b[6] == 'confirmed' %}bg-success
+                                                {% elif b[6] == 'pending' %}bg-warning
+                                                {% else %}bg-secondary{% endif %}">
+                                                {{ b[6] }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">You haven't made any bookings yet.</p>
+                            <a href="/services" class="btn btn-primary">Find Services</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Available Services Card -->
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <i class="fas fa-building"></i> Available Services
+                    </div>
+                    <div class="card-body">
+                        {% if available_rooms %}
+                        <div class="row">
+                            {% for room in available_rooms %}
+                            <div class="col-md-6 mb-3">
+                                <div class="card service-card h-100">
+                                    {% if room[10] %}
+                                    <img src="{{ room[10] }}" class="card-img-top service-image" alt="{{ room[7] }}">
+                                    {% else %}
+                                    <div class="service-image bg-light d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-building fa-3x text-muted"></i>
+                                    </div>
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ room[7] }}</h5>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <i class="fas fa-map-marker-alt"></i> {{ room[8] }}
+                                            </small>
+                                        </p>
+                                        <p class="card-text">{{ room[3] }} - {{ room[1] }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="h5 mb-0 text-primary">R {{ "%.2f"|format(room[2]) }}/night</span>
+                                            <span class="badge bg-success">Available</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-users"></i> Up to {{ room[11] }} guests
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent">
+                                        <a href="/book/{{ room[0] }}" class="btn btn-primary w-100">
+                                            <i class="fas fa-bookmark"></i> Book Now
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-building fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No available services at the moment.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Business Connect</h5>
+                    <p>Connecting Malamulele with trusted local services</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2025 Business Connect. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function markAllRead() {
+            fetch('/api/notifications/mark-read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </body>
 </html>

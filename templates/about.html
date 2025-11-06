@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +31,7 @@
             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -56,7 +57,7 @@
             font-weight: bold;
             color: #2874a6;
             font-size: 24px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
@@ -91,9 +92,10 @@
             border-radius: 4px;
         }
 
-        nav a:hover, nav a.active {
+        nav a:hover,
+        nav a.active {
             color: #ffd700;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Hero Section */
@@ -109,7 +111,7 @@
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .hero p {
@@ -180,7 +182,7 @@
         .about-image {
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .about-image img {
@@ -206,13 +208,13 @@
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .team-member:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
         .member-image {
@@ -302,13 +304,13 @@
             padding: 25px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .contact-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .contact-icon {
@@ -401,7 +403,7 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             border-radius: 50%;
             transition: background 0.3s;
@@ -414,7 +416,7 @@
         .copyright {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #e0e0e0;
             font-size: 14px;
         }
@@ -424,15 +426,15 @@
             .about-content {
                 grid-template-columns: 1fr;
             }
-            
+
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .section-title h2 {
                 font-size: 2rem;
             }
-            
+
             .team-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             }
@@ -443,23 +445,23 @@
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             nav ul {
                 gap: 15px;
             }
-            
+
             .hero {
                 padding: 60px 0;
             }
-            
+
             .hero h1 {
                 font-size: 2rem;
             }
-            
+
             .section {
                 padding: 60px 0;
             }
-            
+
             .member-image {
                 height: 250px;
             }
@@ -471,29 +473,30 @@
                 gap: 10px;
                 text-align: center;
             }
-            
+
             .hero h1 {
                 font-size: 1.8rem;
             }
-            
+
             .section-title h2 {
                 font-size: 1.8rem;
             }
-            
+
             .team-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .contact-info {
                 grid-template-columns: 1fr;
             }
-            
+
             .contact-item {
                 padding: 20px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header>
@@ -502,16 +505,18 @@
                 <div class="logo-container">
                     <div class="logo">
                         <!-- Logo with fallback to initials -->
-                      <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image" onerror="this.style.display='none'; this.parentNode.innerHTML='BC';">
+                        <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                            onerror="this.style.display='none'; this.parentNode.innerHTML='BC';">
                     </div>
                     <div class="logo-text">Business<span>Connect</span></div>
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/services">Services</a></li>
-                        <li><a href="/aboutus" class="active">About Us</a></li>
-                        <li><a href="/contactus">Contact Us</a></li>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('services') }}">Services</a></li>
+                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
                     </ul>
                 </nav>
             </div>
@@ -522,7 +527,8 @@
     <section class="hero">
         <div class="container">
             <h1>About Business Connect</h1>
-            <p>Connecting Malamulele's community with trusted local services and accommodations through innovative digital solutions.</p>
+            <p>Connecting Malamulele's community with trusted local services and accommodations through innovative
+                digital solutions.</p>
         </div>
     </section>
 
@@ -530,17 +536,26 @@
         <div class="container">
             <div class="section-title">
                 <h2>Our Story</h2>
-                <p>Learn how Business Connect is transforming the local service economy in Malamulele and surrounding areas.</p>
+                <p>Learn how Business Connect is transforming the local service economy in Malamulele and surrounding
+                    areas.</p>
             </div>
             <div class="about-content">
                 <div class="about-text">
                     <h3>Empowering Local Businesses</h3>
-                    <p>Business Connect was founded in 2025 with a clear mission: to bridge the digital gap in Malamulele's local service economy. We recognized that many talented service providers and accommodation owners were struggling to reach customers due to limited online visibility.</p>
-                    <p>Our platform connects local plumbers, electricians, guest houses, and room rental providers with residents and visitors who need their services. By creating a centralized digital marketplace, we're helping to grow the local economy while making essential services more accessible to everyone.</p>
-                    <p>Based in the heart of Malamulele, we understand the unique challenges and opportunities in our community. Our team is committed to developing solutions that are tailored to local needs while incorporating global best practices in technology and user experience.</p>
+                    <p>Business Connect was founded in 2025 with a clear mission: to bridge the digital gap in
+                        Malamulele's local service economy. We recognized that many talented service providers and
+                        accommodation owners were struggling to reach customers due to limited online visibility.</p>
+                    <p>Our platform connects local plumbers, electricians, guest houses, and room rental providers with
+                        residents and visitors who need their services. By creating a centralized digital marketplace,
+                        we're helping to grow the local economy while making essential services more accessible to
+                        everyone.</p>
+                    <p>Based in the heart of Malamulele, we understand the unique challenges and opportunities in our
+                        community. Our team is committed to developing solutions that are tailored to local needs while
+                        incorporating global best practices in technology and user experience.</p>
                 </div>
                 <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Business Connect Team">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"
+                        alt="Business Connect Team">
                 </div>
             </div>
         </div>
@@ -556,38 +571,40 @@
                 <!-- Katiego Hope Papala -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/static/images/Papla.png" alt="Katiego Hope Papala" 
-     onerror="this.style.display='none'; document.getElementById('katiego-placeholder').style.display='flex';">
+                        <img src="/static/images/Papla.png" alt="Katiego Hope Papala"
+                            onerror="this.style.display='none'; document.getElementById('katiego-placeholder').style.display='flex';">
                         <div class="initials" id="katiego-placeholder" style="display: none;">KP</div>
                     </div>
                     <div class="member-info">
                         <h4>Katiego Hope Papala</h4>
                         <div class="role">Project Manager</div>
                         <div class="email">katiego.papala@businessconnect.co.za</div>
-                        <p>Oversees project planning and ensures successful delivery of the Business Connect platform.</p>
+                        <p>Oversees project planning and ensures successful delivery of the Business Connect platform.
+                        </p>
                     </div>
                 </div>
 
                 <!-- Nyiko Baloi -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/static/images/B.png" alt="Nyiko Baloi" 
-     onerror="this.style.display='none'; document.getElementById('nyiko-placeholder').style.display='flex';">
+                        <img src="/static/images/B.png" alt="Nyiko Baloi"
+                            onerror="this.style.display='none'; document.getElementById('nyiko-placeholder').style.display='flex';">
                         <div class="initials" id="nyiko-placeholder" style="display: none;">NB</div>
                     </div>
                     <div class="member-info">
                         <h4>Nyiko Baloi</h4>
                         <div class="role">Business Analyst</div>
                         <div class="email">nyiko.baloi@businessconnect.co.za</div>
-                        <p>Gathers requirements and ensures the solution meets stakeholder needs and business objectives.</p>
+                        <p>Gathers requirements and ensures the solution meets stakeholder needs and business
+                            objectives.</p>
                     </div>
                 </div>
 
                 <!-- Holani Baloyi -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/static/images/Baloyi.png" alt="Holani Baloyi" 
-     onerror="this.style.display='none'; document.getElementById('holani-placeholder').style.display='flex';">
+                        <img src="/static/images/Baloyi.png" alt="Holani Baloyi"
+                            onerror="this.style.display='none'; document.getElementById('holani-placeholder').style.display='flex';">
                         <div class="initials" id="holani-placeholder" style="display: none;">HB</div>
                     </div>
                     <div class="member-info">
@@ -601,8 +618,8 @@
                 <!-- Xitsundzuxo Maluleke -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/static/images/Malaluke.png" alt="Xitsundzuxo Maluleke" 
-     onerror="this.style.display='none'; document.getElementById('xitsundzuxo-placeholder').style.display='flex';">
+                        <img src="/static/images/Malaluke.png" alt="Xitsundzuxo Maluleke"
+                            onerror="this.style.display='none'; document.getElementById('xitsundzuxo-placeholder').style.display='flex';">
                         <div class="initials" id="xitsundzuxo-placeholder" style="display: none;">XM</div>
                     </div>
                     <div class="member-info">
@@ -663,7 +680,8 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>Business Connect</h3>
-                    <p>Connecting Malamulele's community with trusted local services and accommodations through innovative digital solutions.</p>
+                    <p>Connecting Malamulele's community with trusted local services and accommodations through
+                        innovative digital solutions.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -695,14 +713,14 @@
 
     <script>
         // Handle image loading errors and show initials placeholder
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('Team member images loading...');
-            
+
             // Check if images are loading properly
             const images = document.querySelectorAll('.member-image img');
             images.forEach(img => {
                 console.log('Checking image:', img.src);
-                
+
                 // Force check if image loaded
                 if (img.complete && img.naturalHeight === 0) {
                     console.log('Image failed to load:', img.src);
@@ -717,4 +735,5 @@
         });
     </script>
 </body>
+
 </html>

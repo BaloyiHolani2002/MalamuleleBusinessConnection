@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Business Connect</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .services-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+        .filter-sidebar {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            position: sticky;
+            top: 20px;
+        }
+        .service-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            height: 100%;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .service-image {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .verified-badge {
+            background: #28a745;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .price-tag {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .rating-stars {
+            color: #ffc107;
+        }
+        .search-box {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .category-badge {
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            display: inline-block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .category-badge:hover, .category-badge.active {
+            background: #007bff;
+            color: white;
+        }
+        .no-services {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        .filter-toggle {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .filter-sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+            }
+            .filter-sidebar.show {
+                left: 0;
+            }
+            .filter-toggle {
+                display: block;
+                margin-bottom: 1rem;
+            }
+            .filter-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+            }
+            .filter-overlay.show {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-handshake"></i> Business Connect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('services') }}">Services</a></li>
+                    <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                <div class="navbar-nav">
+                    {% if session.get('user_id') %}
+                    <a class="nav-link" href="/customer/dashboard">
+                        <i class="fas fa-user"></i> {{ session.get('name', 'Dashboard') }}
+                    </a>
+                    {% else %}
+                    <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a class="nav-link" href="/signup"><i class="fas fa-user-plus"></i> Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="services-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold">Find Local Services</h1>
+                    <p class="lead">Discover trusted service providers in Malamulele and surrounding areas</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <input type="text" class="form-control border-0" id="searchInput" placeholder="Search services...">
+                            <button class="btn btn-primary" type="button" id="searchButton">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Filters Sidebar -->
+            <div class="col-lg-3">
+                <button class="btn btn-primary w-100 filter-toggle mb-3" id="filterToggle">
+                    <i class="fas fa-filter"></i> Show Filters
+                </button>
+                
+                <div class="filter-overlay" id="filterOverlay"></div>
+                
+                <div class="filter-sidebar" id="filterSidebar">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Filters</h5>
+                        <button class="btn-close d-lg-none" id="closeFilters"></button>
+                    </div>
+                    
+                    <form method="GET" id="filterForm">
+                        <!-- Service Type Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Service Type</label>
+                            <select class="form-select" name="type" onchange="this.form.submit()">
+                                <option value="">All Types</option>
+                                {% for bus_type in business_types %}
+                                <option value="{{ bus_type }}" {% if selected_type == bus_type %}selected{% endif %}>
+                                    {{ bus_type }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Category Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Category</label>
+                            <select class="form-select" name="category" onchange="this.form.submit()">
+                                <option value="">All Categories</option>
+                                {% for category in categories %}
+                                <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+                                    {{ category }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Location Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Location</label>
+                            <select class="form-select" name="location" onchange="this.form.submit()">
+                                <option value="">All Locations</option>
+                                {% for location in locations %}
+                                <option value="{{ location }}" {% if selected_location == location %}selected{% endif %}>
+                                    {{ location }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Price Range Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Price Range</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="min_price" placeholder="Min" 
+                                           value="{{ selected_min_price }}" min="0" onchange="this.form.submit()">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="max_price" placeholder="Max"
+                                           value="{{ selected_max_price }}" min="0" onchange="this.form.submit()">
+                                </div>
+                            </div>
+                            <small class="text-muted">Price range: R{{ "%.2f"|format(min_price_range) }} - R{{ "%.2f"|format(max_price_range) }}</small>
+                        </div>
+                        
+                        <!-- Quick Category Filters -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Quick Categories</label>
+                            <div class="d-flex flex-wrap">
+                                {% for category in categories[:5] %}
+                                <a href="?category={{ category }}" class="category-badge {% if selected_category == category %}active{% endif %}">
+                                    {{ category }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="/services" class="btn btn-outline-secondary">Clear Filters</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="col-lg-9">
+                <!-- Results Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="mb-1">Available Services</h4>
+                        <p class="text-muted mb-0">{{ services|length }} services found</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="me-2">Sort by:</span>
+                        <select class="form-select form-select-sm w-auto" id="sortSelect">
+                            <option value="name">Name</option>
+                            <option value="price_low">Price: Low to High</option>
+                            <option value="price_high">Price: High to Low</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Services Grid -->
+                {% if services %}
+                <div class="row" id="servicesGrid">
+                    {% for service in services %}
+                    <div class="col-xl-4 col-lg-6 col-md-6" data-price="{{ service[2] }}" data-rating="{{ service[11] or 0 }}" data-name="{{ service[3] }}">
+                        <div class="card service-card">
+                            {% if service[7] %}
+                            <img src="{{ service[7] }}" class="card-img-top service-image" alt="{{ service[3] }}">
+                            {% else %}
+                            <div class="service-image bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-building fa-3x text-muted"></i>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title mb-0">{{ service[3] }}</h5>
+                                    {% if service[9] %}
+                                    <span class="verified-badge">
+                                        <i class="fas fa-check-circle"></i> Verified
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                
+                                <p class="card-text text-muted small mb-2">
+                                    <i class="fas fa-map-marker-alt"></i> {{ service[4] }}
+                                </p>
+                                
+                                <p class="card-text small mb-2">
+                                    <strong>Category:</strong> {{ service[1] }}
+                                </p>
+                                
+                                {% if service[6] %}
+                                <p class="card-text small mb-2">
+                                    <strong>Type:</strong> {{ service[6] }}
+                                </p>
+                                {% endif %}
+                                
+                                <p class="card-text mb-3">
+                                    {{ service[5][:100] }}{% if service[5]|length > 100 %}...{% endif %}
+                                </p>
+                                
+                                <!-- Rating -->
+                                {% if service[11] %}
+                                <div class="rating-stars mb-2">
+                                    {% for i in range(5) %}
+                                    <i class="fas fa-star{% if i >= service[11] %}-o{% endif %}"></i>
+                                    {% endfor %}
+                                    <small class="text-muted">({{ "%.1f"|format(service[11]) }})</small>
+                                </div>
+                                {% endif %}
+                                
+                                <!-- Available Rooms -->
+                                {% if service[10] > 0 %}
+                                <div class="mb-2">
+                                    <span class="badge bg-success">
+                                        {{ service[10] }} room{% if service[10] > 1 %}s{% endif %} available
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="card-footer bg-transparent">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="price-tag">R{{ "%.2f"|format(service[2]) }}</span>
+                                    <a href="/service/{{ service[0] }}" class="btn btn-primary btn-sm">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-services">
+                    <i class="fas fa-search fa-4x mb-3"></i>
+                    <h4>No services found</h4>
+                    <p class="text-muted">Try adjusting your filters or search terms</p>
+                    <a href="/services" class="btn btn-primary">Clear Filters</a>
+                </div>
+                {% endif %}
+                
+                <!-- Load More Button (for future pagination) -->
+                {% if services|length >= 12 %}
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary" id="loadMore">
+                        Load More Services
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Business Connect</h5>
+                    <p>Connecting Malamulele with trusted local services</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2025 Business Connect. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mobile filter toggle
+        document.getElementById('filterToggle').addEventListener('click', function() {
+            document.getElementById('filterSidebar').classList.add('show');
+            document.getElementById('filterOverlay').classList.add('show');
+        });
+        
+        document.getElementById('closeFilters').addEventListener('click', function() {
+            document.getElementById('filterSidebar').classList.remove('show');
+            document.getElementById('filterOverlay').classList.remove('show');
+        });
+        
+        document.getElementById('filterOverlay').addEventListener('click', function() {
+            document.getElementById('filterSidebar').classList.remove('show');
+            this.classList.remove('show');
+        });
+        
+        // Search functionality
+        document.getElementById('searchButton').addEventListener('click', performSearch);
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `/services?q=${encodeURIComponent(query)}`;
+            }
+        }
+        
+        // Sort functionality
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            const sortBy = this.value;
+            const servicesGrid = document.getElementById('servicesGrid');
+            const services = Array.from(servicesGrid.children);
+            
+            services.sort((a, b) => {
+                const aPrice = parseFloat(a.dataset.price);
+                const bPrice = parseFloat(b.dataset.price);
+                const aRating = parseFloat(a.dataset.rating);
+                const bRating = parseFloat(b.dataset.rating);
+                const aName = a.dataset.name.toLowerCase();
+                const bName = b.dataset.name.toLowerCase();
+                
+                switch(sortBy) {
+                    case 'price_low':
+                        return aPrice - bPrice;
+                    case 'price_high':
+                        return bPrice - aPrice;
+                    case 'rating':
+                        return bRating - aRating;
+                    case 'name':
+                    default:
+                        return aName.localeCompare(bName);
+                }
+            });
+            
+            // Re-append sorted services
+            services.forEach(service => servicesGrid.appendChild(service));
+        });
+        
+        // Price range validation
+        const minPriceInput = document.querySelector('input[name="min_price"]');
+        const maxPriceInput = document.querySelector('input[name="max_price"]');
+        
+        if (minPriceInput && maxPriceInput) {
+            minPriceInput.addEventListener('change', function() {
+                if (maxPriceInput.value && parseFloat(this.value) > parseFloat(maxPriceInput.value)) {
+                    this.value = maxPriceInput.value;
+                }
+            });
+            
+            maxPriceInput.addEventListener('change', function() {
+                if (minPriceInput.value && parseFloat(this.value) < parseFloat(minPriceInput.value)) {
+                    this.value = minPriceInput.value;
+                }
+            });
+        }
+        
+        // Auto-submit form when price inputs lose focus
+        const priceInputs = document.querySelectorAll('input[name="min_price"], input[name="max_price"]');
+        priceInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value) {
+                    document.getElementById('filterForm').submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
