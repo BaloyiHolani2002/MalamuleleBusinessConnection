@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Business Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Base Styles */
         :root {
@@ -35,121 +36,272 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--dark);
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            overflow: hidden;
+            padding: 2px;
         }
 
-        /* Container */
-        .signup-container {
-            display: flex;
-            max-width: 1200px;
+        .logo-image {
             width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            margin: 3px 0;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--warning);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--warning);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #c0392b;
+        }
+
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, var(--secondary), var(--primary));
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding: 80px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .nav-links li {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 12px 15px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+            
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Overlay */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+        }
+
+        /* Signup Container */
+        .signup-container {
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow-lg);
             overflow: hidden;
-            min-height: 700px;
-        }
-
-        /* Brand Section */
-        .brand-section {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .logo-container {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-        }
-
-        .logo img {
-            max-width: 100%;
-            border-radius: 50%;
-        }
-
-        .brand-logo {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .brand-tagline {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .brand-features {
-            list-style: none;
-            margin-top: 30px;
-        }
-
-        .brand-features li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-
-        .feature-icon {
-            background: rgba(255, 255, 255, 0.2);
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-size: 14px;
-        }
-
-        /* Signup Section */
-        .signup-section {
-            flex: 1.2;
-            padding: 40px;
-            overflow-y: auto;
+            width: 100%;
+            max-width: 500px;
         }
 
         .signup-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 30px;
             text-align: center;
-            margin-bottom: 30px;
         }
 
         .signup-header h1 {
             font-size: 28px;
-            color: var(--secondary);
             margin-bottom: 10px;
         }
 
         .signup-header p {
-            color: var(--gray);
+            opacity: 0.9;
             font-size: 16px;
+        }
+
+        .signup-section {
+            padding: 30px;
         }
 
         /* Form Styles */
         .signup-form {
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 100%;
         }
 
         .form-row {
@@ -286,7 +438,7 @@
         }
 
         /* Button */
-        .btn {
+        .btn-form {
             display: block;
             width: 100%;
             padding: 14px;
@@ -301,13 +453,13 @@
             text-align: center;
         }
 
-        .btn:hover {
+        .btn-form:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: var(--shadow);
         }
 
-        .btn:disabled {
+        .btn-form:disabled {
             background: var(--gray-light);
             cursor: not-allowed;
             transform: none;
@@ -379,18 +531,6 @@
             background: rgba(231, 76, 60, 0.1);
             color: var(--danger);
             border: 1px solid rgba(231, 76, 60, 0.2);
-        }
-
-        .flash-warning {
-            background: rgba(243, 156, 18, 0.1);
-            color: var(--warning);
-            border: 1px solid rgba(243, 156, 18, 0.2);
-        }
-
-        .flash-info {
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--primary);
-            border: 1px solid rgba(52, 152, 219, 0.2);
         }
 
         /* Login Link */
@@ -518,42 +658,40 @@
             justify-content: flex-end;
         }
 
-        .btn-secondary {
-            background: var(--gray);
-        }
-
-        .btn-secondary:hover {
-            background: var(--gray-light);
-        }
-
         /* Responsive Design */
-        @media (max-width: 900px) {
-            .signup-container {
-                flex-direction: column;
-                max-width: 500px;
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: row;
+                gap: 1rem;
             }
-            
-            .brand-section {
-                padding: 30px;
-            }
-            
-            .signup-section {
-                padding: 30px;
-            }
-        }
 
-        @media (max-width: 480px) {
+            .auth-buttons {
+                display: flex;
+                gap: 0.5rem;
+            }
+
             .form-row {
                 flex-direction: column;
                 gap: 0;
             }
             
-            .brand-section, .signup-section {
+            .signup-section {
                 padding: 20px;
             }
+        }
+
+        @media (max-width: 480px) {
+            .auth-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons .btn {
+                width: 100%;
+            }
             
-            .brand-logo {
-                font-size: 24px;
+            .signup-header {
+                padding: 20px;
             }
             
             .signup-header h1 {
@@ -567,194 +705,225 @@
     </style>
 </head>
 <body>
-    <div class="signup-container">
-        <!-- Left Side - Branding -->
-        <div class="brand-section">
+    </head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
             <div class="logo-container">
                 <div class="logo">
-                    <!-- Replace this with your actual logo image -->
-                    <img src="/static/images/bslogo.png" alt="Business Connect Logo" onerror="this.style.display='none'">
+                    <a href="{{ url_for('home') }}">
+                        <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                            onerror="this.style.display='none'; this.parentNode.innerHTML='BC'; this.parentNode.style.display='flex'; this.parentNode.style.alignItems='center'; this.parentNode.style.justifyContent='center';">
+                    </a>
                 </div>
-                <div class="brand-logo">Business Connect</div>
-                <div class="brand-tagline">Connecting services with dignity</div>
+                <div class="logo-text">Business Connect</div>
             </div>
             
+            <!-- Hamburger Menu -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             
+            <nav id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('services') }}">Services</a></li>
+                 
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-buttons" id="authButtons">
+                <a href="/login" class="btn btn-outline">Login</a>
+                <a href="/signup" class="btn btn-primary">Sign Up</a>
+            </div>
         </div>
+    </header>
 
-        <!-- Right Side - Signup Form -->
-        <div class="signup-section">
+   
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="signup-container">
             <div class="signup-header">
                 <h1>Create Your Account</h1>
                 <p>Join Business Connect and start connecting with service providers</p>
             </div>
 
-            <!-- Flash Messages -->
-            <div class="flash-messages">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="flash-message flash-{{ category }}">
-                                {{ message }}
+            <div class="signup-section">
+                <!-- Flash Messages -->
+                <div class="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="flash-message flash-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <!-- Alert Messages -->
+                <div class="alert alert-error" id="errorAlert"></div>
+                <div class="alert alert-success" id="successAlert"></div>
+
+                <form class="signup-form" id="signupForm" method="POST" action="/signup">
+                    <!-- Personal Information -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name" class="form-label">First Name *</label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name"
+                                class="form-control" 
+                                placeholder="Enter your first name"
+                                required
+                                value="{{ request.form.name if request.form.name }}"
+                            >
+                            <div class="error-message" id="nameError">Please enter your first name</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="surname" class="form-label">Last Name *</label>
+                            <input 
+                                type="text" 
+                                id="surname" 
+                                name="surname"
+                                class="form-control" 
+                                placeholder="Enter your last name"
+                                required
+                                value="{{ request.form.surname if request.form.surname }}"
+                            >
+                            <div class="error-message" id="surnameError">Please enter your last name</div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            class="form-control" 
+                            placeholder="Enter your email address"
+                            required
+                            value="{{ request.form.email if request.form.email }}"
+                        >
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone_num" class="form-label">Phone Number</label>
+                        <input 
+                            type="tel" 
+                            id="phone_num" 
+                            name="phone_num"
+                            class="form-control" 
+                            placeholder="Enter your phone number"
+                            value="{{ request.form.phone_num if request.form.phone_num }}"
+                        >
+                        <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                    </div>
+
+                    <!-- Account Type -->
+                    <div class="form-group">
+                        <label for="user_type" class="form-label">I am a *</label>
+                        <select id="user_type" name="user_type" class="form-control" required>
+                            <option value="customer" selected>Customer looking for services</option>
+                            <option value="plumber">Plumbing Service Provider</option>
+                            <option value="electrician">Electrical Service Provider</option>
+                            <option value="landlord">Accommodation Provider</option>
+                            <option value="guest_house">Guest House Owner</option>
+                            <option value="other">Other Service Provider</option>
+                        </select>
+                        <div class="error-message" id="userTypeError">Please select your account type</div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password *</label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password"
+                                class="form-control" 
+                                placeholder="Create a strong password"
+                                required
+                            >
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                👁️
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="password-requirements">
+                            <div class="requirement unmet" id="reqLength">
+                                <span class="requirement-icon">○</span>
+                                At least 8 characters
                             </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-            </div>
+                            <div class="requirement unmet" id="reqUpper">
+                                <span class="requirement-icon">○</span>
+                                One uppercase letter
+                            </div>
+                            <div class="requirement unmet" id="reqLower">
+                                <span class="requirement-icon">○</span>
+                                One lowercase letter
+                            </div>
+                            <div class="requirement unmet" id="reqNumber">
+                                <span class="requirement-icon">○</span>
+                                One number
+                            </div>
+                        </div>
+                        <div class="error-message" id="passwordError">Please enter a valid password</div>
+                    </div>
 
-            <!-- Alert Messages -->
-            <div class="alert alert-error" id="errorAlert"></div>
-            <div class="alert alert-success" id="successAlert"></div>
-
-            <form class="signup-form" id="signupForm" method="POST" action="/signup">
-                <!-- Personal Information -->
-                <div class="form-row">
+                    <!-- Confirm Password -->
                     <div class="form-group">
-                        <label for="name" class="form-label">First Name *</label>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            name="name"
-                            class="form-control" 
-                            placeholder="Enter your first name"
-                            required
-                            value="{{ request.form.name if request.form.name }}"
-                        >
-                        <div class="error-message" id="nameError">Please enter your first name</div>
+                        <label for="confirmPassword" class="form-label">Confirm Password *</label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="confirmPassword"
+                                class="form-control" 
+                                placeholder="Confirm your password"
+                                required
+                            >
+                            <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                                👁️
+                            </button>
+                        </div>
+                        <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
                     </div>
 
+                    <!-- Terms and Conditions -->
                     <div class="form-group">
-                        <label for="surname" class="form-label">Last Name *</label>
-                        <input 
-                            type="text" 
-                            id="surname" 
-                            name="surname"
-                            class="form-control" 
-                            placeholder="Enter your last name"
-                            required
-                            value="{{ request.form.surname if request.form.surname }}"
-                        >
-                        <div class="error-message" id="surnameError">Please enter your last name</div>
+                        <label class="remember-me">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            I agree to the <span class="terms-link" id="termsLink">terms & conditions</span> *
+                        </label>
+                        <div class="error-message" id="termsError">You must agree to the terms and conditions</div>
                     </div>
+
+                    <button type="submit" class="btn-form" id="signupBtn">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="login-link">
+                    Already have an account? <a href="/login">Sign in here</a>
                 </div>
-
-                <!-- Contact Information -->
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address *</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email"
-                        class="form-control" 
-                        placeholder="Enter your email address"
-                        required
-                        value="{{ request.form.email if request.form.email }}"
-                    >
-                    <div class="error-message" id="emailError">Please enter a valid email address</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone_num" class="form-label">Phone Number</label>
-                    <input 
-                        type="tel" 
-                        id="phone_num" 
-                        name="phone_num"
-                        class="form-control" 
-                        placeholder="Enter your phone number"
-                        value="{{ request.form.phone_num if request.form.phone_num }}"
-                    >
-                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
-                </div>
-
-                <!-- Account Type -->
-                <div class="form-group">
-                    <label for="user_type" class="form-label">I am a *</label>
-                    <select id="user_type" name="user_type" class="form-control" required>
-                        <option value="customer" selected>Customer looking for services</option>
-                        <option value="plumber">Plumbing Service Provider</option>
-                        <option value="electrician">Electrical Service Provider</option>
-                        <option value="landlord">Accommodation Provider</option>
-                        <option value="guest_house">Guest House Owner</option>
-                        <option value="other">Other Service Provider</option>
-                    </select>
-                    <div class="error-message" id="userTypeError">Please select your account type</div>
-                </div>
-
-                <!-- Password -->
-                <div class="form-group">
-                    <label for="password" class="form-label">Password *</label>
-                    <div class="password-input">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            class="form-control" 
-                            placeholder="Create a strong password"
-                            required
-                        >
-                        <button type="button" class="toggle-password" id="togglePassword">
-                            👁️
-                        </button>
-                    </div>
-                    <div class="password-strength">
-                        <div class="strength-bar" id="strengthBar"></div>
-                    </div>
-                    <div class="password-requirements">
-                        <div class="requirement unmet" id="reqLength">
-                            <span class="requirement-icon">○</span>
-                            At least 8 characters
-                        </div>
-                        <div class="requirement unmet" id="reqUpper">
-                            <span class="requirement-icon">○</span>
-                            One uppercase letter
-                        </div>
-                        <div class="requirement unmet" id="reqLower">
-                            <span class="requirement-icon">○</span>
-                            One lowercase letter
-                        </div>
-                        <div class="requirement unmet" id="reqNumber">
-                            <span class="requirement-icon">○</span>
-                            One number
-                        </div>
-                    </div>
-                    <div class="error-message" id="passwordError">Please enter a valid password</div>
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="form-group">
-                    <label for="confirmPassword" class="form-label">Confirm Password *</label>
-                    <div class="password-input">
-                        <input 
-                            type="password" 
-                            id="confirmPassword" 
-                            name="confirmPassword"
-                            class="form-control" 
-                            placeholder="Confirm your password"
-                            required
-                        >
-                        <button type="button" class="toggle-password" id="toggleConfirmPassword">
-                            👁️
-                        </button>
-                    </div>
-                    <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
-                </div>
-
-                <!-- Terms and Conditions -->
-                <div class="form-group">
-                    <label class="remember-me">
-                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                        I agree to the <span class="terms-link" id="termsLink">, terms & conditions</span> *
-                    </label>
-                    <div class="error-message" id="termsError">You must agree to the terms and conditions</div>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="signupBtn">
-                    Create Account
-                </button>
-            </form>
-
-            <div class="login-link">
-                Already have an account? <a href="/login">Sign in here</a>
             </div>
         </div>
     </div>
@@ -836,7 +1005,9 @@
                     <p>For questions about these terms, please contact us at legal@businessconnect.com.</p>
                 </div>
             </div>
-           
+            <div class="modal-footer">
+                <button class="btn-form" id="acceptTerms">I Accept</button>
+            </div>
         </div>
     </div>
 

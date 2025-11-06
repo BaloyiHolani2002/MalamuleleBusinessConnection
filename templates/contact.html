@@ -45,60 +45,75 @@
             align-items: center;
             gap: 15px;
         }
-/* Logo Styles */
-.logo {
-    width: 60px;
-    height: 60px;
-    background: white;
-    border-radius: 8px; /* Slightly rounded corners for square */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: #2874a6;
-    font-size: 24px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    position: relative;
-   
-    padding: 2px; /* Space between border and image */
-}
 
-.logo-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Changed to contain to show full logo */
-    display: block;
-    border-radius: 5px; /* Slightly less than container for inner border effect */
-    background: white; /* Background in case image has transparency */
-}
+        /* Logo Styles */
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #2874a6;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            padding: 2px;
+        }
 
-.logo-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
+        .logo a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
 
-.business-text {
-    font-size: 18px;
-    font-weight: 700;
-    color: white;
-    letter-spacing: 0.5px;
-}
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 5px;
+            background: white;
+        }
 
-.connect-text {
-    font-size: 18px;
-    font-weight: 700;
-    color: white;
-    letter-spacing: 0.5px;
-}
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
 
+        .business-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
 
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
 
-/* Remove the yellow span color */
-.logo-text span {
-    color: white; /* Changed from #ffd700 to white */
-}
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Navigation */
         nav ul {
             display: flex;
             list-style: none;
@@ -120,9 +135,82 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding: 80px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            nav li {
+                margin-bottom: 15px;
+            }
+            
+            nav a {
+                display: block;
+                padding: 12px 15px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+            
+            nav a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Overlay */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 82, 118, 0.8), rgba(26, 82, 118, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background: linear-gradient(rgba(26, 82, 118, 0.8), rgba(26, 82, 118, 0.9)), url('/static/images/logoonly.png') no-repeat center center/cover;
             background-size: cover;
             background-position: center;
             color: white;
@@ -237,20 +325,6 @@
             margin-bottom: 5px;
         }
 
-        /* Map Section */
-        .map-container {
-            margin-top: 30px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 400px;
-            border: none;
-        }
-
         /* Footer */
         footer {
             background: #1a5276;
@@ -348,11 +422,7 @@
 
         @media (max-width: 768px) {
             .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            nav ul {
+                flex-direction: row;
                 gap: 15px;
             }
 
@@ -374,12 +444,6 @@
         }
 
         @media (max-width: 576px) {
-            nav ul {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-
             .hero h1 {
                 font-size: 1.8rem;
             }
@@ -397,34 +461,43 @@
 
 <body>
     <!-- Header -->
-   <!-- Header -->
-<!-- Header -->
-<header>
-    <div class="container">
-        <div class="header-content">
-            <div class="logo-container">
-                <div class="logo">
-                    <!-- Square logo with border -->
-                <a href="{{ url_for('home') }}">   <img    src ="/static/images/bslogo.png"alt="Business Connect Logo" class="logo-image"
-                         onerror="this.style.display='none'; this.parentNode.innerHTML='BC'; this.parentNode.style.display='flex'; this.parentNode.style.alignItems='center'; this.parentNode.style.justifyContent='center';">  </a>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <a href="{{ url_for('home') }}">
+                            <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                                onerror="this.style.display='none'; this.parentNode.innerHTML='BC'; this.parentNode.style.display='flex'; this.parentNode.style.alignItems='center'; this.parentNode.style.justifyContent='center';">
+                        </a>
+                    </div>
+                    <div class="logo-text">
+                        <div class="business-text">BUSINESS CONNECT</div>
+                    </div>
                 </div>
-                <div class="logo-text">
-                    <div class="business-text">BUSINESS CONNECT</div>
-                 
+                
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
+                
+                <nav id="nav-menu">
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('services') }}">Services</a></li>
+                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
+                    </ul>
+                </nav>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('services') }}">Services</a></li>
-                   
-                    <li><a href="{{ url_for('about') }}">About</a></li>
-                    <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
-                </ul>
-            </nav>
         </div>
-    </div>
-</header>
+    </header>
+
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
 
     <!-- Contact Us Page Content -->
     <section class="hero">
@@ -485,7 +558,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -525,6 +597,35 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Mobile sidebar functionality
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Close menu when clicking on links
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 
 </html>
