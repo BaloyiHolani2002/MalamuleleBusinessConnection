@@ -1,13 +1,26 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_from_directory
 from datetime import datetime, timedelta, date
 import psycopg2
 import os
 import hashlib
 import secrets
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.permanent_session_lifetime = timedelta(days=7)
+
+# Configuration for file uploads
+app.config['UPLOAD_FOLDER'] = 'static/images'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Ensure upload directory exists
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Simple password hashing (without bcrypt)
 def hash_password(password):
@@ -62,7 +75,8 @@ def init_db():
             password VARCHAR(255) NOT NULL,
             phone_num VARCHAR(50),
             user_type VARCHAR(50),
-            reg_date DATE DEFAULT CURRENT_DATE
+            reg_date DATE DEFAULT CURRENT_DATE,
+            profile_picture VARCHAR(255)
         )
         """)
 
@@ -195,6 +209,14 @@ with app.app_context():
 def index():
     return render_template('index.html')
 
+@app.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html')
+
+@app.route('/contactus')
+def contactus():
+    return render_template('contactus.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -243,80 +265,8 @@ def login():
                 cur.close()
             if 'conn' in locals():
                 conn.close()
-
-    return render_template('login.html')
-
-@app.route('/admin/dashboard')
-def userAdmindeshboard():
-    return render_template('userAdmindeshboard.html')
-
-@app.route('/customer/dashboard')
-def userCustomerdeshboard():
-    if 'user_id' not in session:
-        return redirect('/login')
-
-    user_id = session['user_id']
-
-    conn = get_db_connection()
-    cur = conn.cursor()
-
-    # Get user details
-    cur.execute('SELECT name, surname, email, phone_num FROM "User" WHERE user_id = %s', (user_id,))
-    user = cur.fetchone()
-
-    # Get bookings
-    cur.execute("""
-        SELECT B.booking_id, R.room_type, A.accom_type, B.check_in_date, B.check_out_date, B.total_amount, B.status
-        FROM Booking B
-        JOIN Room R ON B.room_id = R.room_id
-        JOIN Accommodation A ON R.accom_id = A.accom_id
-        WHERE B.user_id = %s
-        ORDER BY B.booking_date DESC
-    """, (user_id,))
-    bookings = cur.fetchall()
-
-    # Get unread notifications
-    cur.execute("""
-        SELECT title, message, created_date 
-        FROM Notification
-        WHERE user_id = %s AND is_read = FALSE
-        ORDER BY created_date DESC
-    """, (user_id,))
-    notifications = cur.fetchall()
-
-    # Get available rooms with related service and business owner info
-    cur.execute("""
-        SELECT R.room_id, R.room_type, R.price_per_night, A.accom_type, A.amenities,
-               S.service_category, S.range_price, BO.title, BO.location
-        FROM Room R
-        JOIN Accommodation A ON R.accom_id = A.accom_id
-        JOIN Service S ON A.service_id = S.service_id
-        JOIN BusinessOwner BO ON S.owner_id = BO.owner_id
-        WHERE R.avail_status = 'available' AND S.is_active = TRUE
-        ORDER BY BO.title, A.accom_type
-    """)
-    available_rooms = cur.fetchall()
-
-    cur.close()
-    conn.close()
-
-    return render_template(
-        'userCustomerdeshboard.html', 
-        user=user, 
-        bookings=bookings, 
-        notifications=notifications,
-        available_rooms=available_rooms
-    )
-
-@app.route('/book/<int:room_id>')
-def book_room(room_id):
-    if 'user_id' not in session:
-        return redirect('/login')
-
-    # You can add booking logic here (e.g., show booking form or directly book)
-    flash(f"Booking page for room ID {room_id} coming soon!", "info")
-    return redirect(url_for('userCustomerdeshboard'))
-
+    
+    return render_template('userdeshboard.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -384,6 +334,11 @@ def logout():
     flash('You have been logged out successfully', 'success')
     return redirect(url_for('index'))
 
+# Serve static files (images)
+@app.route('/static/images/<filename>')
+def serve_image(filename):
+    return send_from_directory('static/images', filename)
+
 # API route for AJAX login
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -432,4 +387,8 @@ def api_login():
             conn.close()
 
 if __name__ == '__main__':
+    # Create static directories if they don't exist
+    os.makedirs('static/images', exist_ok=True)
+    os.makedirs('templates', exist_ok=True)
+    
     app.run(debug=True, host='0.0.0.0', port=5000)

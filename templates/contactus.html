@@ -153,92 +153,56 @@
         /* Contact Section */
         .contact-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 50px;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
         .contact-item {
             display: flex;
             align-items: flex-start;
             gap: 15px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .contact-icon {
             background: #1a5276;
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
             flex-shrink: 0;
         }
 
         .contact-details h4 {
             color: #1a5276;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
         }
 
-        .contact-form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
+        .contact-details p {
             color: #555;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-
-        .form-control:focus {
-            border-color: #2874a6;
-            outline: none;
-        }
-
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .btn {
-            display: inline-block;
-            background: #2874a6;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn:hover {
-            background: #1a5276;
+            margin-bottom: 5px;
         }
 
         /* Map Section */
@@ -253,56 +217,6 @@
             width: 100%;
             height: 400px;
             border: none;
-        }
-
-        /* FAQ Section */
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 20px;
-            background: #f8f9fa;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 500;
-            color: #1a5276;
-            transition: background 0.3s;
-        }
-
-        .faq-question:hover {
-            background: #e9ecef;
-        }
-
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
-
-        .faq-item.active .faq-answer {
-            padding: 20px;
-            max-height: 500px;
-        }
-
-        .faq-item.active .faq-question i {
-            transform: rotate(180deg);
-        }
-
-        .faq-question i {
-            transition: transform 0.3s;
         }
 
         /* Footer */
@@ -391,10 +305,6 @@
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-            
             .hero h1 {
                 font-size: 2.5rem;
             }
@@ -425,6 +335,10 @@
             .section {
                 padding: 60px 0;
             }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 576px) {
@@ -442,7 +356,7 @@
                 font-size: 1.8rem;
             }
             
-            .contact-form {
+            .contact-item {
                 padding: 20px;
             }
         }
@@ -454,7 +368,10 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo-container">
-                    <div class="logo">BC</div>
+                 <div class="logo">
+                    <!-- Replace this with your actual logo image -->
+                    <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image" onerror="this.style.display='none'">
+                </div>
                     <div class="logo-text">Business<span>Connect</span></div>
                 </div>
                 <nav>
@@ -491,7 +408,8 @@
                         </div>
                         <div class="contact-details">
                             <h4>Our Location</h4>
-                            <p>Malamulele Town Center<br>Limpopo Province, South Africa</p>
+                            <p>Malamulele Town Center</p>
+                            <p>Limpopo Province, South Africa</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -500,7 +418,8 @@
                         </div>
                         <div class="contact-details">
                             <h4>Phone Number</h4>
-                            <p>+27 15 123 4567<br>+27 82 123 4567</p>
+                            <p>+27 15 123 4567</p>
+                            <p>+27 82 123 4567</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -509,7 +428,8 @@
                         </div>
                         <div class="contact-details">
                             <h4>Email Address</h4>
-                            <p>info@businessconnect.co.za<br>support@businessconnect.co.za</p>
+                            <p>info@businessconnect.co.za</p>
+                            <p>support@businessconnect.co.za</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -518,92 +438,14 @@
                         </div>
                         <div class="contact-details">
                             <h4>Working Hours</h4>
-                            <p>Monday - Friday: 8:00 - 17:00<br>Saturday: 9:00 - 13:00<br>Sunday: Closed</p>
+                            <p>Monday - Friday: 8:00 - 17:00</p>
+                            <p>Saturday: 9:00 - 13:00</p>
+                            <p>Sunday: Closed</p>
                         </div>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <h3>Send Us a Message</h3>
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name">Full Name *</label>
-                            <input type="text" id="name" class="form-control" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" class="form-control" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" id="subject" class="form-control" placeholder="Message Subject">
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" class="form-control" placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn">Send Message</button>
-                    </form>
-                </div>
-            </div>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2237.241164982783!2d30.68256031591847!3d-22.98289768297628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ec39d8d8c7b6b1b%3A0x5c3a3d5b5b5b5b5b!2sMalamulele%2C%20South%20Africa!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Frequently Asked Questions</h2>
-                <p>Find quick answers to common questions about our services.</p>
-            </div>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How do I register as a service provider on Business Connect?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>To register as a service provider, click on the "Register" button on our homepage and select "Service Provider" option. You'll need to provide your business details, contact information, and services you offer. Our team will verify your information before your profile goes live.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Is there a cost to use Business Connect?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Basic listing and booking services are free for both customers and service providers. We offer premium features for service providers who want enhanced visibility and advanced business tools. There are no hidden fees for customers using our platform to find and book services.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What areas does Business Connect serve?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Currently, we primarily serve Malamulele and surrounding villages including Xigalo, Mavambe, Tshikonelo, and Bungeni. We're continuously expanding our coverage to include more areas in the Vhembe District.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How do I update my business information or availability?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Service providers can log into their dashboard to update business information, service details, pricing, and availability in real-time. For accommodation providers, you can mark rooms as available or booked directly from your dashboard.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What should I do if I encounter a problem with a booking?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>If you experience any issues with a booking, please contact our support team immediately at support@businessconnect.co.za or call +27 15 123 4567. We'll work to resolve the issue promptly and ensure a positive experience for both customers and service providers.</p>
                     </div>
                 </div>
             </div>
+            
         </div>
     </section>
 
@@ -642,45 +484,5 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        // Simple form validation for contact form
-        document.addEventListener('DOMContentLoaded', function() {
-            const contactForm = document.getElementById('contactForm');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const message = document.getElementById('message').value;
-                    
-                    if (name && email && message) {
-                        alert('Thank you for your message! We will get back to you soon.');
-                        contactForm.reset();
-                    } else {
-                        alert('Please fill in all required fields.');
-                    }
-                });
-            }
-
-            // FAQ functionality
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                question.addEventListener('click', () => {
-                    // Close all other items
-                    faqItems.forEach(otherItem => {
-                        if (otherItem !== item) {
-                            otherItem.classList.remove('active');
-                        }
-                    });
-                    
-                    // Toggle current item
-                    item.classList.toggle('active');
-                });
-            });
-        });
-    </script>
 </body>
 </html>
