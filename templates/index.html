@@ -78,6 +78,23 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            margin: 3px 0;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
         .nav-links {
             display: flex;
             list-style: none;
@@ -159,6 +176,79 @@
             color: var(--white);
             font-weight: bold;
             margin-right: 1rem;
+        }
+
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, var(--secondary), var(--primary));
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding: 80px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .nav-links li {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 12px 15px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+            
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Overlay */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
         }
 
         /* Flash Messages */
@@ -559,14 +649,8 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-container {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
             }
 
             .hero h1 {
@@ -588,20 +672,14 @@
             }
 
             .auth-buttons {
-                flex-direction: column;
+                display: flex;
                 gap: 0.5rem;
-                width: 100%;
-            }
-
-            .auth-buttons .btn {
-                width: 100%;
             }
         }
 
         @media (max-width: 480px) {
             .hero {
                 padding: 4rem 1rem;
-
             }
 
             .hero h1 {
@@ -616,6 +694,15 @@
             .step {
                 padding: 2rem 1rem;
             }
+
+            .auth-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .auth-buttons .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -629,13 +716,22 @@
         <div class="nav-container">
             <div class="logo-container">
                 <div class="logo">
-                    <!-- Replace this with your actual logo image -->
-                    <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
-                        onerror="this.style.display='none'">
+                    <a href="{{ url_for('home') }}">
+                        <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                            onerror="this.style.display='none'; this.parentNode.innerHTML='BC'; this.parentNode.style.display='flex'; this.parentNode.style.alignItems='center'; this.parentNode.style.justifyContent='center';">
+                    </a>
                 </div>
                 <div class="logo-text">Business Connect</div>
             </div>
-            <nav>
+            
+            <!-- Hamburger Menu -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <nav id="nav-menu">
                 <ul class="nav-links">
                     <li><a href="{{ url_for('home') }}">Home</a></li>
                     <li><a href="{{ url_for('services') }}">Services</a></li>
@@ -644,6 +740,7 @@
                     <li><a href="{{ url_for('contact') }}">Contact</a></li>
                 </ul>
             </nav>
+            
             <div class="auth-buttons" id="authButtons">
                 <!-- User authentication buttons will be populated by backend -->
                 <a href="/login" class="btn btn-outline">Login</a>
@@ -652,13 +749,14 @@
         </div>
     </header>
 
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>BUSINESS CONNECT.</h1>
             <p>Connecting services with dignity in Malamulele</p>
-
-        </div>
         </div>
     </section>
 
@@ -740,9 +838,7 @@
                     </div>
                     <div class="listing-content">
                         <h3>Comfort Guest House</h3>
-
                         <p>Luxury accommodation in central Malamulele with all amenities</p>
-
                     </div>
                 </div>
                 <div class="listing-card">
@@ -751,9 +847,7 @@
                     </div>
                     <div class="listing-content">
                         <h3>Plumbing Services</h3>
-
                         <p>24/7 emergency plumbing services with 10 years experience</p>
-
                     </div>
                 </div>
                 <div class="listing-card">
@@ -762,9 +856,7 @@
                     </div>
                     <div class="listing-content">
                         <h3>Safe Electrical Solutions</h3>
-
                         <p>Certified electrical installations and repairs</p>
-
                     </div>
                 </div>
             </div>
@@ -782,22 +874,22 @@
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#listings">Listings</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('services') }}">Services</a></li>
+                    <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Service Categories</h3>
                 <ul>
-                    <li><a href="#">Plumbing Services</a></li>
-                    <li><a href="#">Electrical Work</a></li>
-                    <li><a href="#">Guest Houses</a></li>
-                    <li><a href="#">Room Rentals</a></li>
-                    <li><a href="#">Local Businesses</a></li>
-                    <li><a href="#">And Many More</a></li>
+                    <li>Plumbing Services</li>
+                    <li>Electrical Work</li>
+                    <li>Guest Houses</li>
+                    <li>Room Rentals</li>
+                    <li>Local Businesses</li>
+                    <li>And Many More....</li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -813,14 +905,40 @@
     </footer>
 
     <script>
+        // Mobile sidebar functionality
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Close menu when clicking on links
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+
         // Simple JavaScript for form submission
-        document.querySelector('.search-form').addEventListener('submit', function (e) {
+        document.querySelector('.search-form')?.addEventListener('submit', function (e) {
             e.preventDefault();
-            const serviceType = document.getElementById('service-type').value;
-            const availability = document.getElementById('availability').value;
+            const serviceType = document.getElementById('service-type')?.value;
+            const availability = document.getElementById('availability')?.value;
 
             alert(`Searching for ${serviceType || 'all services'} in Malamulele${availability ? ' (' + availability + ')' : ''}`);
-            // In actual implementation, this would redirect to search results page
         });
 
         // Smooth scrolling for navigation links
