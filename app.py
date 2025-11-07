@@ -13,6 +13,10 @@ def home():
 def services():
     return render_template('services.html')
 
+@app.route('/reset_password')
+def reset_password():
+    return render_template('reset_password.html')
+
 # ------------------- LISTINGS PAGE -------------------
 @app.route('/listings')
 def listings():
