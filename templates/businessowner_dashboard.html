@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Business Owner Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #efefef;
+            padding: 40px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 60%;
+            margin: auto;
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 10px;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome Business Owner 👋</h1>
+        <p>Choose an action below:</p>
+
+        <a href="#" class="btn">Add Business / Update Details</a>
+        <a href="#" class="btn">Add Service</a>
+        <a href="#" class="btn">Manage Accommodation</a>
+        <a href="#" class="btn">View Bookings</a>
+        <a href="#" class="btn">Notifications</a>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Business Owner Dashboard</title>
+    <style>
+        body { background: #f4f4f4; font-family: Arial; padding: 20px; }
+        .dashboard-box {
+            background: #fff;
+            width: 70%;
+            margin: auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        h2 { color: #333; }
+        .info-box { text-align: left; margin-top: 20px; }
+        .buttons { margin-top: 30px; }
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 8px;
+        }
+        .btn:hover { background: #0056b3; }
+        .no-business { color: #777; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-box">
+    <h2>Welcome, {{ user.name }} {{ user.surname }} 👋</h2>
+
+    {% if owner %}
+        <div class="info-box">
+            <p><strong>Business Title:</strong> {{ owner.title }}</p>
+            <p><strong>Business Type:</strong> {{ owner.bus_type }}</p>
+            <p><strong>Location:</strong> {{ owner.location }}</p>
+            <p><strong>Years In Business:</strong> {{ owner.num_years }}</p>
+            <p><strong>Description:</strong> {{ owner.description }}</p>
+            <p><strong>Address:</strong> {{ owner.address }}</p>
+        </div>
+    {% else %}
+        <p class="no-business">You haven't registered your business profile yet.</p>
+        <a href="#" class="btn">Register Business Profile</a>
+    {% endif %}
+
+    <div class="buttons">
+        <a href="#" class="btn">Add / Manage Services</a>
+        <a href="#" class="btn">Manage Accommodation & Rooms</a>
+        <a href="#" class="btn">View Bookings</a>
+        <a href="#" class="btn">Notifications</a>
+    </div>
+</div>
+
+</body>
+</html>
