@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Business Profile</title>
+</head>
+<body>
+
+<h2>Edit / Manage Business Profile</h2>
+
+<form method="POST">
+
+    <label>Business Title:</label>
+    <input type="text" name="title" value="{{ business.title }}" required><br><br>
+
+    <label>Location:</label>
+    <input type="text" name="location" value="{{ business.location }}" required><br><br>
+
+    <label>Business Type:</label>
+    <input type="text" name="bus_type" value="{{ business.bus_type }}"><br><br>
+
+    <label>Description:</label>
+    <textarea name="description">{{ business.description }}</textarea><br><br>
+
+    <label>Address:</label>
+    <input type="text" name="address" value="{{ business.address }}"><br><br>
+
+    <label>Years in Business:</label>
+    <input type="text" name="num_years" value="{{ business.num_years }}"><br><br>
+
+    <button type="submit">Save Changes</button>
+
+</form>
+
+</body>
+</html>

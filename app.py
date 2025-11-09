@@ -55,6 +55,51 @@ class BusinessOwner(db.Model):
 
     user = db.relationship("User", backref="owner_profile", lazy=True)
 
+class Service(db.Model):
+    __tablename__ = "Service"
+
+    service_id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey("BusinessOwner.owner_id", ondelete="CASCADE"))
+    service_category = db.Column(db.String(255))
+    range_price = db.Column(db.Float)
+    is_active = db.Column(db.Boolean, default=True)
+
+    # Relationships
+    accommodations = db.relationship("Accommodation", backref="service", cascade="all, delete-orphan")
+    images = db.relationship("Images", backref="service", cascade="all, delete-orphan")
+
+
+class Accommodation(db.Model):
+    __tablename__ = "Accommodation"
+
+    accom_id = db.Column(db.Integer, primary_key=True)
+    service_id = db.Column(db.Integer, db.ForeignKey("Service.service_id", ondelete="CASCADE"))
+    accom_type = db.Column(db.String(255))
+    total_rooms = db.Column(db.Integer)
+    amenities = db.Column(db.Text)
+
+    # Rooms relationship
+    rooms = db.relationship("Room", backref="accommodation", cascade="all, delete-orphan")
+
+
+class Images(db.Model):
+    __tablename__ = "Images"
+
+    image_id = db.Column(db.Integer, primary_key=True)
+    service_id = db.Column(db.Integer, db.ForeignKey("Service.service_id", ondelete="CASCADE"))
+    image_url = db.Column(db.Text)
+
+
+class Room(db.Model):
+    __tablename__ = "Room"
+
+    room_id = db.Column(db.Integer, primary_key=True)
+    accom_id = db.Column(db.Integer, db.ForeignKey("Accommodation.accom_id", ondelete="CASCADE"))
+    room_type = db.Column(db.String(255))
+    room_num = db.Column(db.Integer)
+    avail_status = db.Column(db.String(50))
+    price_per_night = db.Column(db.String(50))
+
 
 # ------------------- HOME PAGE -------------------
 @app.route('/')
@@ -192,6 +237,176 @@ def businessowner_dashboard():
     user = User.query.get(user_id)
 
     return render_template('businessowner_dashboard.html', owner=owner, user=user)
+
+@app.route('/register_business', methods=['GET', 'POST'])
+def register_business():
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        title = request.form.get('title')
+        location = request.form.get('location')
+        bus_type = request.form.get('bus_type')
+        description = request.form.get('description')
+        address = request.form.get('address')
+        num_years = request.form.get('num_years')
+
+        business = BusinessOwner(
+            user_id=session['user_id'],
+            title=title,
+            location=location,
+            bus_type=bus_type,
+            description=description,
+            address=address,
+            num_years=num_years
+        )
+
+        db.session.add(business)
+        db.session.commit()
+
+        return redirect(url_for('businessowner_dashboard'))
+
+    return render_template('register_business.html')
+
+@app.route('/edit_business_profile', methods=['GET', 'POST'])
+def edit_business_profile():
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    # Get business owner linked to the logged-in user
+    business = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+
+    # If no business profile exists → send user to create one
+    if not business:
+        return redirect(url_for('register_business'))
+
+    if request.method == 'POST':
+        business.title = request.form.get('title')
+        business.location = request.form.get('location')
+        business.bus_type = request.form.get('bus_type')
+        business.description = request.form.get('description')
+        business.address = request.form.get('address')
+        business.num_years = request.form.get('num_years')
+
+        db.session.commit()
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for('businessowner_dashboard'))
+
+    return render_template('edit_business_profile.html', business=business)
+
+@app.route('/delete_business_profile')
+def delete_business_profile():
+    # Ensure logged in + correct user type
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    # Find linked business owner record
+    business = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+
+    if business:
+        db.session.delete(business)
+        db.session.commit()
+        flash("Business Profile deleted successfully!", "success")
+    else:
+        flash("No business profile found to delete.", "error")
+
+    return redirect(url_for('businessowner_dashboard'))
+
+@app.route('/manage_services', methods=['GET', 'POST'])
+def manage_services():
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    # Get the business profile
+    business = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+
+    # If business not registered -> force profile creation
+    if not business:
+        flash("Please register your business profile first.", "error")
+        return redirect(url_for('register_business'))
+
+    # Fetch all services under this owner
+    services = Service.query.filter_by(owner_id=business.owner_id).all()
+
+    return render_template('manage_services.html', business=business, services=services)
+
+@app.route('/add_service', methods=['GET', 'POST'])
+def add_service():
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    business = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+
+    if request.method == 'POST':
+        category = request.form.get('service_category')
+        price = request.form.get('range_price')
+
+        new_service = Service(
+            owner_id=business.owner_id,
+            service_category=category,
+            range_price=price
+        )
+        db.session.add(new_service)
+        db.session.commit()
+
+        flash("Service added successfully!", "success")
+        return redirect(url_for('manage_services'))
+
+    return render_template('add_service.html')
+
+@app.route('/delete_service/<int:service_id>')
+def delete_service(service_id):
+    # Ensure logged in and role is BusinessOwner
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    # Get the service record
+    service = Service.query.get(service_id)
+
+    if not service:
+        flash("Service not found.", "error")
+        return redirect(url_for('manage_services'))
+
+    # Extra safety: ensure service belongs to this business owner
+    owner = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+    if not owner or service.owner_id != owner.owner_id:
+        flash("You do not have permission to delete this service.", "error")
+        return redirect(url_for('manage_services'))
+
+    db.session.delete(service)
+    db.session.commit()
+
+    flash("Service and all linked info successfully deleted!", "success")
+    return redirect(url_for('manage_services'))
+
+    service = Service.query.get_or_404(service_id)
+    db.session.delete(service)
+    db.session.commit()
+    flash("Service deleted successfully!", "success")
+    return redirect(url_for('manage_services'))
+
+@app.route('/edit_service/<int:service_id>', methods=['GET', 'POST'])
+def edit_service(service_id):
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    service = Service.query.get(service_id)
+    if not service:
+        flash("Service not found", "error")
+        return redirect(url_for('manage_services'))
+
+    if request.method == 'POST':
+        service.service_category = request.form.get('service_category')
+        service.range_price = request.form.get('range_price')
+        service.is_active = bool(request.form.get('is_active'))
+
+        db.session.commit()
+        flash("Service updated successfully", "success")
+        return redirect(url_for('manage_services'))
+
+    return render_template("edit_service.html", service=service)
+
+
 
 
 # ------------------- RUN SERVER -------------------

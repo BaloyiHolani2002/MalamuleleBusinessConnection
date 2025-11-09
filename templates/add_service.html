@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 40px;
+        }
+        .container {
+            background: white;
+            width: 500px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid gray;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 18px;
+            background: #007bff;
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #005dc4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add Service</h2>
+
+    <form method="POST">
+
+        <label>Service Category</label>
+        <input type="text" name="service_category" placeholder="e.g. Accommodation / Catering / Transport" required>
+
+        <label>Price Range</label>
+        <input type="number" step="0.01" name="range_price" placeholder="e.g. 150.00" required>
+
+        <label>Active Status</label>
+        <select name="is_active">
+            <option value="1" selected>Active</option>
+            <option value="0">Inactive</option>
+        </select>
+
+        <button type="submit" class="btn">Add Service</button>
+    </form>
+</div>
+
+</body>
+</html>
