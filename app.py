@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
 
@@ -65,40 +66,27 @@ class Service(db.Model):
     is_active = db.Column(db.Boolean, default=True)
 
     # Relationships
-    accommodations = db.relationship("Accommodation", backref="service", cascade="all, delete-orphan")
+    categories = db.relationship("Category", backref="service", cascade="all, delete-orphan")
     images = db.relationship("Images", backref="service", cascade="all, delete-orphan")
 
+class Category(db.Model):
+    __tablename__ = "Category"
 
-class Accommodation(db.Model):
-    __tablename__ = "Accommodation"
-
-    accom_id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, primary_key=True)
     service_id = db.Column(db.Integer, db.ForeignKey("Service.service_id", ondelete="CASCADE"))
-    accom_type = db.Column(db.String(255))
-    total_rooms = db.Column(db.Integer)
+    category_type = db.Column(db.String(255))
+    total_units = db.Column(db.Integer)
     amenities = db.Column(db.Text)
-
-    # Rooms relationship
-    rooms = db.relationship("Room", backref="accommodation", cascade="all, delete-orphan")
-
-
+ 
 class Images(db.Model):
     __tablename__ = "Images"
 
     image_id = db.Column(db.Integer, primary_key=True)
     service_id = db.Column(db.Integer, db.ForeignKey("Service.service_id", ondelete="CASCADE"))
-    image_url = db.Column(db.Text)
+    filename = db.Column(db.String(255), nullable=False)
 
 
-class Room(db.Model):
-    __tablename__ = "Room"
-
-    room_id = db.Column(db.Integer, primary_key=True)
-    accom_id = db.Column(db.Integer, db.ForeignKey("Accommodation.accom_id", ondelete="CASCADE"))
-    room_type = db.Column(db.String(255))
-    room_num = db.Column(db.Integer)
-    avail_status = db.Column(db.String(50))
-    price_per_night = db.Column(db.String(50))
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 
 # ------------------- HOME PAGE -------------------
@@ -406,6 +394,85 @@ def edit_service(service_id):
 
     return render_template("edit_service.html", service=service)
 
+@app.route('/manage_category')
+def manage_category():
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    owner = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+    if not owner:
+        flash("Please register your business profile first.", "error")
+        return redirect(url_for('register_business'))
+
+    services = Service.query.filter_by(owner_id=owner.owner_id).all()
+    return render_template('manage_category.html', services=services)
+
+@app.route('/add_image/<int:service_id>', methods=['POST'])
+def add_image(service_id):
+    service = Service.query.get(service_id)
+    if not service:
+        flash("Service not found.", "error")
+        return redirect(url_for('manage_category'))
+
+    # Limit to 3 images
+    image_count = Images.query.filter_by(service_id=service_id).count()
+    if image_count >= 3:
+        flash("Maximum 3 images allowed for each category.", "error")
+        return redirect(url_for('manage_category'))
+
+    if 'image_file' not in request.files:
+        flash("No file selected.", "error")
+        return redirect(url_for('manage_category'))
+
+    file = request.files['image_file']
+
+    if file.filename == '':
+        flash("No file selected.", "error")
+        return redirect(url_for('manage_category'))
+
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    new_img = Images(service_id=service_id, filename=filename)
+    db.session.add(new_img)
+    db.session.commit()
+
+    flash("Image uploaded successfully!", "success")
+    return redirect(url_for('manage_category'))
+
+@app.route('/delete_image/<int:image_id>')
+def delete_image(image_id):
+    img = Images.query.get(image_id)
+    if not img:
+        flash("Image not found.", "error")
+        return redirect(url_for('manage_category'))
+
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], img.filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    db.session.delete(img)
+    db.session.commit()
+
+    flash("Image deleted successfully!", "success")
+    return redirect(url_for('manage_category'))
+
+@app.route('/view_services')
+def view_services():
+    # Check if user is logged in
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+
+    # Get business owner
+    owner = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+    if not owner:
+        flash("Please register your business profile first.", "error")
+        return redirect(url_for('register_business'))
+
+    # Get all services for this owner
+    services = Service.query.filter_by(owner_id=owner.owner_id).all()
+
+    return render_template('view_services.html', services=services)
 
 
 
