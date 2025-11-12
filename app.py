@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from flask_mail import Mail, Message
+from datetime import date
+from flask import request
 import os
 from dotenv import load_dotenv
 
@@ -8,6 +11,16 @@ load_dotenv()  # Load .env values if running locally
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "your_secret_key_here")  # Always keep secret key safe
+
+# Setup Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # or your email provider
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'timbearmindo191@gmail.com'
+app.config['MAIL_PASSWORD'] = 'wjfgcpmyjqjoofrh'
+
+mail = Mail(app)
 
 # --------------- DATABASE CONFIG -----------------
 # Try to get hosted DB URL (e.g., from Railway / Render)
@@ -17,7 +30,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL:
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Maxelo%402023@localhost:5432/businessconnect"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Admin123@localhost:5432/businessconnect"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -66,6 +79,8 @@ class Service(db.Model):
     is_active = db.Column(db.Boolean, default=True)
 
     # Relationships
+    owner = db.relationship("BusinessOwner", backref="services")
+   # owner = service.owner  # ✅ FIXED
     categories = db.relationship("Category", backref="service", cascade="all, delete-orphan")
     images = db.relationship("Images", backref="service", cascade="all, delete-orphan")
 
@@ -85,6 +100,24 @@ class Images(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey("Service.service_id", ondelete="CASCADE"))
     filename = db.Column(db.String(255), nullable=False)
 
+
+class Booking(db.Model):
+    __tablename__ = "Booking"
+
+    booking_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.user_id", ondelete="CASCADE"))
+    service_id = db.Column(db.Integer, db.ForeignKey("Service.service_id", ondelete="CASCADE"))
+    booking_date = db.Column(db.Date, default=date.today)
+    total_amount = db.Column(db.Float)
+    status = db.Column(db.String(50))
+    special_request = db.Column(db.Text)
+
+    # Relationships
+    user = db.relationship("User", backref=db.backref("bookings", lazy=True))
+    service = db.relationship("Service", backref=db.backref("bookings", lazy=True))
+
+    def __repr__(self):
+        return f"<Booking {self.booking_id} | User {self.user_id} | Service {self.service_id}>"
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
@@ -475,6 +508,118 @@ def view_services():
     return render_template('view_services.html', services=services)
 
 
+# ------------------- CUSTOMER DESHBOAD PAGE -------------------
+# ------------------- CUSTOMER DESHBOAD PAGE -------------------
+
+@app.route("/customer/dashboard")
+def customer_dashboard():
+    if 'user_id' not in session or session.get('user_type') != "Customer":
+        return redirect(url_for("login"))
+
+    user = User.query.get(session["user_id"])
+    services = Service.query.filter_by(is_active=True).all()
+
+    return render_template("customer_dashboard.html", user=user, services=services)
+
+@app.route("/customer/view_services/<int:owner_id>")
+def customer_view_services(owner_id):
+    owner = BusinessOwner.query.get_or_404(owner_id)
+
+    services = Service.query.filter_by(owner_id=owner_id).all()
+
+    return render_template("customer_view_services.html", owner=owner, services=services)
+
+@app.route("/customer/booking/success")
+def booking_success():
+    return render_template("booking_success.html")
+
+# --- Route to confirm booking page ---
+@app.route("/customer/book/<int:service_id>", methods=["GET", "POST"])
+def customer_book(service_id):
+    if "user_id" not in session:
+        flash("Please login first", "warning")
+        return redirect(url_for("login"))
+
+    user = User.query.get(session["user_id"])
+    service = Service.query.get(service_id)
+
+    if not service:
+        return "Service not found", 404
+
+    owner = service.owner  # BusinessOwner object
+
+    if request.method == "POST":
+        special_request = request.form.get("special_request")
+
+        # Create booking
+        booking = Booking(
+            user_id=user.user_id,
+            service_id=service.service_id,
+            total_amount=service.range_price,
+            status="Pending",
+            special_request=special_request
+        )
+        db.session.add(booking)
+        db.session.commit()
+
+        # Send email to owner
+        try:
+            msg = Message(
+                subject="New Booking Received",
+                sender=app.config['MAIL_USERNAME'],
+                recipients=[owner.user.email]  # Owner’s email
+            )
+            msg.body = f"""
+Hello {owner.user.name},
+
+You have a new booking!
+
+Service: {service.service_category}
+Customer: {user.name} {user.surname}
+Phone: {user.phone_num}
+Price: R{service.range_price}
+Special Request: {special_request if special_request else 'None'}
+
+Please check your dashboard for more details.
+"""
+            mail.send(msg)
+        except Exception as e:
+            print("Email send failed:", e)
+
+        flash("Booking confirmed! An email has been sent to the owner.", "success")
+        return redirect(url_for("booking_success"))
+
+    return render_template("confirm_booking.html", user=user, service=service, owner=owner)
+
+@app.route("/customer/cancel_booking/<int:booking_id>", methods=["POST"])
+def cancel_booking(booking_id):
+    booking = Booking.query.get_or_404(booking_id)
+    if booking.status != "Pending":
+        flash("Only pending bookings can be cancelled.", "warning")
+    else:
+        booking.status = "Cancelled"
+        db.session.commit()
+        flash("Booking cancelled successfully.", "success")
+    return redirect(url_for("view_my_bookings", customer_id=session["user_id"]))
+
+@app.route("/customer/businesses")
+def view_businesses():
+    # Fetch all active businesses with their services
+    businesses = BusinessOwner.query.join(Service).filter(Service.is_active == True).all()
+    return render_template("view_businesses.html", businesses=businesses)
+
+@app.route("/customer/bookings/<int:customer_id>")
+def view_my_bookings(customer_id):
+    # Fetch the user first
+    user = User.query.get(customer_id)
+    if not user:
+        flash("User not found.", "danger")
+        return redirect(url_for("home"))
+
+    # Get all bookings for this user
+    bookings = Booking.query.filter_by(user_id=customer_id).all()
+
+    return render_template("my_bookings.html", bookings=bookings, user=user)
 
 # ------------------- RUN SERVER -------------------
 if __name__ == '__main__':

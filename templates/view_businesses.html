@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Businesses</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Available Businesses</h2>
+
+        {% if businesses %}
+            <div class="row">
+                {% for business in businesses %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ business.title }}</h5>
+                            <p class="text-muted">{{ business.bus_type }}</p>
+                            <p><strong>Location:</strong> {{ business.location }}</p>
+                            <p><strong>Experience:</strong> {{ business.num_years }} years</p>
+                            <p><strong>Description:</strong> {{ business.description or "No description available." }}</p>
+
+                            <h6 class="mt-3">Services:</h6>
+                            <ul class="list-group mb-3">
+                                {% for service in business.services %}
+                                    {% if service.is_active %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ service.service_category }}
+                                        <span>R{{ "%.2f"|format(service.range_price) }}</span>
+                                    </li>
+                                    {% endif %}
+                                {% else %}
+                                    <li class="list-group-item text-muted">No active services available.</li>
+                                {% endfor %}
+                            </ul>
+
+                            <a href="{{ url_for('customer_book', service_id=business.services[0].service_id) }}"
+                               class="btn btn-success w-100">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-muted">No businesses available at the moment.</p>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('customer_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
