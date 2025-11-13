@@ -2,51 +2,525 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Confirm Booking</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Booking - Business Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .confirm-container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
+        /* Base Styles */
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --gray-light: #bdc3c7;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding-top: 80px; /* Space for fixed header */
+        }
+
+        /* Header Styles - Fixed */
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: white;
             border-radius: 8px;
-            background: #ffffff;
-            box-shadow: 0 2px 10px #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #2874a6;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            padding: 2px;
         }
-        .confirm-container h2 { text-align: center; }
-        .confirm-container label { font-weight: bold; margin-top: 10px; display: block; }
-        .confirm-container input, textarea {
-            width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
         }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding: 80px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            nav li {
+                margin-bottom: 15px;
+            }
+            
+            nav a {
+                display: block;
+                padding: 12px 15px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+            
+            nav a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Overlay */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+        }
+
+        /* Confirm Container */
+        .confirm-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .confirm-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .confirm-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .confirm-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .confirm-section {
+            padding: 30px;
+        }
+
+        /* Form Styles */
+        .booking-form {
+            max-width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--radius);
+            font-size: 16px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-control:disabled {
+            background-color: var(--light);
+            color: var(--gray);
+            cursor: not-allowed;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Confirm Button */
         .confirm-btn {
-            margin-top: 20px; width: 100%; background: #007bff; color: white;
-            padding: 12px; border: none; border-radius: 6px; cursor: pointer;
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--success);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            margin-top: 25px;
         }
-        .confirm-btn:hover { background: #005fcc; }
+
+        .confirm-btn:hover {
+            background: #219653;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Service Info Styles */
+        .service-info {
+            background: var(--light);
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .info-value {
+            color: var(--dark);
+            text-align: right;
+        }
+
+        .price-highlight {
+            color: var(--success);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+            }
+
+            .confirm-section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .confirm-header {
+                padding: 20px;
+            }
+            
+            .confirm-header h2 {
+                font-size: 24px;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .info-value {
+                text-align: left;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Fixed Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <a href="{{ url_for('customer_dashboard') }}">
+                            <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                                onerror="this.style.display='none'; this.parentNode.innerHTML='BC';">
+                        </a>
+                    </div>
+                    <div class="logo-text">Business Connect</div>
+                </div>
+                
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <nav id="nav-menu">
+                    <ul>
+                  
+                        <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+                       
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-<div class="confirm-container">
-    <h2>Confirm Booking</h2>
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
 
-    <form method="POST">
-        
-        <label>Service Category:</label>
-        <input type="text" value="{{ service.service_category }}" disabled>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="confirm-container">
+            <div class="confirm-header">
+                <h2>Confirm Your Booking</h2>
+                <p>Review and confirm your service booking</p>
+            </div>
 
-        <label>Price:</label>
-        <input type="text" value="R {{ service.range_price }}" disabled>
+            <div class="confirm-section">
+                <!-- Service Information -->
+                <div class="service-info">
+                    <div class="info-item">
+                        <span class="info-label">Service Category:</span>
+                        <span class="info-value">{{ service.service_category }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Price:</span>
+                        <span class="info-value price-highlight">R {{ service.range_price }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Business Owner:</span>
+                        <span class="info-value">{{ service.owner.user.name }} {{ service.owner.user.surname }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Contact:</span>
+                        <span class="info-value">{{ service.owner.user.phone_num }}</span>
+                    </div>
+                </div>
 
-        <label>Business Owner:</label>
-        <input type="text" value="{{ service.owner.user.name }} {{ service.owner.user.surname }}" disabled>
+                <form method="POST" class="booking-form">
+                    <div class="form-group">
+                        <label for="special_request" class="form-label">
+                            <i class="fas fa-edit"></i> Special Request (optional)
+                        </label>
+                        <textarea 
+                            id="special_request" 
+                            name="special_request" 
+                            class="form-control" 
+                            placeholder="Any special instructions or requirements for your booking. eg. Date, time, location, etc."
+                            rows="4"
+                        ></textarea>
+                    </div>
 
-        <label>Special Request (optional):</label>
-        <textarea name="special_request" placeholder="Any special instructions..."></textarea>
+                    <button type="submit" class="confirm-btn">
+                        <i class="fas fa-calendar-check"></i> Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-        <button type="submit" class="confirm-btn">Confirm Booking</button>
-    </form>
-</div>
+    <script>
+        // Mobile sidebar functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('nav-menu');
+            const overlay = document.getElementById('overlay');
 
+            if (hamburger && navMenu && overlay) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+
+                overlay.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+
+                // Close menu when clicking on links
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        overlay.classList.remove('active');
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>

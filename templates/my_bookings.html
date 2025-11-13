@@ -2,67 +2,683 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Bookings</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Business Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --gray-light: #bdc3c7;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding-top: 80px; /* Space for fixed header */
+        }
+
+        /* Header Styles - Fixed */
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #2874a6;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            padding: 2px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding: 80px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            nav li {
+                margin-bottom: 15px;
+            }
+            
+            nav a {
+                display: block;
+                padding: 12px 15px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+            
+            nav a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Overlay */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 20px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .page-header h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* Bookings Container */
+        .bookings-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .bookings-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .bookings-header h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .bookings-header p {
+            opacity: 0.9;
+        }
+
+        .bookings-content {
+            padding: 30px;
+        }
+
+        /* Bookings Table */
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .bookings-table th {
+            background: var(--light);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .bookings-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-light);
+            vertical-align: top;
+        }
+
+        .bookings-table tr:hover {
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-confirmed {
+            background: rgba(39, 174, 96, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .status-pending {
+            background: rgba(243, 156, 18, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(231, 76, 60, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .status-completed {
+            background: rgba(52, 152, 219, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+
+        /* Price Styling */
+        .price {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 16px;
+        }
+
+        /* Action Buttons */
+        .cancel-btn {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cancel-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .cancel-btn:disabled {
+            background: var(--gray-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* No Bookings Message */
+        .no-bookings {
+            text-align: center;
+            padding: 60px 30px;
+            color: var(--gray);
+        }
+
+        .no-bookings-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: var(--gray-light);
+        }
+
+        .no-bookings h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: var(--secondary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-btn:hover {
+            background: #1c2833;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .action-center {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Special Request Styling */
+        .special-request {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .special-request.expanded {
+            white-space: normal;
+            overflow: visible;
+        }
+
+        .toggle-more {
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .bookings-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+            }
+
+            .bookings-content {
+                padding: 20px;
+            }
+
+            .bookings-table th,
+            .bookings-table td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+
+            .page-header h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bookings-header {
+                padding: 20px;
+            }
+            
+            .bookings-header h3 {
+                font-size: 20px;
+            }
+
+            .no-bookings {
+                padding: 40px 20px;
+            }
+
+            .no-bookings-icon {
+                font-size: 48px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">My Bookings</h2>
+<body>
+    <!-- Fixed Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <a href="{{ url_for('home') }}">
+                            <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                                onerror="this.style.display='none'; this.parentNode.innerHTML='BC';">
+                        </a>
+                    </div>
+                    <div class="logo-text">Business Connect</div>
+                </div>
+                
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <nav id="nav-menu">
+                    <ul>
 
-        {% if bookings %}
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Service</th>
-                        <th>Business Owner</th>
-                        <th>Status</th>
-                        <th>Total Amount</th>
-                        <th>Booking Date</th>
-                        <th>Special Request</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for b in bookings %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ b.service.service_category }}</td>
-                        <td>{{ b.service.owner.user.name }} {{ b.service.owner.user.surname }}</td>
-                        <td>
-                            {% if b.status == "Confirmed" %}
-                                <span class="badge bg-success">{{ b.status }}</span>
-                            {% elif b.status == "Pending" %}
-                                <span class="badge bg-warning text-dark">{{ b.status }}</span>
-                            {% else %}
-                                <span class="badge bg-secondary">{{ b.status }}</span>
-                            {% endif %}
-                        </td>
-                        <td>R{{ "%.2f"|format(b.total_amount) }}</td>
-                        <td>{{ b.booking_date }}</td>
-                        <td>{{ b.special_request or "—" }}</td>
-                        <td>
-                            {% if b.status == "Pending" %}
-                                <form action="{{ url_for('cancel_booking', booking_id=b.booking_id) }}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
-                                </form>
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ url_for('view_my_bookings', customer_id=user.user_id) }}" class="active">My Bookings</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-        {% else %}
-            <p class="text-center text-muted">You have no bookings yet.</p>
-        {% endif %}
+    </header>
 
-        <div class="text-center mt-4">
-            <a href="{{ url_for('customer_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2>My Bookings</h2>
+                <p>Manage and track your service bookings</p>
+            </div>
+
+            <!-- Bookings Container -->
+            <div class="bookings-container">
+                <div class="bookings-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Booking History</h3>
+                    <p>All your service appointments in one place</p>
+                </div>
+
+                <div class="bookings-content">
+                    {% if bookings %}
+                    <div class="table-responsive">
+                        <table class="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Service</th>
+                                    <th>Business Owner</th>
+                                    <th>Status</th>
+                                    <th>Total Amount</th>
+                                    <th>Booking Date</th>
+                                    <th>Special Request</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for b in bookings %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <strong>{{ b.service.service_category }}</strong>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ b.service.owner.user.name }} {{ b.service.owner.user.surname }}</strong>
+                                            <div style="font-size: 12px; color: var(--gray);">
+                                                {{ b.service.owner.user.phone_num }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if b.status == "Confirmed" %}
+                                            <span class="status-badge status-confirmed">
+                                                <i class="fas fa-check-circle"></i> {{ b.status }}
+                                            </span>
+                                        {% elif b.status == "Pending" %}
+                                            <span class="status-badge status-pending">
+                                                <i class="fas fa-clock"></i> {{ b.status }}
+                                            </span>
+                                        {% elif b.status == "Cancelled" %}
+                                            <span class="status-badge status-cancelled">
+                                                <i class="fas fa-times-circle"></i> {{ b.status }}
+                                            </span>
+                                        {% elif b.status == "Completed" %}
+                                            <span class="status-badge status-completed">
+                                                <i class="fas fa-flag-checkered"></i> {{ b.status }}
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge status-pending">{{ b.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="price">R{{ "%.2f"|format(b.total_amount) }}</td>
+                                    <td>{{ b.booking_date }}</td>
+                                    <td>
+                                        <div class="special-request" id="request-{{ b.booking_id }}">
+                                            {{ b.special_request or "—" }}
+                                        </div>
+                                        {% if b.special_request and b.special_request|length > 30 %}
+                                        <span class="toggle-more" onclick="toggleRequest('{{ b.booking_id }}')">more</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if b.status == "Pending" %}
+                                            <form action="{{ url_for('cancel_booking', booking_id=b.booking_id) }}" method="POST" style="display:inline;">
+                                                <button type="submit" class="cancel-btn" onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                    <i class="fas fa-times"></i> Cancel
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <span style="color: var(--gray);">—</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="no-bookings">
+                        <i class="fas fa-calendar-times no-bookings-icon"></i>
+                        <h4>No Bookings Yet</h4>
+                        <p>You haven't made any bookings yet. Start exploring services to book your first appointment!</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="action-center">
+                        <a href="{{ url_for('customer_dashboard') }}" class="back-btn">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Mobile sidebar functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('nav-menu');
+            const overlay = document.getElementById('overlay');
+
+            if (hamburger && navMenu && overlay) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+
+                overlay.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+
+                // Close menu when clicking on links
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        overlay.classList.remove('active');
+                    });
+                });
+            }
+        });
+
+        // Toggle special request text
+        function toggleRequest(bookingId) {
+            const requestElement = document.getElementById(`request-${bookingId}`);
+            const toggleElement = requestElement.nextElementSibling;
+            
+            if (requestElement.classList.contains('expanded')) {
+                requestElement.classList.remove('expanded');
+                toggleElement.textContent = 'more';
+            } else {
+                requestElement.classList.add('expanded');
+                toggleElement.textContent = 'less';
+            }
+        }
+    </script>
 </body>
 </html>
