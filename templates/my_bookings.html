@@ -510,7 +510,6 @@
                 
                 <nav id="nav-menu">
                     <ul>
-
                         <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
                         <li><a href="{{ url_for('view_my_bookings', customer_id=user.user_id) }}" class="active">My Bookings</a></li>
                     </ul>
@@ -559,32 +558,48 @@
                                 <tr>
                                     <td>{{ loop.index }}</td>
                                     <td>
-                                        <strong>{{ b.service.service_category }}</strong>
+                                        <strong>
+                                            {% if b.service and b.service.service_category %}
+                                                {{ b.service.service_category }}
+                                            {% else %}
+                                                Service Not Available
+                                            {% endif %}
+                                        </strong>
                                     </td>
                                     <td>
                                         <div>
-                                            <strong>{{ b.service.owner.user.name }} {{ b.service.owner.user.surname }}</strong>
+                                            <strong>
+                                                {% if b.service and b.service.owner and b.service.owner.user %}
+                                                    {{ b.service.owner.user.name }} {{ b.service.owner.user.surname }}
+                                                {% else %}
+                                                    Owner Not Available
+                                                {% endif %}
+                                            </strong>
                                             <div style="font-size: 12px; color: var(--gray);">
-                                                {{ b.service.owner.user.phone_num }}
+                                                {% if b.service and b.service.owner and b.service.owner.user and b.service.owner.user.phone_num %}
+                                                    {{ b.service.owner.user.phone_num }}
+                                                {% else %}
+                                                    —
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         {% if b.status == "Confirmed" %}
                                             <span class="status-badge status-confirmed">
-                                                <i class="fas fa-check-circle"></i> {{ b.status }}
+                                                <i></i> {{ b.status }}
                                             </span>
                                         {% elif b.status == "Pending" %}
                                             <span class="status-badge status-pending">
-                                                <i class="fas fa-clock"></i> {{ b.status }}
+                                                {{ b.status }}
                                             </span>
                                         {% elif b.status == "Cancelled" %}
                                             <span class="status-badge status-cancelled">
-                                                <i class="fas fa-times-circle"></i> {{ b.status }}
+                                                <i></i> {{ b.status }}
                                             </span>
                                         {% elif b.status == "Completed" %}
                                             <span class="status-badge status-completed">
-                                                <i class="fas fa-flag-checkered"></i> {{ b.status }}
+                                                <i ></i> {{ b.status }}
                                             </span>
                                         {% else %}
                                             <span class="status-badge status-pending">{{ b.status }}</span>
