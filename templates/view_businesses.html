@@ -767,12 +767,11 @@
                 
                 <nav id="nav-menu">
                     <ul>
-                        <li><a href="{{ url_for('home') }}">Home</a></li>
-                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
-                        <li><a href="{{ url_for('about') }}">About</a></li>
-                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                       
                         <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ url_for('view_businesses') }}" class="active">Businesses</a></li>
+
+                        <li><a href="{{ url_for('view_businesses') }}" class="active">View All Businesses</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
                     </ul>
                 </nav>
             </div>

@@ -495,6 +495,7 @@ class Images(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey("Service.service_id", ondelete="CASCADE"))
     filename = db.Column(db.String(255), nullable=False)
 
+
 class Booking(db.Model):
     __tablename__ = "Booking"
 
@@ -511,6 +512,7 @@ class Booking(db.Model):
 
     def __repr__(self):
         return f"<Booking {self.booking_id} | User {self.user_id} | Service {self.service_id}>"
+    
     
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -537,13 +539,146 @@ def send_email(subject, recipient, html_body):
 def home():
     return render_template('index.html')
 
+#------------------RESET PASSSWORD-------------------
+#------------------RESET PASSSWORD-------------------
+#------------------RESET PASSSWORD-----------------
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        # Validate inputs
+        if not email or not new_password or not confirm_password:
+            flash("All fields are required.", "error")
+            return redirect(url_for('reset_password'))
+
+        if new_password != confirm_password:
+            flash("Passwords do not match.", "error")
+            return redirect(url_for('reset_password'))
+
+        # Check password strength (minimum 8 characters)
+        if len(new_password) < 8:
+            flash("Password must be at least 8 characters long.", "error")
+            return redirect(url_for('reset_password'))
+
+        # Find user by email
+        user = User.query.filter_by(email=email).first()
+        
+        if not user:
+            # For security reasons, don't reveal if email exists or not
+            flash("If your email exists in our system, a password reset has been processed.", "success")
+            return redirect(url_for('login'))
+
+        # Update password
+        try:
+            user.password = new_password
+            db.session.commit()
+            
+            # Send password change confirmation email
+            send_password_change_email(user)
+            
+            flash("Password reset successfully! You can now login with your new password.", "success")
+            return redirect(url_for('login'))
+            
+        except Exception as e:
+            db.session.rollback()
+            flash("An error occurred while resetting your password. Please try again.", "error")
+            return redirect(url_for('reset_password'))
+
+    # GET request - show reset password form
+    return render_template('reset_password.html')
+
+def send_password_change_email(user):
+    """Send email notification when password is changed"""
+    try:
+        email_html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f9fa; }}
+                .container {{ max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }}
+                .header {{ background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); color: white; padding: 30px; text-align: center; }}
+                .header h1 {{ margin: 0; font-size: 28px; font-weight: 700; }}
+                .content {{ padding: 30px; }}
+                .alert {{ background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3498db; }}
+                .details {{ background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                .detail-item {{ margin: 10px 0; }}
+                .label {{ font-weight: bold; color: #2c3e50; }}
+                .footer {{ margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; text-align: center; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Password Changed Successfully</h1>
+                </div>
+                <div class="content">
+                    <div class="alert">
+                        <strong>Security Notice:</strong> Your password has been updated
+                    </div>
+                    
+                    <div class="details">
+                        <h3>Account Security Update</h3>
+                        <div class="detail-item">
+                            <span class="label">Name:</span> {user.name} {user.surname}
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Email:</span> {user.email}
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">New Password:</span> {user.password}
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Time:</span> {date.today().strftime("%B %d, %Y %H:%M")}
+                        </div>
+                    </div>
+                    
+                    <p>Your Business Connect account password was successfully changed.</p>
+                    
+                    <p><strong>If you did not make this change:</strong></p>
+                    <ul>
+                        <li>Reset your password immediately using the forgot password feature</li>
+                        <li>Contact our support team if you need assistance</li>
+                        <li>Ensure your email account is secure</li>
+                    </ul>
+                    
+                    <div class="footer">
+                        <p><strong>Business Connect</strong> - Growing Together</p>
+                        <p>&copy; 2025 Business Connect. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        msg = Message(
+            subject="Password Changed - Business Connect",
+            recipients=[user.email],
+            html=email_html
+        )
+        mail.send(msg)
+        print(f"✅ Password change notification sent to: {user.email}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Failed to send password change email: {e}")
+        return False
+
+
+
+
 @app.route('/services')
 def services():
     return render_template('services.html')
 
-@app.route('/reset_password')
-def reset_password():
-    return render_template('reset_password.html')
+
 
 @app.route('/listings')
 def listings():
@@ -931,7 +1066,59 @@ def view_services():
     services = Service.query.filter_by(owner_id=owner.owner_id).all()
     return render_template('view_services.html', services=services)
 
-# Customer Routes
+@app.route('/businessowner/bookings')
+def view_bookings():
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+    
+    owner = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+    if not owner:
+        flash("Please register your business profile first.", "error")
+        return redirect(url_for('register_business'))
+    
+    # Get all bookings for this business owner's services
+    bookings = db.session.query(Booking, Service, User).\
+        join(Service, Booking.service_id == Service.service_id).\
+        join(User, Booking.user_id == User.user_id).\
+        filter(Service.owner_id == owner.owner_id).\
+        order_by(Booking.booking_date.desc()).all()
+    
+    return render_template('business_bookings.html', bookings=bookings, owner=owner)
+
+@app.route('/businessowner/update_booking_status/<int:booking_id>', methods=['POST'])
+def update_booking_status(booking_id):
+    if 'user_id' not in session or session.get('user_type') != "BusinessOwner":
+        return redirect(url_for('login'))
+    
+    booking = Booking.query.get_or_404(booking_id)
+    owner = BusinessOwner.query.filter_by(user_id=session['user_id']).first()
+    
+    # Verify this booking belongs to the business owner
+    if booking.service.owner_id != owner.owner_id:
+        flash("You don't have permission to update this booking.", "error")
+        return redirect(url_for('view_bookings'))
+    
+    new_status = request.form.get('status')
+    welcome_message = request.form.get('welcome_message', '')
+    
+    if new_status:
+        booking.status = new_status
+        
+        # If approved, combine welcome message with status
+        if new_status == 'Approved' and welcome_message:
+            booking.special_request = f"{booking.special_request or ''}\n\n(Business Message:) {welcome_message}".strip()
+        
+        db.session.commit()
+        flash("Booking status updated successfully!", "success")
+    
+    return redirect(url_for('view_bookings'))
+
+
+
+#----------------------------- Customer Routes -----------------------------
+#----------------------------- Customer Routes -----------------------------
+#----------------------------- Customer Routes -----------------------------
+
 @app.route("/customer/dashboard")
 def customer_dashboard():
     if 'user_id' not in session or session.get('user_type') != "Customer":
@@ -1059,11 +1246,185 @@ def view_my_bookings(customer_id):
     bookings = Booking.query.filter_by(user_id=customer_id).all()
     return render_template("my_bookings.html", bookings=bookings, user=user)
 
+
+
+
+
+
+#------------------ADMIN ROUTES-------------------
+#------------------ADMIN ROUTES-------------------
+#------------------ADMIN ROUTES-------------------
 @app.route('/admin/dashboard')
 def admin_dashboard():
     if 'user_id' not in session or session.get('user_type') != "Admin":
         return redirect(url_for('login'))
-    return "Admin Dashboard - Under Construction"
+    
+    # Get counts for dashboard
+    business_owners_count = User.query.filter_by(user_type='BusinessOwner').count()
+    customers_count = User.query.filter_by(user_type='Customer').count()
+    services_count = Service.query.count()
+    businesses_count = BusinessOwner.query.count()
+    
+    return render_template('admin_dashboard.html', 
+                         business_owners_count=business_owners_count,
+                         customers_count=customers_count,
+                         services_count=services_count,
+                         businesses_count=businesses_count)
+
+@app.route('/admin/add-owner', methods=['GET', 'POST'])
+def admin_add_owner():
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        name = request.form.get('name')
+        surname = request.form.get('surname')
+        email = request.form.get('email')
+        phone_num = request.form.get('phone_num')
+        password = request.form.get('password')
+        
+        # Check if email already exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash("Email already registered.", "error")
+            return redirect(url_for('admin_add_owner'))
+        
+        # Create new business owner
+        new_owner = User(
+            name=name,
+            surname=surname,
+            email=email,
+            password=password,
+            phone_num=phone_num,
+            user_type="BusinessOwner",
+        )
+        
+        db.session.add(new_owner)
+        db.session.commit()
+        
+        flash("Business owner added successfully!", "success")
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('addowner.html')
+
+@app.route('/admin/view-businesses')
+def admin_view_businesses():
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    businesses = BusinessOwner.query.all()
+    return render_template('admin_businesses.html', businesses=businesses)
+
+@app.route('/admin/view-services')
+def admin_view_services():
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    services = Service.query.all()
+    return render_template('admin_services.html', services=services)
+
+@app.route('/admin/view-business-owners')
+def admin_view_business_owners():
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    business_owners = User.query.filter_by(user_type='BusinessOwner').all()
+    return render_template('admin_business_owners.html', business_owners=business_owners)
+
+@app.route('/admin/view-customers')
+def admin_view_customers():
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    customers = User.query.filter_by(user_type='Customer').all()
+    return render_template('admin_customers.html', customers=customers)
+
+@app.route('/admin/delete-user/<int:user_id>')
+def admin_delete_user(user_id):
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    user = User.query.get(user_id)
+    if user:
+        # Delete associated business profile if exists
+        business_profile = BusinessOwner.query.filter_by(user_id=user_id).first()
+        if business_profile:
+            db.session.delete(business_profile)
+        
+        # Delete associated services
+        services = Service.query.filter_by(owner_id=user_id).all()
+        for service in services:
+            db.session.delete(service)
+        
+        db.session.delete(user)
+        db.session.commit()
+        flash("User deleted successfully!", "success")
+    else:
+        flash("User not found.", "error")
+    
+    return redirect(request.referrer or url_for('admin_dashboard'))
+
+@app.route('/admin/edit-user/<int:user_id>', methods=['GET', 'POST'])
+def admin_edit_user(user_id):
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    user = User.query.get(user_id)
+    if not user:
+        flash("User not found.", "error")
+        return redirect(url_for('admin_dashboard'))
+    
+    if request.method == 'POST':
+        user.name = request.form.get('name')
+        user.surname = request.form.get('surname')
+        user.email = request.form.get('email')
+        user.phone_num = request.form.get('phone_num')
+        
+        db.session.commit()
+        flash("User updated successfully!", "success")
+        return redirect(url_for('admin_view_' + ('business_owners' if user.user_type == 'BusinessOwner' else 'customers')))
+    
+    return render_template('admin_edit_user.html', user=user)
+
+@app.route('/admin/delete-service/<int:service_id>')
+def admin_delete_service(service_id):
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    service = Service.query.get(service_id)
+    if service:
+        db.session.delete(service)
+        db.session.commit()
+        flash("Service deleted successfully!", "success")
+    else:
+        flash("Service not found.", "error")
+    
+    return redirect(url_for('admin_view_services'))
+
+@app.route('/admin/delete-business/<int:business_id>')
+def admin_delete_business(business_id):
+    if 'user_id' not in session or session.get('user_type') != "Admin":
+        return redirect(url_for('login'))
+    
+    business = BusinessOwner.query.get(business_id)
+    if business:
+        db.session.delete(business)
+        db.session.commit()
+        flash("Business profile deleted successfully!", "success")
+    else:
+        flash("Business profile not found.", "error")
+    
+    return redirect(url_for('admin_view_businesses'))
+
+
+
+    # ------------------- logout -------------------
+    # -------------------LOGOUT-------------------
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been logged out successfully.", "success")
+    return redirect(url_for('login'))
 
 # ------------------- RUN SERVER -------------------
 if __name__ == '__main__':

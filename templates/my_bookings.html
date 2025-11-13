@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +39,8 @@
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            padding-top: 80px; /* Space for fixed header */
+            padding-top: 80px;
+            /* Space for fixed header */
         }
 
         /* Header Styles - Fixed */
@@ -159,7 +161,7 @@
             .hamburger {
                 display: flex;
             }
-            
+
             nav {
                 position: fixed;
                 top: 0;
@@ -172,44 +174,44 @@
                 padding: 80px 20px 20px;
                 box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             }
-            
+
             nav.active {
                 right: 0;
             }
-            
+
             nav ul {
                 flex-direction: column;
                 gap: 0;
             }
-            
+
             nav li {
                 margin-bottom: 15px;
             }
-            
+
             nav a {
                 display: block;
                 padding: 12px 15px;
                 border-radius: 5px;
                 transition: background 0.3s;
             }
-            
+
             nav a:hover {
                 background: rgba(255, 255, 255, 0.2);
             }
-            
+
             /* Hamburger animation */
             .hamburger.active span:nth-child(1) {
                 transform: rotate(-45deg) translate(-5px, 6px);
             }
-            
+
             .hamburger.active span:nth-child(2) {
                 opacity: 0;
             }
-            
+
             .hamburger.active span:nth-child(3) {
                 transform: rotate(45deg) translate(-5px, -6px);
             }
-            
+
             /* Overlay */
             .overlay {
                 display: none;
@@ -221,7 +223,7 @@
                 background: rgba(0, 0, 0, 0.5);
                 z-index: 999;
             }
-            
+
             .overlay.active {
                 display: block;
             }
@@ -471,7 +473,7 @@
             .bookings-header {
                 padding: 20px;
             }
-            
+
             .bookings-header h3 {
                 font-size: 20px;
             }
@@ -486,6 +488,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Fixed Header -->
     <header>
@@ -500,18 +503,20 @@
                     </div>
                     <div class="logo-text">Business Connect</div>
                 </div>
-                
+
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
-                
+
                 <nav id="nav-menu">
                     <ul>
                         <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ url_for('view_my_bookings', customer_id=user.user_id) }}" class="active">My Bookings</a></li>
+                        <li><a href="{{ url_for('view_my_bookings', customer_id=user.user_id) }}" class="active">My
+                                Bookings</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
                     </ul>
                 </nav>
             </div>
@@ -560,9 +565,9 @@
                                     <td>
                                         <strong>
                                             {% if b.service and b.service.service_category %}
-                                                {{ b.service.service_category }}
+                                            {{ b.service.service_category }}
                                             {% else %}
-                                                Service Not Available
+                                            Service Not Available
                                             {% endif %}
                                         </strong>
                                     </td>
@@ -570,60 +575,64 @@
                                         <div>
                                             <strong>
                                                 {% if b.service and b.service.owner and b.service.owner.user %}
-                                                    {{ b.service.owner.user.name }} {{ b.service.owner.user.surname }}
+                                                {{ b.service.owner.user.name }} {{ b.service.owner.user.surname }}
                                                 {% else %}
-                                                    Owner Not Available
+                                                Owner Not Available
                                                 {% endif %}
                                             </strong>
                                             <div style="font-size: 12px; color: var(--gray);">
-                                                {% if b.service and b.service.owner and b.service.owner.user and b.service.owner.user.phone_num %}
-                                                    {{ b.service.owner.user.phone_num }}
+                                                {% if b.service and b.service.owner and b.service.owner.user and
+                                                b.service.owner.user.phone_num %}
+                                                {{ b.service.owner.user.phone_num }}
                                                 {% else %}
-                                                    —
+                                                —
                                                 {% endif %}
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         {% if b.status == "Confirmed" %}
-                                            <span class="status-badge status-confirmed">
-                                                <i></i> {{ b.status }}
-                                            </span>
+                                        <span class="status-badge status-confirmed">
+                                            <i></i> {{ b.status }}
+                                        </span>
                                         {% elif b.status == "Pending" %}
-                                            <span class="status-badge status-pending">
-                                                {{ b.status }}
-                                            </span>
+                                        <span class="status-badge status-pending">
+                                            {{ b.status }}
+                                        </span>
                                         {% elif b.status == "Cancelled" %}
-                                            <span class="status-badge status-cancelled">
-                                                <i></i> {{ b.status }}
-                                            </span>
+                                        <span class="status-badge status-cancelled">
+                                            <i></i> {{ b.status }}
+                                        </span>
                                         {% elif b.status == "Completed" %}
-                                            <span class="status-badge status-completed">
-                                                <i ></i> {{ b.status }}
-                                            </span>
+                                        <span class="status-badge status-completed">
+                                            <i></i> {{ b.status }}
+                                        </span>
                                         {% else %}
-                                            <span class="status-badge status-pending">{{ b.status }}</span>
+                                        <span class="status-badge status-pending">{{ b.status }}</span>
                                         {% endif %}
                                     </td>
                                     <td class="price">R{{ "%.2f"|format(b.total_amount) }}</td>
                                     <td>{{ b.booking_date }}</td>
                                     <td>
                                         <div class="special-request" id="request-{{ b.booking_id }}">
-                                            {{ b.special_request or "—" }}
+                                            {{ (b.special_request or "—") | replace('\n', '<br>') | safe }}
                                         </div>
                                         {% if b.special_request and b.special_request|length > 30 %}
-                                        <span class="toggle-more" onclick="toggleRequest('{{ b.booking_id }}')">more</span>
+                                        <span class="toggle-more"
+                                            onclick="toggleRequest('{{ b.booking_id }}')">more</span>
                                         {% endif %}
                                     </td>
                                     <td>
                                         {% if b.status == "Pending" %}
-                                            <form action="{{ url_for('cancel_booking', booking_id=b.booking_id) }}" method="POST" style="display:inline;">
-                                                <button type="submit" class="cancel-btn" onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                                    <i class="fas fa-times"></i> Cancel
-                                                </button>
-                                            </form>
+                                        <form action="{{ url_for('cancel_booking', booking_id=b.booking_id) }}"
+                                            method="POST" style="display:inline;">
+                                            <button type="submit" class="cancel-btn"
+                                                onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                <i class="fas fa-times"></i> Cancel
+                                            </button>
+                                        </form>
                                         {% else %}
-                                            <span style="color: var(--gray);">—</span>
+                                        <span style="color: var(--gray);">—</span>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -635,7 +644,8 @@
                     <div class="no-bookings">
                         <i class="fas fa-calendar-times no-bookings-icon"></i>
                         <h4>No Bookings Yet</h4>
-                        <p>You haven't made any bookings yet. Start exploring services to book your first appointment!</p>
+                        <p>You haven't made any bookings yet. Start exploring services to book your first appointment!
+                        </p>
                     </div>
                     {% endif %}
 
@@ -651,7 +661,7 @@
 
     <script>
         // Mobile sidebar functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const hamburger = document.getElementById('hamburger');
             const navMenu = document.getElementById('nav-menu');
             const overlay = document.getElementById('overlay');
@@ -685,7 +695,7 @@
         function toggleRequest(bookingId) {
             const requestElement = document.getElementById(`request-${bookingId}`);
             const toggleElement = requestElement.nextElementSibling;
-            
+
             if (requestElement.classList.contains('expanded')) {
                 requestElement.classList.remove('expanded');
                 toggleElement.textContent = 'more';
@@ -696,4 +706,5 @@
         }
     </script>
 </body>
+
 </html>
