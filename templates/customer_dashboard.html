@@ -38,14 +38,13 @@
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            padding-top: 80px;
+            padding-top: 140px; /* Increased for header search */
         }
 
         /* Header Styles */
         header {
             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
-            padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
             top: 0;
@@ -64,6 +63,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
 
         .logo-container {
@@ -114,7 +114,120 @@
             color: white;
         }
 
-       /* Hamburger Menu */
+        /* Header Search Section */
+        .header-search-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .header-search-section.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-search-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header-search-box {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header-search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+        }
+
+        .header-search-input::placeholder {
+            color: var(--gray);
+        }
+
+        .header-search-btn {
+            padding: 0 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .header-search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .header-price-filter {
+            display: flex;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-width: 200px;
+        }
+
+        .header-price-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            min-width: 120px;
+        }
+
+        .header-price-input::placeholder {
+            color: var(--gray);
+        }
+
+        .toggle-search-btn {
+           background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .toggle-search-btn:hover {
+           background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger Menu */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -156,6 +269,10 @@
 
         /* Mobile Sidebar */
         @media (max-width: 768px) {
+            body {
+                padding-top: 180px; /* Further increased for mobile */
+            }
+
             .hamburger {
                 display: flex;
             }
@@ -223,11 +340,26 @@
             .overlay.active {
                 display: block;
             }
+
+            .header-search-container {
+                flex-direction: column;
+            }
+
+            .header-search-box,
+            .header-price-filter {
+                min-width: 100%;
+            }
+
+            .toggle-search-btn {
+                width: 40%;
+                justify-content: center;
+            }
         }
+
         /* Main Content */
         .main-content {
             padding: 40px 20px;
-            min-height: calc(100vh - 80px);
+            min-height: calc(100vh - 140px);
         }
 
         /* Page Header */
@@ -286,89 +418,7 @@
             font-size: 18px;
         }
 
-        /* Navigation Bar */
-        .top-nav {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .top-nav a {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 25px;
-            background: var(--primary);
-            color: var(--white);
-            text-decoration: none;
-            border-radius: var(--radius);
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .top-nav a:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .view-business-btn {
-            background: var(--success) !important;
-        }
-
-        .view-business-btn:hover {
-            background: #219653 !important;
-        }
-
-        /* Search Bar Styles */
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .search-box {
-            display: flex;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            max-width: 600px;
-            width: 100%;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            background: transparent;
-        }
-
-        .search-input::placeholder {
-            color: var(--gray);
-        }
-
-        .search-btn {
-            padding: 0 25px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-
-        .search-btn:hover {
-            background: var(--primary-dark);
-        }
-
+        /* Search Options */
         .search-options {
             display: flex;
             justify-content: center;
@@ -402,53 +452,6 @@
             font-size: 16px;
         }
 
-        /* Price Filter Styles */
-        .price-filter-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .price-filter-box {
-            display: flex;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .price-filter-input {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            background: transparent;
-        }
-
-        .price-filter-input::placeholder {
-            color: var(--gray);
-        }
-
-        .price-filter-btn {
-            padding: 0 25px;
-            background: var(--success);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-
-        .price-filter-btn:hover {
-            background: #219653;
-        }
-
         /* Enhanced Services Section Styles */
         .services-section {
             margin-top: 40px;
@@ -462,88 +465,85 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        /* Tighter Services Grid */
+        /* Services Grid with Animation */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 20px; /* Reduced from 30px for tighter spacing */
+            gap: 20px;
             margin-bottom: 40px;
         }
 
-        /* Compact Service Card */
+        /* Service Card with Slide-in Animation */
         .service-card {
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow-lg);
-            padding: 20px; /* Reduced from 25px */
+            padding: 20px;
             transition: var(--transition);
             display: flex;
             flex-direction: column;
             height: 100%;
             position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.6s ease forwards;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        .service-card:nth-child(even) {
+            animation-delay: 0.2s;
         }
 
         .service-card:hover {
-            transform: translateY(-3px); /* Reduced from -5px */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
-        /* Tighter Service Header */
         .service-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 12px; /* Reduced from 15px */
+            margin-bottom: 12px;
             flex-wrap: wrap;
-            gap: 10px; /* Reduced from 15px */
+            gap: 10px;
         }
 
         .service-title {
-            font-size: 20px; /* Slightly smaller */
+            font-size: 20px;
             color: var(--secondary);
-            margin-bottom: 4px; /* Reduced */
+            margin-bottom: 4px;
             line-height: 1.3;
         }
 
         .service-price {
-            font-size: 22px; /* Slightly smaller */
+            font-size: 22px;
             font-weight: 700;
             color: var(--success);
         }
 
-        .status {
-            padding: 4px 12px; /* Reduced padding */
-            border-radius: 16px; /* Slightly smaller */
-            font-size: 13px; /* Smaller font */
-            font-weight: 600;
-            color: white;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px; /* Reduced gap */
-        }
-
-        .active {
-            background: var(--success);
-        }
-
-        .inactive {
-            background: var(--accent);
-        }
-
-        /* Compact Service Details */
         .service-details {
-            margin: 12px 0; /* Reduced from 15px */
+            margin: 12px 0;
             color: var(--dark);
-            line-height: 1.5; /* Tighter line height */
+            line-height: 1.5;
         }
 
         .detail-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 6px; /* Reduced from 8px */
-            padding-bottom: 6px; /* Reduced from 8px */
+            margin-bottom: 6px;
+            padding-bottom: 6px;
             border-bottom: 1px solid var(--light);
-            font-size: 14px; /* Slightly smaller font */
+            font-size: 14px;
         }
 
         .detail-row:last-child {
@@ -555,7 +555,7 @@
         .detail-label {
             font-weight: 600;
             color: var(--secondary);
-            min-width: 70px; /* Ensure consistent alignment */
+            min-width: 70px;
         }
 
         .detail-value {
@@ -565,18 +565,18 @@
             margin-left: 10px;
         }
 
-        /* Compact Image Slider */
+        /* Image Slider */
         .image-slider {
             display: flex;
-            gap: 8px; /* Reduced from 10px */
+            gap: 8px;
             overflow-x: auto;
-            padding: 12px 0; /* Reduced padding */
-            margin: 15px 0; /* Reduced margin */
+            padding: 12px 0;
+            margin: 15px 0;
             scrollbar-width: thin;
         }
 
         .image-slider::-webkit-scrollbar {
-            height: 6px; /* Thinner scrollbar */
+            height: 6px;
         }
 
         .image-slider::-webkit-scrollbar-track {
@@ -590,10 +590,10 @@
         }
 
         .image-slider img {
-            width: 100px; /* Slightly smaller */
-            height: 75px; /* Slightly smaller */
+            width: 100px;
+            height: 75px;
             object-fit: cover;
-            border-radius: 5px; /* Slightly smaller */
+            border-radius: 5px;
             flex-shrink: 0;
             border: 2px solid transparent;
             transition: var(--transition);
@@ -602,16 +602,16 @@
 
         .image-slider img:hover {
             border-color: var(--primary);
-            transform: scale(1.03); /* Reduced scale effect */
+            transform: scale(1.03);
         }
 
         /* Book Button */
         .book-btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 12px; /* Slightly reduced padding */
+            padding: 12px;
             background: var(--success);
             color: var(--white);
             text-decoration: none;
@@ -620,7 +620,7 @@
             transition: var(--transition);
             border: none;
             cursor: pointer;
-            font-size: 15px; /* Slightly smaller */
+            font-size: 15px;
             margin-top: auto;
             width: 100%;
         }
@@ -631,10 +631,43 @@
             box-shadow: var(--shadow);
         }
 
+        .book-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .book-btn.loading {
+            background: var(--success);
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .btn-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading-text {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .book-btn.loading .btn-text {
+            display: none;
+        }
+
+        .book-btn.loading .loading-text {
+            display: flex;
+        }
+
         /* No Services Message */
         .no-services {
             text-align: center;
-            padding: 50px 30px; /* Slightly reduced padding */
+            padding: 50px 30px;
             color: white;
             background: rgba(255, 255, 255, 0.1);
             border-radius: var(--radius);
@@ -642,8 +675,8 @@
         }
 
         .no-services-icon {
-            font-size: 56px; /* Slightly smaller */
-            margin-bottom: 18px; /* Reduced */
+            font-size: 56px;
+            margin-bottom: 18px;
             opacity: 0.7;
         }
 
@@ -728,13 +761,9 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: row;
-            }
-
             .services-grid {
                 grid-template-columns: 1fr;
-                gap: 16px; /* Even tighter on mobile */
+                gap: 16px;
             }
 
             .service-header {
@@ -745,11 +774,11 @@
             }
 
             .service-card {
-                padding: 18px; /* Slightly less padding on mobile */
+                padding: 18px;
             }
 
             .detail-row {
-                font-size: 13px; /* Smaller font on mobile */
+                font-size: 13px;
             }
 
             .image-slider img {
@@ -765,15 +794,14 @@
                 font-size: 28px;
             }
 
-            .top-nav {
+            .search-options {
                 flex-direction: column;
                 align-items: center;
             }
 
-            .top-nav a {
+            .sort-btn {
                 width: 100%;
-                max-width: 300px;
-                justify-content: center;
+                max-width: 200px;
             }
 
             .modal-nav {
@@ -788,25 +816,6 @@
 
             .modal-next {
                 right: 10px;
-            }
-
-            .search-options {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .sort-btn {
-                width: 100%;
-                max-width: 200px;
-            }
-
-            .price-filter-box {
-                flex-direction: column;
-            }
-
-            .price-filter-btn {
-                justify-content: center;
-                padding: 12px;
             }
         }
 
@@ -827,15 +836,6 @@
             .container {
                 padding: 0 1rem;
             }
-
-            .search-box {
-                flex-direction: column;
-            }
-
-            .search-btn {
-                justify-content: center;
-                padding: 12px;
-            }
         }
     </style>
 </head>
@@ -854,6 +854,11 @@
                     <div class="logo-text">Business Connect</div>
                 </div>
                 
+                <!-- Search Toggle Button -->
+                <button class="toggle-search-btn" id="toggleSearchBtn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -866,10 +871,28 @@
                         <li><a href="{{ url_for('customer_dashboard') }}" class="active">Dashboard</a></li>
                         <li><a href="{{ url_for('view_businesses') }}">View All Businesses</a></li>
                         <li><a href="{{ url_for('view_my_bookings', customer_id=user.user_id) }}">My Bookings</a></li>
-                       
                         <li><a href="{{ url_for('logout') }}">Logout</a></li>
                     </ul>
                 </nav>
+            </div>
+        </div>
+
+        <!-- Header Search Section -->
+        <div class="header-search-section" id="headerSearchSection">
+            <div class="container">
+                <div class="header-search-container">
+                    <div class="header-search-box">
+                        <input type="text" class="header-search-input" id="headerSearchInput" 
+                               placeholder="Search by service, location, or address...">
+                        <button class="header-search-btn" id="headerSearchBtn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                    <div class="header-price-filter">
+                        <input type="number" class="header-price-input" id="headerPriceInput" 
+                               placeholder="Min price (R)...">
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -895,9 +918,6 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="container">
-            
-           
-
             <!-- Customer Profile -->
             <div class="profile-box">
                 <h2>Hello, {{ user.name }} {{ user.surname }}</h2>
@@ -914,26 +934,6 @@
                 </div>
             </div>
 
-            <!-- Search Section -->
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" class="search-input" id="searchInput"  placeholder="Search services by name or location...">
-                    <button class="search-btn" id="searchBtn">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                </div>
-            </div>
-
-            <!-- Price Filter Section -->
-            <div class="price-filter-container">
-                <div class="price-filter-box">
-                    <input type="number" class="price-filter-input" id="priceFilterInput" placeholder="Minimum price (R)...">
-                    <button class="price-filter-btn" id="priceFilterBtn">
-                        <i class="fas fa-filter"></i> Filter by Price
-                    </button>
-                </div>
-            </div>
-
             <!-- Search Options -->
             <div class="search-options">
                 <button class="sort-btn active" data-sort="default">Default</button>
@@ -942,13 +942,11 @@
             </div>
 
             <!-- Search Results Info -->
-            <div class="search-results-info" id="searchResultsInfo">
-                Showing all available services
-            </div>
+           
 
             <!-- Services Section -->
             <div class="services-section">
-                <h2 class="section-title">Available Services</h2>
+              
 
                 {% if services %}
                     <div class="services-grid" id="services-grid">
@@ -957,43 +955,30 @@
                                 <div class="service-card" data-service-id="{{ service.service_id }}" 
                                      data-service-name="{{ service.service_category|lower }}" 
                                      data-service-price="{{ service.range_price }}" 
-                                     data-service-location="{{ service.owner.location|lower }}">
+                                     data-service-location="{{ service.owner.location|lower }}"
+                                     data-service-address="{{ service.owner.address|lower }}">
                                     <div class="service-header">
                                         <div>
                                             <h3 class="service-title">{{ service.service_category }}</h3>
-                                           
                                         </div>
                                         <div class="service-price">R{{ service.range_price }}</div>
                                     </div>
 
                                     <div class="service-details">
                                         <div class="detail-row">
-                                            <span class="detail-label"><strong>Owner: </strong>
-                                           
-                                              <i>{{ service.owner.user.name }} {{ service.owner.user.surname }}</i>  
-                                            
+                                            <span class="detail-label"><strong>Owner: </strong><i>{{ service.owner.user.name }} {{ service.owner.user.surname }}</i>
                                         </div>
                                         <div class="detail-row">
-                                            <span class="detail-label"><strong>Location: </strong>
-                                           
-                                               <i> {{ service.owner.location }}</i>
-                                            </span>
+                                            <span class="detail-label"><strong>Location: </strong><i>{{ service.owner.location }}</i>
                                         </div>
                                         <div class="detail-row">
-                                            <span class="detail-label"><strong>Address:</strong> 
-                                        
-                                                <i>{{ service.owner.address }}</i>
-                                            </span>
+                                            <span class="detail-label"><strong>Address: </strong><i>{{ service.owner.address }}</i>
                                         </div>
                                         <div class="detail-row">
-                                            <span class="detail-label"><strong>Contact: </strong>
-                                               <i>{{ service.owner.user.phone_num }}</i> 
-                                            </span>
+                                            <span class="detail-label"><strong>Contact: </strong><i>{{ service.owner.user.phone_num }}</i>
                                         </div>
                                         <div class="detail-row">
-                                            <span class="detail-label"><strong>Email: </strong>
-                                               <i>{{ service.owner.user.email }}</i> 
-                                            </span>
+                                            <span class="detail-label"><strong>Email: </strong><i>{{ service.owner.user.email }}</i>
                                         </div>
                                     </div>
 
@@ -1010,8 +995,13 @@
                                     {% endif %}
 
                                     {% if service.is_active %}
-                                    <a href="/customer/book/{{ service.service_id }}" class="book-btn">
-                                        <i class="fas fa-calendar-check"></i> Book Now
+                                    <a href="/customer/book/{{ service.service_id }}" class="book-btn" id="bookBtn-{{ service.service_id }}">
+                                        <span class="btn-text">
+                                            <i class="fas fa-calendar-check"></i> Book Now
+                                        </span>
+                                        <span class="loading-text">
+                                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                                        </span>
                                     </a>
                                     {% else %}
                                     <button class="book-btn" style="background: var(--gray); cursor: not-allowed;" disabled>
@@ -1032,10 +1022,17 @@
             </div>
         </div>
     </div>
+       <div class="search-options">
+               <a  href="{{ url_for('customer_dashboard') }}"> <button  class="sort-btn active" > R E F R E S H</button></a>
+                
+            </div>
 
     <script>
-        // Mobile sidebar functionality
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar functionality
             const hamburger = document.getElementById('hamburger');
             const navMenu = document.getElementById('nav-menu');
             const overlay = document.getElementById('overlay');
@@ -1053,7 +1050,6 @@
                     overlay.classList.remove('active');
                 });
 
-                // Close menu when clicking on links
                 const navLinks = document.querySelectorAll('nav a');
                 navLinks.forEach(link => {
                     link.addEventListener('click', () => {
@@ -1064,169 +1060,86 @@
                 });
             }
 
-            // Image Modal Functionality
-            const imageModal = document.getElementById('imageModal');
-            const modalImage = document.getElementById('modalImage');
-            const modalClose = document.getElementById('modalClose');
-            const modalPrev = document.getElementById('modalPrev');
-            const modalNext = document.getElementById('modalNext');
-            const imageCounter = document.getElementById('imageCounter');
-
-            let currentServiceId = null;
-            let currentImageIndex = 0;
-            let currentImages = [];
-
-            // Open modal when clicking on an image
-            document.querySelectorAll('.image-slider img').forEach(img => {
-                img.addEventListener('click', function() {
-                    const serviceId = this.getAttribute('data-service-id');
-                    const imageIndex = parseInt(this.getAttribute('data-image-index'));
-                    
-                    openImageModal(serviceId, imageIndex);
-                });
-            });
-
-            function openImageModal(serviceId, imageIndex) {
-                currentServiceId = serviceId;
-                currentImageIndex = imageIndex;
-                
-                // Get all images for this service
-                currentImages = Array.from(document.querySelectorAll(`.image-slider img[data-service-id="${serviceId}"]`));
-                
-                // Show the modal
-                imageModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                
-                // Load the selected image
-                updateModalImage();
-            }
-
-            function updateModalImage() {
-                if (currentImages.length === 0) return;
-                
-                const currentImg = currentImages[currentImageIndex];
-                modalImage.src = currentImg.src;
-                imageCounter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
-                
-                // Update navigation button states
-                modalPrev.style.display = currentImages.length > 1 ? 'flex' : 'none';
-                modalNext.style.display = currentImages.length > 1 ? 'flex' : 'none';
-            }
-
-            // Close modal
-            modalClose.addEventListener('click', closeImageModal);
             
-            // Close modal when clicking outside the image
-            imageModal.addEventListener('click', function(e) {
-                if (e.target === imageModal) {
-                    closeImageModal();
+
+            // Header Search Toggle
+            const toggleSearchBtn = document.getElementById('toggleSearchBtn');
+            const headerSearchSection = document.getElementById('headerSearchSection');
+            const headerSearchInput = document.getElementById('headerSearchInput');
+            const headerSearchBtn = document.getElementById('headerSearchBtn');
+            const headerPriceInput = document.getElementById('headerPriceInput');
+
+            toggleSearchBtn.addEventListener('click', function() {
+                headerSearchSection.classList.toggle('active');
+                if (headerSearchSection.classList.contains('active')) {
+                    headerSearchInput.focus();
                 }
             });
 
-            function closeImageModal() {
-                imageModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
 
-            // Navigate images
-            modalPrev.addEventListener('click', function() {
-                if (currentImages.length === 0) return;
-                
-                currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-                updateModalImage();
-            });
 
-            modalNext.addEventListener('click', function() {
-                if (currentImages.length === 0) return;
-                
-                currentImageIndex = (currentImageIndex + 1) % currentImages.length;
-                updateModalImage();
-            });
-
-            // Keyboard navigation
-            document.addEventListener('keydown', function(e) {
-                if (imageModal.style.display === 'flex') {
-                    if (e.key === 'Escape') {
-                        closeImageModal();
-                    } else if (e.key === 'ArrowLeft') {
-                        modalPrev.click();
-                    } else if (e.key === 'ArrowRight') {
-                        modalNext.click();
-                    }
-                }
-            });
-
+            
             // Search Functionality
-            const searchInput = document.getElementById('searchInput');
-            const searchBtn = document.getElementById('searchBtn');
-            const priceFilterInput = document.getElementById('priceFilterInput');
-            const priceFilterBtn = document.getElementById('priceFilterBtn');
             const sortBtns = document.querySelectorAll('.sort-btn');
             const searchResultsInfo = document.getElementById('searchResultsInfo');
             const servicesGrid = document.getElementById('services-grid');
             let currentSort = 'default';
+            let currentQuery = '';
             let currentMinPrice = null;
 
             // Set up search button
-            searchBtn.addEventListener('click', performSearch);
+            headerSearchBtn.addEventListener('click', performSearch);
             
             // Set up Enter key for search
-            searchInput.addEventListener('keyup', function(e) {
+            headerSearchInput.addEventListener('keyup', function(e) {
                 if (e.key === 'Enter') {
                     performSearch();
                 }
             });
 
-            // Set up price filter button
-            priceFilterBtn.addEventListener('click', performPriceFilter);
-            
-            // Set up Enter key for price filter
-            priceFilterInput.addEventListener('keyup', function(e) {
+            // Set up price filter input
+            headerPriceInput.addEventListener('keyup', function(e) {
                 if (e.key === 'Enter') {
-                    performPriceFilter();
+                    performSearch();
                 }
             });
+
+    
+
 
             // Set up sort buttons
             sortBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
-                    // Update active sort
                     sortBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     currentSort = this.getAttribute('data-sort');
-                    
-                    // Perform search with current query
                     performSearch();
                 });
             });
 
             function performSearch() {
-                const query = searchInput.value.trim().toLowerCase();
-                currentMinPrice = null; // Reset price filter when doing text search
-                filterAndSortServices(query, currentMinPrice);
-            }
-
-            function performPriceFilter() {
-                const minPrice = priceFilterInput.value.trim();
-                currentMinPrice = minPrice ? parseFloat(minPrice) : null;
-                filterAndSortServices(searchInput.value.trim().toLowerCase(), currentMinPrice);
+                currentQuery = headerSearchInput.value.trim().toLowerCase();
+                currentMinPrice = headerPriceInput.value.trim() ? parseFloat(headerPriceInput.value.trim()) : null;
+                filterAndSortServices(currentQuery, currentMinPrice);
             }
 
             function filterAndSortServices(query, minPrice) {
                 let serviceCards = Array.from(document.querySelectorAll('.service-card'));
                 let resultsCount = 0;
                 
-                // Filter cards based on search query and price
                 serviceCards.forEach(card => {
                     const serviceName = card.getAttribute('data-service-name');
                     const servicePrice = parseFloat(card.getAttribute('data-service-price'));
                     const serviceLocation = card.getAttribute('data-service-location');
+                    const serviceAddress = card.getAttribute('data-service-address');
                     
                     let matches = true;
                     
-                    // Apply text search filter
+                    // Apply text search filter (case-insensitive)
                     if (query !== '') {
-                        matches = serviceName.includes(query) || serviceLocation.includes(query);
+                        matches = serviceName.includes(query) || 
+                                 serviceLocation.includes(query) || 
+                                 serviceAddress.includes(query);
                     }
                     
                     // Apply price filter
@@ -1234,7 +1147,6 @@
                         matches = servicePrice >= minPrice;
                     }
                     
-                    // Show or hide card based on match
                     if (matches) {
                         card.style.display = 'flex';
                         resultsCount++;
@@ -1261,13 +1173,11 @@
                         });
                     }
                     
-                    // Reorder cards in the grid
                     visibleCards.forEach(card => {
                         servicesGrid.appendChild(card);
                     });
                 }
                 
-                // Update search results info
                 updateSearchResultsInfo(query, minPrice, resultsCount);
             }
 
@@ -1305,34 +1215,129 @@
                 searchResultsInfo.textContent = infoText;
             }
 
-            // Function to randomize service cards
-            function randomizeServiceCards() {
-                const servicesGrid = document.getElementById('services-grid');
-                if (!servicesGrid) return;
-                
-                const serviceCards = Array.from(servicesGrid.querySelectorAll('.service-card'));
-                
-                // Fisher-Yates shuffle algorithm
-                for (let i = serviceCards.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    servicesGrid.insertBefore(serviceCards[j], serviceCards[i]);
-                }
-                
-                // Add subtle animation to cards after shuffle
-                serviceCards.forEach((card, index) => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    
-                    setTimeout(() => {
-                        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, index * 100);
+            // Image Modal Functionality
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalClose = document.getElementById('modalClose');
+            const modalPrev = document.getElementById('modalPrev');
+            const modalNext = document.getElementById('modalNext');
+            const imageCounter = document.getElementById('imageCounter');
+
+            let currentServiceId = null;
+            let currentImageIndex = 0;
+            let currentImages = [];
+
+            document.querySelectorAll('.image-slider img').forEach(img => {
+                img.addEventListener('click', function() {
+                    const serviceId = this.getAttribute('data-service-id');
+                    const imageIndex = parseInt(this.getAttribute('data-image-index'));
+                    openImageModal(serviceId, imageIndex);
                 });
+            });
+
+            function openImageModal(serviceId, imageIndex) {
+                currentServiceId = serviceId;
+                currentImageIndex = imageIndex;
+                currentImages = Array.from(document.querySelectorAll(`.image-slider img[data-service-id="${serviceId}"]`));
+                
+                imageModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                updateModalImage();
+            }
+
+            function updateModalImage() {
+                if (currentImages.length === 0) return;
+                
+                const currentImg = currentImages[currentImageIndex];
+                modalImage.src = currentImg.src;
+                imageCounter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+                
+                modalPrev.style.display = currentImages.length > 1 ? 'flex' : 'none';
+                modalNext.style.display = currentImages.length > 1 ? 'flex' : 'none';
+            }
+
+            modalClose.addEventListener('click', closeImageModal);
+            
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    closeImageModal();
+                }
+            });
+
+            function closeImageModal() {
+                imageModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            modalPrev.addEventListener('click', function() {
+                if (currentImages.length === 0) return;
+                currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+                updateModalImage();
+            });
+
+            modalNext.addEventListener('click', function() {
+                if (currentImages.length === 0) return;
+                currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+                updateModalImage();
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (imageModal.style.display === 'flex') {
+                    if (e.key === 'Escape') {
+                        closeImageModal();
+                    } else if (e.key === 'ArrowLeft') {
+                        modalPrev.click();
+                    } else if (e.key === 'ArrowRight') {
+                        modalNext.click();
+                    }
+                }
+            });
+
+
+
+            
+function randomizeServices() {
+            const servicesGrid = document.getElementById('services-grid');
+            if (!servicesGrid) return;
+            
+            const serviceCards = Array.from(servicesGrid.querySelectorAll('.service-card'));
+            
+            // Shuffle the array using Fisher-Yates algorithm
+            for (let i = serviceCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                servicesGrid.appendChild(serviceCards[j]);
             }
             
-            // Randomize cards automatically when page loads
-            randomizeServiceCards();
+            // Reapply animations to shuffled cards
+            serviceCards.forEach((card, index) => {
+                card.style.animationDelay = `${(index % 2 === 0 ? 0.1 : 0.2)}s`;
+            });
+        }
+
+        // Call randomization on page load
+        randomizeServices();
+
+            // Book Button Loading State
+            document.querySelectorAll('.book-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // Only apply loading state to active booking buttons (not disabled ones)
+                    if (!this.disabled && this.classList.contains('book-btn') && !this.classList.contains('loading')) {
+                        e.preventDefault();
+                        
+                        // Show loading state
+                        this.classList.add('loading');
+                        this.disabled = true;
+                        
+                        // Get the href to redirect after loading
+                        const href = this.getAttribute('href');
+                        
+                        // Simulate loading time (2 seconds) then redirect
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 2000);
+                    }
+                });
+            });
         });
     </script>
 </body>

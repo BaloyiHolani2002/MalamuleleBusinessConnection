@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,12 +36,22 @@
             color: var(--dark);
             background-color: #f8f9fa;
         }
-/* Header Styles */
+        
+        /* Header Styles */
         header {
             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
             padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .header-content {
@@ -256,13 +265,22 @@
                 url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80') center/cover;
             color: var(--white);
             text-align: center;
-            padding: 8rem 8rem;
+            padding: 8rem 2rem;
             position: relative;
+            overflow: hidden;
         }
 
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .hero-content.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .hero h1 {
@@ -278,48 +296,23 @@
             opacity: 0.9;
         }
 
-        .search-box {
-            background: var(--white);
-            padding: 2rem;
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 2rem;
             border-radius: var(--radius);
-            margin-top: 2rem;
-            box-shadow: var(--shadow-lg);
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr auto;
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .form-group {
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
+            text-decoration: none;
             font-weight: 600;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--gray-light);
-            border-radius: var(--radius);
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: var(--transition);
+            box-shadow: var(--shadow);
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
         /* Services Section */
@@ -328,14 +321,17 @@
             background: var(--white);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         .section-title {
             text-align: center;
             margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .section-title.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .section-title h2 {
@@ -381,7 +377,30 @@
             border: 1px solid var(--gray-light);
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.3s ease;
         }
+
+        /* Animation from sides for service cards */
+        .service-card:nth-child(odd) {
+            transform: translateX(-50px);
+        }
+
+        .service-card:nth-child(even) {
+            transform: translateX(50px);
+        }
+
+        .service-card.animate {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+
+        /* Add delay for staggered effect */
+        .service-card:nth-child(1) { transition-delay: 0.1s; }
+        .service-card:nth-child(2) { transition-delay: 0.2s; }
+        .service-card:nth-child(3) { transition-delay: 0.3s; }
+        .service-card:nth-child(4) { transition-delay: 0.4s; }
 
         .service-card::before {
             content: '';
@@ -434,7 +453,31 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
+
+        /* Apply staggered animations to steps */
+        .step:nth-child(odd) {
+            transform: translateX(-50px);
+        }
+
+        .step:nth-child(even) {
+            transform: translateX(50px);
+        }
+
+        .step.animate {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+
+        /* Add delay for staggered effect */
+        .step:nth-child(1) { transition-delay: 0.1s; }
+        .step:nth-child(2) { transition-delay: 0.2s; }
+        .step:nth-child(3) { transition-delay: 0.3s; }
+        .step:nth-child(4) { transition-delay: 0.4s; }
+        .step:nth-child(5) { transition-delay: 0.5s; }
 
         .step:hover {
             transform: translateY(-5px);
@@ -484,7 +527,29 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
+
+        /* Apply staggered animations to listings */
+        .listing-card:nth-child(odd) {
+            transform: translateX(-50px);
+        }
+
+        .listing-card:nth-child(even) {
+            transform: translateX(50px);
+        }
+
+        .listing-card.animate {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+
+        /* Add delay for staggered effect */
+        .listing-card:nth-child(1) { transition-delay: 0.1s; }
+        .listing-card:nth-child(2) { transition-delay: 0.2s; }
+        .listing-card:nth-child(3) { transition-delay: 0.3s; }
 
         .listing-card:hover {
             transform: translateY(-10px);
@@ -556,6 +621,23 @@
             margin-bottom: 2rem;
         }
 
+        .footer-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .footer-section.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Apply staggered animations to footer sections */
+        .footer-section:nth-child(1) { transition-delay: 0.1s; }
+        .footer-section:nth-child(2) { transition-delay: 0.2s; }
+        .footer-section:nth-child(3) { transition-delay: 0.3s; }
+        .footer-section:nth-child(4) { transition-delay: 0.4s; }
+
         .footer-section h3 {
             margin-bottom: 1.5rem;
             color: var(--warning);
@@ -604,6 +686,12 @@
             border-top: 1px solid #34495e;
             color: var(--gray-light);
             font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.8s ease 0.5s;
+        }
+
+        .footer-bottom.animate {
+            opacity: 1;
         }
 
         /* Responsive Design */
@@ -621,10 +709,6 @@
                 font-size: 1.1rem;
             }
 
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-
             .services-grid,
             .steps,
             .listings-grid {
@@ -634,6 +718,19 @@
             .auth-buttons {
                 display: flex;
                 gap: 0.5rem;
+            }
+
+            /* For mobile, use fadeInUp animation for all cards */
+            .service-card,
+            .step,
+            .listing-card {
+                transform: translateY(30px) !important;
+            }
+
+            .service-card.animate,
+            .step.animate,
+            .listing-card.animate {
+                transform: translateY(0) !important;
             }
         }
 
@@ -670,7 +767,8 @@
 <body>
     <!-- Flash Messages -->
     <div class="flash-messages" id="flashMessages"></div>
-<!-- Header -->
+    
+    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
@@ -708,11 +806,13 @@
 
     <!-- Overlay for mobile menu -->
     <div class="overlay" id="overlay"></div>
+    
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>BUSINESS CONNECT.</h1>
+        <div class="hero-content animate">
+            <h1>BUSINESS CONNECT</h1>
             <p>Connecting services with dignity</p>
+            <a href="{{ url_for('listings') }}" class="cta-button">Explore Services</a>
         </div>
     </section>
 
@@ -758,21 +858,28 @@
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Search Services</h3>
-                    <p>Browse through various service categories or use search filters</p>
+                    <h3>Display Your Business</h3>
+                    <p>Contact us to list your service</p>
+                    <p>✉️ businessconnectrsa@gmail.com</p>
+                    <p>📞 067 397 0212</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
+                    <h3>Search Services</h3>
+                    <p>Browse through various service categories</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
                     <h3>Compare Options</h3>
                     <p>View provider profiles, ratings, and availability</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">3</div>
+                    <div class="step-number">4</div>
                     <h3>Book & Connect</h3>
                     <p>Make bookings or contact service providers directly</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">4</div>
+                    <div class="step-number">5</div>
                     <h3>Get Service</h3>
                     <p>Receive quality service from trusted local providers</p>
                 </div>
@@ -831,7 +938,7 @@
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('services') }}">Services</a></li>
+                    <li><a href="{{ url_for('listings') }}">Services</a></li>
                     <li><a href="{{ url_for('listings') }}">Listings</a></li>
                     <li><a href="{{ url_for('about') }}">About</a></li>
                     <li><a href="{{ url_for('contact') }}">Contact</a></li>
@@ -850,9 +957,9 @@
             </div>
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p>📍 Malamulele, Limpopo</p>
-                <p>📞 +27 XXX XXX XXXX</p>
-                <p>✉️ info@businessconnect.co.za</p>
+                <p>📍 MALAMULELE, STAND No 1457 B-EXTENTION, LIMPOPO, SOUTH AFRICA</p>
+                <p>📞 067 397 0212</p>
+                <p>✉️ businessconnectrsa@gmail.com</p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -862,43 +969,33 @@
 
     <script>
         // Mobile sidebar functionality
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('nav-menu');
-    const overlay = document.getElementById('overlay');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
 
-    if (hamburger && navMenu && overlay) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            overlay.classList.toggle('active');
-        });
+        if (hamburger && navMenu && overlay) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
 
-        overlay.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-        // Close menu when clicking on links
-        const navLinks = document.querySelectorAll('nav a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
+            overlay.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
                 overlay.classList.remove('active');
             });
-        });
-    }
 
-
-        // Simple JavaScript for form submission
-        document.querySelector('.search-form')?.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const serviceType = document.getElementById('service-type')?.value;
-            const availability = document.getElementById('availability')?.value;
-
-            alert(`Searching for ${serviceType || 'all services'} in Malamulele${availability ? ' (' + availability + ')' : ''}`);
-        });
+            // Close menu when clicking on links
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            });
+        }
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -950,7 +1047,41 @@
                 this.style.zIndex = '1';
             });
         });
+
+        // Scroll-triggered animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements to animate
+            const animatedElements = document.querySelectorAll(
+                '.section-title, .service-card, .step, .listing-card, .footer-section, .footer-bottom'
+            );
+            
+            // Hero elements are already visible
+            document.querySelector('.hero-content').classList.add('animate');
+            
+            // Function to check if element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight * 0.85) &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // Function to handle scroll events
+            function handleScroll() {
+                animatedElements.forEach(element => {
+                    if (isInViewport(element) && !element.classList.contains('animate')) {
+                        element.classList.add('animate');
+                    }
+                });
+            }
+            
+            // Initial check on page load
+            handleScroll();
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', handleScroll);
+        });
     </script>
 </body>
-
 </html>

@@ -312,6 +312,26 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .team-member.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .team-member:nth-child(odd) {
+            transform: translateX(-100px);
+        }
+
+        .team-member:nth-child(even) {
+            transform: translateX(100px);
+        }
+
+        .team-member.visible:nth-child(odd),
+        .team-member.visible:nth-child(even) {
+            transform: translateX(0);
         }
 
         .team-member:hover {
@@ -513,6 +533,36 @@
             font-size: 14px;
         }
 
+        /* Animation Classes */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-100px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-bottom {
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-top {
+            opacity: 0;
+            transform: translateY(-100px);
+            transition: all 0.8s ease-out;
+        }
+
+        .animate {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .about-content {
@@ -552,6 +602,15 @@
 
             .member-image {
                 height: 250px;
+            }
+
+            /* Reset animations for mobile */
+            .team-member {
+                transform: translateY(30px) !important;
+            }
+
+            .team-member.visible {
+                transform: translateY(0) !important;
             }
         }
 
@@ -604,8 +663,7 @@
                 <nav id="nav-menu">
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
-                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
-
+                        <li><a href="{{ url_for('listings') }}">Services</a></li>
                         <li><a href="{{ url_for('about') }}" class="active">About</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact</a></li>
                         <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -622,8 +680,8 @@
     <!-- About Us Page Content -->
     <section class="hero">
         <div class="container">
-            <h1>About Business Connect</h1>
-            <p>Connecting community with trusted local services and accommodations through innovative
+            <h1 class="slide-in-bottom">About Business Connect</h1>
+            <p class="slide-in-bottom" style="transition-delay: 0.2s;">Connecting community with trusted local services and accommodations through innovative
                 digital solutions.</p>
         </div>
     </section>
@@ -631,12 +689,12 @@
     <section class="section section-light">
         <div class="container">
             <div class="section-title">
-                <h2>Our Story</h2>
-                <p>Learn how Business Connect is transforming the local service economy in Malamulele and surrounding
+                <h2 class="slide-in-bottom">Our Story</h2>
+                <p class="slide-in-bottom" style="transition-delay: 0.3s;">Learn how Business Connect is transforming the local service economy in Malamulele and surrounding
                     areas.</p>
             </div>
             <div class="about-content">
-                <div class="about-text">
+                <div class="about-text slide-in-left">
                     <h3>Empowering Local Businesses</h3>
                     <p>Business Connect was founded in 2025 with a clear mission: to bridge the digital gap in
                         Malamulele's local service economy. We recognized that many talented service providers and
@@ -649,7 +707,7 @@
                         community. Our team is committed to developing solutions that are tailored to local needs while
                         incorporating global best practices in technology and user experience.</p>
                 </div>
-                <div class="about-image">
+                <div class="about-image slide-in-right">
                     <img src="/static/images/bslogo.png" alt="Business Connect Team">
                 </div>
             </div>
@@ -659,11 +717,11 @@
     <section class="section">
         <div class="container">
             <div class="section-title">
-                <h2>Our Team</h2>
-                <p>Meet the dedicated professionals behind Business Connect</p>
+                <h2 class="slide-in-bottom">Our Team</h2>
+                <p class="slide-in-bottom" style="transition-delay: 0.2s;">Meet the dedicated team behind Business Connect</p>
             </div>
             <div class="team-grid">
-                <!-- Team members remain the same -->
+                <!-- Team Member 1 -->
                 <div class="team-member">
                     <div class="member-image">
                         <img src="/static/images/Papla.jpg" alt="Katiego Hope Papala"
@@ -679,6 +737,7 @@
                     </div>
                 </div>
 
+                <!-- Team Member 2 -->
                 <div class="team-member">
                     <div class="member-image">
                         <img src="/static/images/Baloi.png" alt="Nyiko Baloi"
@@ -694,6 +753,7 @@
                     </div>
                 </div>
 
+                <!-- Team Member 3 -->
                 <div class="team-member">
                     <div class="member-image">
                         <img src="/static/images/Baloyi.png" alt="Holani Baloyi"
@@ -708,6 +768,7 @@
                     </div>
                 </div>
 
+                <!-- Team Member 4 -->
                 <div class="team-member">
                     <div class="member-image">
                         <img src="/static/images/Malaluke.png" alt="Xitsundzuxo Maluleke"
@@ -722,11 +783,12 @@
                     </div>
                 </div>
 
+                <!-- Team Member 5 -->
                 <div class="team-member">
                     <div class="member-image">
                         <img src="/static/images/maxelologo.jpg" alt="Maxelo Business Solutions"
-                            onerror="this.style.display='none'; document.getElementById('xitsundzuxo-placeholder').style.display='flex';">
-                        <div class="initials" id="Maxelo Business Solutions" style="display: none;">MBS</div>
+                            onerror="this.style.display='none'; document.getElementById('maxelo-placeholder').style.display='flex';">
+                        <div class="initials" id="maxelo-placeholder" style="display: none;">MBS</div>
                     </div>
                     <div class="member-info">
                         <h4>MAXELO BUSINESS SOLUTIONS</h4>
@@ -738,12 +800,12 @@
                     </div>
                 </div>
 
-
+                <!-- Team Member 6 -->
                 <div class="team-member">
                     <div class="member-image">
                         <img src="/static/images/chauke.jpg" alt="NDZALAMA CHAUKE"
-                            onerror="this.style.display='none'; document.getElementById('NDZALAMA CHAUKE').style.display='flex';">
-                        <div class="initials" id="NDZALAMA CHAUKE" style="display: none;">MBS</div>
+                            onerror="this.style.display='none'; document.getElementById('ndzalama-placeholder').style.display='flex';">
+                        <div class="initials" id="ndzalama-placeholder" style="display: none;">NC</div>
                     </div>
                     <div class="member-info">
                         <h4>NDZALAMA CHAUKE</h4>
@@ -754,10 +816,6 @@
                             industry best practices.</p>
                     </div>
                 </div>
-
-
-
-
             </div>
         </div>
     </section>
@@ -765,37 +823,40 @@
     <section class="section section-light">
         <div class="container">
             <div class="section-title">
-                <h2>Contact Our Team</h2>
-                <p>Get in touch with our team members for specific inquiries</p>
+                <h2 class="slide-in-bottom">Contact Our Team</h2>
+                <p class="slide-in-bottom" style="transition-delay: 0.2s;">Get in touch with our team members for specific inquiries</p>
             </div>
             <div class="contact-info">
-                <div class="contact-item">
+                <div class="contact-item slide-in-left">
                     <div class="contact-icon">
                         <i class="fas fa-envelope"></i>
                     </div>
                     <div class="contact-details">
                         <h4>General Inquiries</h4>
-                        <p>info@businessconnect.co.za</p>
+                        <p>businessconnectrsa.com</p>
+                        <p>067 397 212</p>
                         <p>For general questions about our platform and services</p>
                     </div>
                 </div>
-                <div class="contact-item">
+                <div class="contact-item slide-in-bottom" style="transition-delay: 0.2s;">
                     <div class="contact-icon">
                         <i class="fas fa-headset"></i>
                     </div>
                     <div class="contact-details">
                         <h4>Technical Support</h4>
-                        <p>support@businessconnect.co.za</p>
+                        <p>businessconnectrsa.com</p>
+                        <p>067 397 212</p>
                         <p>For technical issues and platform assistance</p>
                     </div>
                 </div>
-                <div class="contact-item">
+                <div class="contact-item slide-in-right">
                     <div class="contact-icon">
                         <i class="fas fa-handshake"></i>
                     </div>
                     <div class="contact-details">
                         <h4>Partnerships</h4>
-                        <p>partnerships@businessconnect.co.za</p>
+                        <p>businessconnectrsa.com</p>
+                        <p>067 397 212</p>
                         <p>For business collaborations and partnership opportunities</p>
                     </div>
                 </div>
@@ -807,34 +868,33 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
+                <div class="footer-column slide-in-left">
                     <h3>Business Connect</h3>
                     <p>Connecting community with trusted local services and accommodations through innovative digital
                         solutions.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
-                <div class="footer-column">
+                <div class="footer-column slide-in-bottom" style="transition-delay: 0.1s;">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
                         <li><a href="{{ url_for('home') }}">Home</a></li>
-                        <li><a href="{{ url_for('services') }}">Services</a></li>
+                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
                         <li><a href="{{ url_for('about') }}">About Us</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
                     </ul>
                 </div>
-                <div class="footer-column">
+                <div class="footer-column slide-in-right">
                     <h3>Contact Info</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Malamulele, Limpopo, South Africa</p>
-                    <p><i class="fas fa-phone"></i> +27 15 123 4567</p>
-                    <p><i class="fas fa-envelope"></i> info@businessconnect.co.za</p>
+                    <p><i class="fas fa-map-marker-alt"></i> MALAMULELE, STAND No 1457 B-EXTENTION, LIMPOPO, SOUTH AFRICA</p>
+                    <p><i class="fas fa-phone"></i> 067 397 0212</p>
+                    <p><i class="fas fa-envelope"></i> businessconnectrsa@gmail.com</p>
                 </div>
             </div>
-            <div class="copyright">
+            <div class="copyright slide-in-top">
                 <p>&copy; 2025 Business Connect. All rights reserved. | A Maxelo Business Solutions Initiative</p>
             </div>
         </div>
@@ -880,6 +940,48 @@
                         placeholder.style.display = 'flex';
                     }
                 }
+            });
+        });
+
+        // Scroll animation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add animation classes to elements
+            const animatedElements = document.querySelectorAll('.slide-in-left, .slide-in-right, .slide-in-bottom, .slide-in-top');
+            
+            // Create intersection observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            // Observe all animated elements
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Team member animation
+            const teamMembers = document.querySelectorAll('.team-member');
+            const teamObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 200); // Staggered animation
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            teamMembers.forEach(member => {
+                teamObserver.observe(member);
             });
         });
     </script>
