@@ -404,7 +404,7 @@
                         
                         <li><a href="{{ url_for('manage_category') }}">Category/Images</a></li>
                         <li><a href="">Bookings</a></li>
-                        <li><a href="">Notifications</a></li>
+                        
                         <li><a href="{{ url_for('login') }}">Logout</a></li>
                     </ul>
                 </nav>
@@ -433,7 +433,7 @@
                             name="service_category" 
                             class="form-control" 
                             value="{{ service.service_category }}" 
-                            placeholder="Enter service category"
+                            placeholder="e.g. Accommodation / Catering / Transport.(DESCRIBE IN DETAIL)"
                             required
                         >
                     </div>
@@ -456,7 +456,7 @@
                         <label for="is_active" class="form-label">Active Status</label>
                         <select id="is_active" name="is_active" class="form-control" required>
                             <option value="1" {% if service.is_active %}selected{% endif %}>Active</option>
-                            <option value="0" {% if not service.is_active %}selected{% endif %}>Inactive</option>
+                            
                         </select>
                     </div>
 
