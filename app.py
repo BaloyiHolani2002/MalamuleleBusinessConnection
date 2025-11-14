@@ -955,9 +955,6 @@ def send_password_change_email(user):
                             <span class="label">Email:</span> {user.email}
                         </div>
                         <div class="detail-item">
-                            <span class="label">New Password:</span> {user.password}
-                        </div>
-                        <div class="detail-item">
                             <span class="label">Time:</span> {date.today().strftime("%B %d, %Y %H:%M")}
                         </div>
                     </div>
@@ -3558,14 +3555,3 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-    # -------------------LOGOUT-------------------
-@app.route('/logout')
-def logout():
-    session.clear()
-    flash("You have been logged out successfully.", "success")
-    return redirect(url_for('login'))
-
-# ------------------- RUN SERVER -------------------
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
