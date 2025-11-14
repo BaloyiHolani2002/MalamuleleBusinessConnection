@@ -18,9 +18,9 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'businessconnectrsa@gmail.com'
-app.config['MAIL_PASSWORD'] = 'upytpexovucqaiqx'  # Using app password
-app.config['MAIL_DEFAULT_SENDER'] = 'businessconnectrsa@gmail.com'
+app.config['MAIL_USERNAME'] = 'timbearmindo191@gmail.com'
+app.config['MAIL_PASSWORD'] = 'uxemeyronrjrstpb'  # Using app password
+app.config['MAIL_DEFAULT_SENDER'] = 'timbearmindo191@gmail.com'
 
 mail = Mail(app)
 
@@ -897,13 +897,9 @@ def reset_password():
             db.session.commit()
             
             # Send password change confirmation email
-            email_sent = send_password_change_email(user)
+            send_password_change_email(user)
             
-            if email_sent:
-                flash("Password reset successfully! Confirmation email sent. You can now login with your new password.", "success")
-            else:
-                flash("Password reset successfully! However, confirmation email failed to send.", "warning")
-            
+            flash("Password reset successfully! You can now login with your new password.", "success")
             return redirect(url_for('login'))
             
         except Exception as e:
@@ -915,84 +911,6 @@ def reset_password():
     return render_template('reset_password.html')
 
 def send_password_change_email(user):
-    """Send email notification when password is changed"""
-    try:
-        email_html = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f9fa; }}
-                .container {{ max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }}
-                .header {{ background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); color: white; padding: 30px; text-align: center; }}
-                .header h1 {{ margin: 0; font-size: 28px; font-weight: 700; }}
-                .content {{ padding: 30px; }}
-                .alert {{ background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3498db; }}
-                .details {{ background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; }}
-                .detail-item {{ margin: 10px 0; }}
-                .label {{ font-weight: bold; color: #2c3e50; }}
-                .footer {{ margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; text-align: center; }}
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>Password Changed Successfully</h1>
-                </div>
-                <div class="content">
-                    <div class="alert">
-                        <strong>Security Notice:</strong> Your password has been updated
-                    </div>
-                    
-                    <div class="details">
-                        <h3>Account Security Update</h3>
-                        <div class="detail-item">
-                            <span class="label">Name:</span> {user.name} {user.surname}
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">Email:</span> {user.email}
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">New Password:</span> {user.password}
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">Time:</span> {date.today().strftime("%B %d, %Y %H:%M")}
-                        </div>
-                    </div>
-                    
-                    <p>Your Business Connect account password was successfully changed.</p>
-                    
-                    <p><strong>If you did not make this change:</strong></p>
-                    <ul>
-                        <li>Reset your password immediately using the forgot password feature</li>
-                        <li>Contact our support team if you need assistance</li>
-                        <li>Ensure your email account is secure</li>
-                    </ul>
-                    
-                    <div class="footer">
-                        <p><strong>Business Connect</strong> - Growing Together</p>
-                        <p>&copy; 2025 Business Connect. All rights reserved.</p>
-                    </div>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
-        
-        msg = Message(
-            subject="Password Changed - Business Connect",
-            recipients=[user.email],
-            html=email_html
-        )
-        mail.send(msg)
-        print(f"✅ Password change notification sent to: {user.email}")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Failed to send password change email: {e}")
-        return False
     """Send email notification when password is changed"""
     try:
         email_html = f"""
@@ -1831,9 +1749,9 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'businessconnectrsa@gmail.com'
-app.config['MAIL_PASSWORD'] = 'upytpexovucqaiqx'  # Using app password
-app.config['MAIL_DEFAULT_SENDER'] = 'businessconnectrsa@gmail.com'
+app.config['MAIL_USERNAME'] = 'timbearmindo191@gmail.com'
+app.config['MAIL_PASSWORD'] = 'uxemeyronrjrstpb'  # Using app password
+app.config['MAIL_DEFAULT_SENDER'] = 'timbearmindo191@gmail.com'
 
 mail = Mail(app)
 

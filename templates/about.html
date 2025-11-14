@@ -132,7 +132,7 @@
             .hamburger {
                 display: flex;
             }
-            
+
             nav {
                 position: fixed;
                 top: 0;
@@ -145,44 +145,44 @@
                 padding: 80px 20px 20px;
                 box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             }
-            
+
             nav.active {
                 right: 0;
             }
-            
+
             nav ul {
                 flex-direction: column;
                 gap: 0;
             }
-            
+
             nav li {
                 margin-bottom: 15px;
             }
-            
+
             nav a {
                 display: block;
                 padding: 12px 15px;
                 border-radius: 5px;
                 transition: background 0.3s;
             }
-            
+
             nav a:hover {
                 background: rgba(255, 255, 255, 0.2);
             }
-            
+
             /* Hamburger animation */
             .hamburger.active span:nth-child(1) {
                 transform: rotate(-45deg) translate(-5px, 6px);
             }
-            
+
             .hamburger.active span:nth-child(2) {
                 opacity: 0;
             }
-            
+
             .hamburger.active span:nth-child(3) {
                 transform: rotate(45deg) translate(-5px, -6px);
             }
-            
+
             /* Overlay */
             .overlay {
                 display: none;
@@ -194,7 +194,7 @@
                 background: rgba(0, 0, 0, 0.5);
                 z-index: 999;
             }
-            
+
             .overlay.active {
                 display: block;
             }
@@ -593,23 +593,23 @@
                     </div>
                     <div class="logo-text">Business Connect</div>
                 </div>
-                
+
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
-                
+
                 <nav id="nav-menu">
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
                         <li><a href="{{ url_for('listings') }}">Listings</a></li>
-                       
+
                         <li><a href="{{ url_for('about') }}" class="active">About</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                          <li><a href="{{ url_for('login') }}">Login</a></li>
-                            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
                     </ul>
                 </nav>
             </div>
@@ -666,7 +666,7 @@
                 <!-- Team members remain the same -->
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/static/images/Papla.png" alt="Katiego Hope Papala"
+                        <img src="/static/images/Papla.jpg" alt="Katiego Hope Papala"
                             onerror="this.style.display='none'; document.getElementById('katiego-placeholder').style.display='flex';">
                         <div class="initials" id="katiego-placeholder" style="display: none;">KP</div>
                     </div>
@@ -674,7 +674,8 @@
                         <h4>KATLEGO HOPE PAPALA</h4>
                         <div class="role">Project Manager and Frontend Developer</div>
                         <div class="email">katlegohope708@gmail.com</div>
-                        <p>Oversees project planning and ensures successful delivery of the Business Connect platform. Specializes in creating responsive and user-friendly interfaces.</p>
+                        <p>Oversees project planning and ensures successful delivery of the Business Connect platform.
+                            Specializes in creating responsive and user-friendly interfaces.</p>
                     </div>
                 </div>
 
@@ -688,7 +689,8 @@
                         <h4>NYIKO BALOI</h4>
                         <div class="role">Business Analyst</div>
                         <div class="email">nyikobaloi0@gmail.com</div>
-                        <p>Gathers requirements and ensures the solution meets stakeholder needs and business objectives.</p>
+                        <p>Gathers requirements and ensures the solution meets stakeholder needs and business
+                            objectives.</p>
                     </div>
                 </div>
 
@@ -730,9 +732,30 @@
                         <h4>MAXELO BUSINESS SOLUTIONS</h4>
                         <div class="role">Project Sponsor</div>
                         <div class="email">info@maxelobs.com</div>
-                        <p>As the Project Sponsor, MAXELO BUSINESS SOLUTIONS provides strategic direction, financial backing, and overall project oversight to ensure the successful development and deployment of the Business Connect platform.</p>
+                        <p>As the Project Sponsor, MAXELO BUSINESS SOLUTIONS provides strategic direction, financial
+                            backing, and overall project oversight to ensure the successful development and deployment
+                            of the Business Connect platform.</p>
                     </div>
                 </div>
+
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/static/images/chauke.jpg" alt="NDZALAMA CHAUKE"
+                            onerror="this.style.display='none'; document.getElementById('NDZALAMA CHAUKE').style.display='flex';">
+                        <div class="initials" id="NDZALAMA CHAUKE" style="display: none;">MBS</div>
+                    </div>
+                    <div class="member-info">
+                        <h4>NDZALAMA CHAUKE</h4>
+                        <div class="role">Supervisor</div>
+                        <div class="email">ndzalamanbc@gmail.com</div>
+                        <p>As the Project Supervisor, NDZALAMA CHAUKE provides academic guidance, technical oversight,
+                            and quality assurance to ensure the Business Connect platform meets academic standards and
+                            industry best practices.</p>
+                    </div>
+                </div>
+
+
 
 
             </div>
@@ -786,7 +809,8 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>Business Connect</h3>
-                    <p>Connecting community with trusted local services and accommodations through innovative digital solutions.</p>
+                    <p>Connecting community with trusted local services and accommodations through innovative digital
+                        solutions.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
