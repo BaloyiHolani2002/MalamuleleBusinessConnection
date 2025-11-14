@@ -312,7 +312,10 @@
 
         /* Confirm Button */
         .confirm-btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             width: 100%;
             padding: 14px;
             background: var(--success);
@@ -331,6 +334,38 @@
             background: #219653;
             transform: translateY(-2px);
             box-shadow: var(--shadow);
+        }
+
+        .confirm-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .confirm-btn.loading {
+            background: var(--success);
+            pointer-events: none;
+        }
+
+        .btn-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading-text {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .confirm-btn.loading .btn-text {
+            display: none;
+        }
+
+        .confirm-btn.loading .loading-text {
+            display: flex;
         }
 
         /* Service Info Styles */
@@ -372,6 +407,103 @@
             font-size: 18px;
         }
 
+        /* Success Modal */
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            font-size: 64px;
+            color: var(--success);
+            margin-bottom: 20px;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .modal-content h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .modal-content p {
+            margin-bottom: 10px;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .redirect-countdown {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .redirect-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .redirect-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
@@ -380,6 +512,14 @@
 
             .confirm-section {
                 padding: 20px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
+
+            .success-icon {
+                font-size: 48px;
             }
         }
 
@@ -399,6 +539,10 @@
             
             .info-value {
                 text-align: left;
+            }
+
+            .modal-content h3 {
+                font-size: 20px;
             }
         }
     </style>
@@ -427,12 +571,9 @@
                 
                 <nav id="nav-menu">
                     <ul>
-                  
                         <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
                         <li><a href="" class="active">Confirm Booking</a></li>
                         <li><a href="{{ url_for('view_businesses') }}">View All Businesses</a></li>
-
-                       
                     </ul>
                 </nav>
             </div>
@@ -441,6 +582,22 @@
 
     <!-- Overlay for mobile menu -->
     <div class="overlay" id="overlay"></div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Booking Successful!</h3>
+            <p>Your booking has been confirmed successfully.</p>
+            <p>You will be redirected to your bookings page in <span id="countdown">5</span> seconds.</p>
+            <div class="redirect-countdown" id="redirectCountdown"></div>
+            <a href="{{ url_for('view_my_bookings', customer_id=user.user_id) }}" class="redirect-link" id="manualRedirect">
+                <i class="fas fa-external-link-alt"></i> Click here if not redirected automatically
+            </a>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -471,7 +628,7 @@
                     </div>
                 </div>
 
-                <form method="POST" class="booking-form">
+                <form method="POST" class="booking-form" id="bookingForm">
                     <div class="form-group">
                         <label for="special_request" class="form-label">
                             <i class="fas fa-edit"></i> Special Request (optional)
@@ -485,8 +642,13 @@
                         ></textarea>
                     </div>
 
-                    <button type="submit" class="confirm-btn">
-                        <i class="fas fa-calendar-check"></i> Confirm Booking
+                    <button type="submit" class="confirm-btn" id="confirmBtn">
+                        <span class="btn-text">
+                            <i class="fas fa-calendar-check"></i> Confirm Booking
+                        </span>
+                        <span class="loading-text">
+                            <i class="fas fa-spinner fa-spin"></i> Processing...
+                        </span>
                     </button>
                 </form>
             </div>
@@ -494,8 +656,8 @@
     </div>
 
     <script>
-        // Mobile sidebar functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar functionality
             const hamburger = document.getElementById('hamburger');
             const navMenu = document.getElementById('nav-menu');
             const overlay = document.getElementById('overlay');
@@ -522,6 +684,61 @@
                         overlay.classList.remove('active');
                     });
                 });
+            }
+
+            // Form submission with success modal and redirect
+            const bookingForm = document.getElementById('bookingForm');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const successModal = document.getElementById('successModal');
+            const countdownElement = document.getElementById('countdown');
+            const redirectCountdown = document.getElementById('redirectCountdown');
+            const manualRedirect = document.getElementById('manualRedirect');
+
+            if (bookingForm && confirmBtn) {
+                bookingForm.addEventListener('submit', function(e) {
+                    // Show loading state but DON'T prevent default form submission
+                    confirmBtn.classList.add('loading');
+                    confirmBtn.disabled = true;
+                    
+                    // The form will submit normally to Flask backend
+                    // Flask will handle the booking creation and redirect
+                });
+            }
+
+            // Check if we should show success modal (for when form is submitted successfully)
+            // This would be set by Flask after successful booking
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'true') {
+                showSuccessModal();
+            }
+
+            function showSuccessModal() {
+                successModal.classList.add('active');
+                
+                let countdown = 5;
+                countdownElement.textContent = countdown;
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        // Redirect to my bookings page
+                        window.location.href = "{{ url_for('view_my_bookings', customer_id=user.user_id) }}";
+                    }
+                }, 1000);
+                
+                // Update the countdown message
+                redirectCountdown.textContent = `Redirecting in ${countdown} seconds...`;
+                
+                // Manual redirect link
+                if (manualRedirect) {
+                    manualRedirect.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = "{{ url_for('view_my_bookings', customer_id=user.user_id) }}";
+                    });
+                }
             }
         });
     </script>

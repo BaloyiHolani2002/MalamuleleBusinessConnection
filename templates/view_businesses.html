@@ -38,14 +38,13 @@
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            padding-top: 80px;
+            padding-top: 140px; /* Increased for header search */
         }
 
         /* Header Styles */
         header {
             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
-            padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
             top: 0;
@@ -64,6 +63,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
 
         .logo-container {
@@ -114,6 +114,96 @@
             color: white;
         }
 
+        /* Header Search Section */
+        .header-search-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .header-search-section.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-search-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header-search-box {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header-search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+        }
+
+        .header-search-input::placeholder {
+            color: var(--gray);
+        }
+
+        .header-search-btn {
+            padding: 0 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .header-search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .toggle-search-btn {
+           background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .toggle-search-btn:hover {
+           background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            transform: translateY(-2px);
+        }
+
         /* Hamburger Menu */
         .hamburger {
             display: none;
@@ -156,6 +246,10 @@
 
         /* Mobile Sidebar */
         @media (max-width: 768px) {
+            body {
+                padding-top: 180px;
+            }
+
             .hamburger {
                 display: flex;
             }
@@ -223,12 +317,25 @@
             .overlay.active {
                 display: block;
             }
+
+            .header-search-container {
+                flex-direction: column;
+            }
+
+            .header-search-box {
+                min-width: 100%;
+            }
+
+            .toggle-search-btn {
+                width: 40%;
+                justify-content: center;
+            }
         }
 
         /* Main Content */
         .main-content {
             padding: 40px 20px;
-            min-height: calc(100vh - 80px);
+            min-height: calc(100vh - 140px);
         }
 
         /* Page Header */
@@ -242,11 +349,78 @@
             font-size: 36px;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease forwards;
         }
 
         .page-header p {
             font-size: 18px;
-            opacity: 0.9;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease 0.2s forwards;
+        }
+
+        /* Animation Classes */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            animation: slideInRight 0.8s ease forwards;
+        }
+
+        .slide-in-bottom {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.8s ease forwards;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Search Results Info */
+        .search-results-info {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 0.4s forwards;
         }
 
         /* Businesses Grid */
@@ -267,6 +441,17 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.8s ease forwards;
+        }
+
+        .business-card:nth-child(odd) {
+            animation-delay: 0.5s;
+        }
+
+        .business-card:nth-child(even) {
+            animation-delay: 0.6s;
         }
 
         .business-card:hover {
@@ -310,7 +495,15 @@
             align-items: flex-start;
             gap: 10px;
             margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease forwards;
         }
+
+        .detail-item:nth-child(1) { animation-delay: 0.6s; }
+        .detail-item:nth-child(2) { animation-delay: 0.7s; }
+        .detail-item:nth-child(3) { animation-delay: 0.8s; }
+        .detail-item:nth-child(4) { animation-delay: 0.9s; }
 
         .detail-item i {
             color: var(--primary);
@@ -338,11 +531,17 @@
             margin: 15px 0;
             border-left: 3px solid var(--primary);
             line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 1s forwards;
         }
 
         /* Services Section */
         .services-section {
-            margin: 00px 0;
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 1.1s forwards;
         }
 
         .services-title {
@@ -370,7 +569,14 @@
             border-radius: var(--radius);
             border-left: 3px solid var(--success);
             transition: var(--transition);
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 0.6s ease forwards;
         }
+
+        .service-item:nth-child(1) { animation-delay: 1.2s; }
+        .service-item:nth-child(2) { animation-delay: 1.3s; }
+        .service-item:nth-child(3) { animation-delay: 1.4s; }
 
         .service-item:hover {
             background: rgba(52, 152, 219, 0.1);
@@ -403,6 +609,9 @@
             flex-direction: column;
             gap: 10px;
             margin-top: auto;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 1.5s forwards;
         }
 
         .btn {
@@ -467,6 +676,9 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: var(--radius);
             margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease 0.6s forwards;
         }
 
         .no-businesses-icon {
@@ -495,6 +707,9 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 1.6s forwards;
         }
 
         .back-btn:hover {
@@ -536,153 +751,6 @@
             margin-left: 10px;
         }
 
-        /* Service Details Modal */
-        .service-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .service-modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--white);
-            border-radius: var(--radius);
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 25px;
-            text-align: center;
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 18px;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .modal-body {
-            padding: 30px;
-        }
-
-        .service-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .service-card {
-            background: var(--white);
-            border: 1px solid var(--gray-light);
-            border-radius: var(--radius);
-            padding: 20px;
-            transition: var(--transition);
-        }
-
-        .service-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-        }
-
-        .service-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .service-card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .service-card-price {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--success);
-        }
-
-        .service-images {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-            overflow-x: auto;
-            padding-bottom: 10px;
-        }
-
-        .service-image {
-            width: 100px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: var(--radius);
-            border: 2px solid var(--gray-light);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .service-image:hover {
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .service-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .status-active {
-            background: rgba(39, 174, 96, 0.15);
-            color: var(--success);
-        }
-
-        .status-inactive {
-            background: rgba(231, 76, 60, 0.15);
-            color: var(--accent);
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
@@ -711,10 +779,6 @@
                 min-width: auto;
             }
 
-            .service-cards {
-                grid-template-columns: 1fr;
-            }
-
             .action-buttons {
                 flex-direction: column;
             }
@@ -736,10 +800,6 @@
             .no-businesses-icon {
                 font-size: 48px;
             }
-
-            .modal-body {
-                padding: 20px;
-            }
         }
     </style>
 </head>
@@ -758,6 +818,11 @@
                     <div class="logo-text">Business Connect</div>
                 </div>
                 
+                <!-- Search Toggle Button -->
+                <button class="toggle-search-btn" id="toggleSearchBtn">
+                    <i class="fas fa-search"></i> Search Businesses
+                </button>
+                
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -767,13 +832,26 @@
                 
                 <nav id="nav-menu">
                     <ul>
-                       
                         <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
-
                         <li><a href="{{ url_for('view_businesses') }}" class="active">View All Businesses</a></li>
                         <li><a href="{{ url_for('logout') }}">Logout</a></li>
                     </ul>
                 </nav>
+            </div>
+        </div>
+
+        <!-- Header Search Section -->
+        <div class="header-search-section" id="headerSearchSection">
+            <div class="container">
+                <div class="header-search-container">
+                    <div class="header-search-box">
+                        <input type="text" class="header-search-input" id="headerSearchInput" 
+                               placeholder="Search by business name, type, location, or services...">
+                        <button class="header-search-btn" id="headerSearchBtn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -787,13 +865,21 @@
             <!-- Page Header -->
             <div class="page-header">
                 <h2>Available Businesses</h2>
-                <p>Discover professional service providers in your area</p>
+                
             </div>
 
+            <!-- Search Results Info -->
+            
+
             {% if businesses %}
-                <div class="businesses-grid">
+                <div class="businesses-grid" id="businesses-grid">
                     {% for business in businesses %}
-                    <div class="business-card">
+                    <div class="business-card" 
+                         data-business-name="{{ business.title|lower }}"
+                         data-business-type="{{ business.bus_type|lower }}"
+                         data-location="{{ business.location|lower }}"
+                         data-address="{{ business.address|lower }}"
+                         data-description="{{ business.description|lower if business.description else '' }}">
                         <div class="business-header">
                             <h3 class="business-title">{{ business.title }}</h3>
                             <div class="business-type">{{ business.bus_type }}</div>
@@ -803,21 +889,23 @@
                             <div class="business-details">
                                 <div class="detail-item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span class="detail-label">Location: {{ business.location }}
+                                    <span class="detail-label">Location:</span>
+                                    <span class="detail-value">{{ business.location }}</span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span class="detail-label">Adress: {{ business.address }}
+                                    <span class="detail-label">Address:</span>
+                                    <span class="detail-value">{{ business.address }}</span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-briefcase"></i>
-                                    <span class="detail-label">Since: {{ business.num_years }} 
-                                      
-                                    </span>
+                                    <span class="detail-label">Since:</span>
+                                    <span class="detail-value">{{ business.num_years }}</span>
                                 </div>
                                 
                                 {% if business.description %}
-                                <div class="description">About Us:  {{ business.description }}
+                                <div class="description">
+                                    {{ business.description }}
                                 </div>
                                 {% endif %}
                             </div>
@@ -837,11 +925,18 @@
                                     <div class="services-list">
                                         {% for service in business.services %}
                                             {% if service.is_active and loop.index <= 3 %}
-                                            
+                                            <div class="service-item">
+                                                <span class="service-name">{{ service.service_category }}</span>
+                                                <span class="service-price">R{{ "%.2f"|format(service.range_price) }}</span>
+                                            </div>
                                             {% endif %}
                                         {% endfor %}
                                         {% if business.services|selectattr("is_active")|list|length > 3 %}
-                                        
+                                        <div class="service-item" style="justify-content: center; background: rgba(52, 152, 219, 0.1);">
+                                            <span class="service-name" style="color: var(--primary);">
+                                                +{{ business.services|selectattr("is_active")|list|length - 3 }} more services
+                                            </span>
+                                        </div>
                                         {% endif %}
                                     </div>
                                 {% else %}
@@ -855,7 +950,7 @@
                             <div class="action-buttons">
                                 {% if business.services and business.services|selectattr("is_active")|list|length > 0 %}
                                 <a href="{{ url_for('customer_view_services', owner_id=business.owner_id) }}" class="btn btn-primary">
-                                    <i class="fas fa-eye"></i> View Our Services
+                                    <i class="fas fa-eye"></i> View Our Services Details
                                 </a>
                                 {% else %}
                                 <button class="btn btn-secondary" disabled>
@@ -884,8 +979,8 @@
     </div>
 
     <script>
-        // Mobile sidebar functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar functionality
             const hamburger = document.getElementById('hamburger');
             const navMenu = document.getElementById('nav-menu');
             const overlay = document.getElementById('overlay');
@@ -903,7 +998,6 @@
                     overlay.classList.remove('active');
                 });
 
-                // Close menu when clicking on links
                 const navLinks = document.querySelectorAll('nav a');
                 navLinks.forEach(link => {
                     link.addEventListener('click', () => {
@@ -912,6 +1006,73 @@
                         overlay.classList.remove('active');
                     });
                 });
+            }
+
+            // Header Search Toggle
+            const toggleSearchBtn = document.getElementById('toggleSearchBtn');
+            const headerSearchSection = document.getElementById('headerSearchSection');
+            const headerSearchInput = document.getElementById('headerSearchInput');
+            const headerSearchBtn = document.getElementById('headerSearchBtn');
+            const searchResultsInfo = document.getElementById('searchResultsInfo');
+
+            toggleSearchBtn.addEventListener('click', function() {
+                headerSearchSection.classList.toggle('active');
+                if (headerSearchSection.classList.contains('active')) {
+                    headerSearchInput.focus();
+                }
+            });
+
+            // Search Functionality
+            headerSearchBtn.addEventListener('click', performSearch);
+            headerSearchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            function performSearch() {
+                const query = headerSearchInput.value.trim().toLowerCase();
+                filterBusinesses(query);
+            }
+
+            function filterBusinesses(query) {
+                const businessCards = document.querySelectorAll('.business-card');
+                let resultsCount = 0;
+
+                businessCards.forEach(card => {
+                    const businessName = card.getAttribute('data-business-name');
+                    const businessType = card.getAttribute('data-business-type');
+                    const location = card.getAttribute('data-location');
+                    const address = card.getAttribute('data-address');
+                    const description = card.getAttribute('data-description');
+
+                    let matches = false;
+
+                    if (query === '') {
+                        matches = true;
+                    } else {
+                        // Search across all fields (case-insensitive)
+                        matches = businessName.includes(query) ||
+                                 businessType.includes(query) ||
+                                 location.includes(query) ||
+                                 address.includes(query) ||
+                                 description.includes(query);
+                    }
+
+                    if (matches) {
+                        card.style.display = 'flex';
+                        resultsCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Update search results info
+                if (query === '') {
+                    searchResultsInfo.textContent = 'Showing all available businesses';
+                } else {
+                    searchResultsInfo.textContent = `Found ${resultsCount} business(es) matching "${query}"`;
+                }
             }
         });
     </script>
