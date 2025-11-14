@@ -32,7 +32,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL:
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Maxelo%402023@localhost:5432/businessconnect"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Admin123@localhost:5432/businessconnect"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -247,6 +247,7 @@ BOOKING_NOTIFICATION_HTML = """
 </body>
 </html>
 """
+
 NEW_BUSINESS_EMAIL_HTML = """
 <!DOCTYPE html>
 <html>
@@ -435,8 +436,6 @@ BOOKING_CONFIRMATION_HTML = """
 </html>
 """
 
-
-
 # Database Models
 
 
@@ -451,6 +450,7 @@ class User(db.Model):
     phone_num = db.Column(db.String(50))
     user_type = db.Column(db.String(50))
     reg_date = db.Column(db.Date, default=db.func.current_date())
+
 
 class BusinessOwner(db.Model):
     __tablename__ = "BusinessOwner"
