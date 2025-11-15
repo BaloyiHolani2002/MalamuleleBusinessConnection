@@ -40,7 +40,8 @@
             background-size: cover;
             min-height: 100vh;
         }
-/* Header Styles */
+
+        /* Header Styles */
         header {
             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
@@ -146,7 +147,7 @@
             .hamburger {
                 display: flex;
             }
-            
+
             nav {
                 position: fixed;
                 top: 0;
@@ -159,44 +160,44 @@
                 padding: 80px 20px 20px;
                 box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             }
-            
+
             nav.active {
                 right: 0;
             }
-            
+
             nav ul {
                 flex-direction: column;
                 gap: 0;
             }
-            
+
             nav li {
                 margin-bottom: 15px;
             }
-            
+
             nav a {
                 display: block;
                 padding: 12px 15px;
                 border-radius: 5px;
                 transition: background 0.3s;
             }
-            
+
             nav a:hover {
                 background: rgba(255, 255, 255, 0.2);
             }
-            
+
             /* Hamburger animation */
             .hamburger.active span:nth-child(1) {
                 transform: rotate(-45deg) translate(-5px, 6px);
             }
-            
+
             .hamburger.active span:nth-child(2) {
                 opacity: 0;
             }
-            
+
             .hamburger.active span:nth-child(3) {
                 transform: rotate(45deg) translate(-5px, -6px);
             }
-            
+
             /* Overlay */
             .overlay {
                 display: none;
@@ -208,12 +209,11 @@
                 background: rgba(0, 0, 0, 0.5);
                 z-index: 999;
             }
-            
+
             .overlay.active {
                 display: block;
             }
         }
-
         /* Main Content */
         .main-content {
             display: flex;
@@ -341,7 +341,10 @@
 
         /* Button */
         .btn-form {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             width: 100%;
             padding: 14px;
             background: var(--primary);
@@ -368,28 +371,30 @@
             box-shadow: none;
         }
 
-        .btn-loading {
-            position: relative;
-            color: transparent;
+        .btn-form.loading {
+            background: var(--primary-dark);
+            pointer-events: none;
+            cursor: not-allowed;
         }
 
-        .btn-loading::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 50%;
-            left: 50%;
-            margin-left: -10px;
-            margin-top: -10px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--white);
-            animation: spin 1s ease-in-out infinite;
+        .btn-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .loading-text {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-form.loading .btn-text {
+            display: none;
+        }
+
+        .btn-form.loading .loading-text {
+            display: flex;
         }
 
         /* Alert Messages */
@@ -582,7 +587,7 @@
                                 
                             >
                             <button type="button" class="toggle-password" id="togglePassword">
-                                👁️
+                                
                             </button>
                         </div>
                         <div class="error-message" id="passwordError">Please enter your password</div>
@@ -599,7 +604,12 @@
                     </div>
 
                     <button type="submit" class="btn-form" id="loginBtn">
-                        Sign In
+                        <span class="btn-text">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </span>
+                        <span class="loading-text">
+                            <i class="fas fa-spinner fa-spin"></i> Signing In...
+                        </span>
                     </button>
                 </form>
 
@@ -695,10 +705,10 @@
             function setLoadingState(loading, button = loginBtn) {
                 if (loading) {
                     button.disabled = true;
-                    button.classList.add('btn-loading');
+                    button.classList.add('loading');
                 } else {
                     button.disabled = false;
-                    button.classList.remove('btn-loading');
+                    button.classList.remove('loading');
                 }
             }
 
@@ -748,8 +758,9 @@
 
             // Form Submission
             function handleLogin(e) {
+                e.preventDefault();
+                
                 if (!validateForm()) {
-                    e.preventDefault();
                     showError('Please fix the errors in the form before submitting.');
                     return;
                 }

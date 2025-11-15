@@ -38,14 +38,13 @@
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            padding-top: 80px;
+            padding-top: 100px; /* Increased for header search */
         }
 
         /* Header Styles */
         header {
             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
-            padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
             top: 0;
@@ -64,6 +63,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
 
         .logo-container {
@@ -114,6 +114,96 @@
             color: white;
         }
 
+        /* Header Search Section */
+        .header-search-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .header-search-section.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-search-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header-search-box {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header-search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+        }
+
+        .header-search-input::placeholder {
+            color: var(--gray);
+        }
+
+        .header-search-btn {
+            padding: 0 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .header-search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .toggle-search-btn {
+             background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .toggle-search-btn:hover {
+         background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            transform: translateY(-2px);
+        }
+
         /* Hamburger Menu */
         .hamburger {
             display: none;
@@ -156,6 +246,10 @@
 
         /* Mobile Sidebar */
         @media (max-width: 768px) {
+            body {
+                padding-top: 180px;
+            }
+
             .hamburger {
                 display: flex;
             }
@@ -223,12 +317,25 @@
             .overlay.active {
                 display: block;
             }
+
+            .header-search-container {
+                flex-direction: column;
+            }
+
+            .header-search-box {
+                min-width: 100%;
+            }
+
+            .toggle-search-btn {
+                width: 40%;
+                justify-content: center;
+            }
         }
 
         /* Main Content */
         .main-content {
-            padding: 40px 20px;
-            min-height: calc(100vh - 80px);
+            padding: 0px 20px;
+            min-height: calc(100vh - 140px);
         }
 
         /* Page Header */
@@ -242,11 +349,67 @@
             font-size: 36px;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease forwards;
         }
 
         .page-header p {
             font-size: 18px;
-            opacity: 0.9;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease 0.2s forwards;
+        }
+
+        /* Animation Classes */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            animation: slideInRight 0.8s ease forwards;
+        }
+
+        .slide-in-bottom {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.8s ease forwards;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
         }
 
         /* Owner Info Card */
@@ -257,6 +420,9 @@
             padding: 30px;
             margin-bottom: 30px;
             text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease 0.3s forwards;
         }
 
         .owner-header {
@@ -265,13 +431,13 @@
 
         .owner-name {
             font-size: 28px;
-            color: var(--secondary);
+             color: black;
             margin-bottom: 10px;
         }
 
         .owner-business {
             font-size: 18px;
-            color: var(--primary);
+            color: black;
             font-weight: 600;
         }
 
@@ -290,11 +456,31 @@
             padding: 15px;
             background: var(--light);
             border-radius: var(--radius);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease forwards;
         }
+
+        .detail-item:nth-child(1) { animation-delay: 0.4s; }
+        .detail-item:nth-child(2) { animation-delay: 0.5s; }
+        .detail-item:nth-child(3) { animation-delay: 0.6s; }
+        .detail-item:nth-child(4) { animation-delay: 0.7s; }
+        .detail-item:nth-child(5) { animation-delay: 0.8s; }
 
         .detail-item i {
             color: var(--primary);
             font-size: 18px;
+        }
+
+        /* Search Results Info */
+        .search-results-info {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 0.4s forwards;
         }
 
         /* Services Section */
@@ -308,6 +494,9 @@
             margin-bottom: 25px;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease 0.5s forwards;
         }
 
         /* Services Grid */
@@ -328,6 +517,17 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideInUp 0.8s ease forwards;
+        }
+
+        .service-card:nth-child(odd) {
+            animation-delay: 0.6s;
+        }
+
+        .service-card:nth-child(even) {
+            animation-delay: 0.7s;
         }
 
         .service-card:hover {
@@ -367,9 +567,7 @@
             gap: 5px;
         }
 
-        .active {
-            background: var(--success);
-        }
+        
 
         .inactive {
             background: var(--accent);
@@ -384,6 +582,9 @@
         /* Image Gallery */
         .image-gallery {
             margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 0.8s forwards;
         }
 
         .gallery-preview {
@@ -428,6 +629,9 @@
             font-size: 16px;
             margin-top: auto;
             width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 1s forwards;
         }
 
         .book-btn:hover {
@@ -451,6 +655,9 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: var(--radius);
             margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease 0.6s forwards;
         }
 
         .no-services-icon {
@@ -474,6 +681,9 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s ease 1.1s forwards;
         }
 
         .back-btn:hover {
@@ -504,12 +714,23 @@
 
         .gallery-modal.active {
             display: flex;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
             position: relative;
             max-width: 90%;
             max-height: 90%;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: zoomIn 0.3s ease 0.1s forwards;
+        }
+
+        @keyframes zoomIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .modal-image {
@@ -630,7 +851,7 @@
             }
 
             .owner-card {
-                padding: 20px;
+                padding: 0px;
             }
 
             .container {
@@ -654,6 +875,11 @@
                     <div class="logo-text">Business Connect</div>
                 </div>
                 
+                <!-- Search Toggle Button -->
+                <button class="toggle-search-btn" id="toggleSearchBtn">
+                    <i class="fas fa-search"></i> Search 
+                </button>
+                
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -664,16 +890,26 @@
                 <nav id="nav-menu">
                     <ul>
                         <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
-                        <li><a href="" class="active">View Business Services</a></li>
-
-                      
+                        <li><a href="" class="active">{{ owner.title }}'s Services</a></li>
                         <li><a href="{{ url_for('view_businesses') }}">View All Businesses</a></li>
-
-                    
-
                         <li><a href="{{ url_for('login') }}">Logout</a></li>
                     </ul>
                 </nav>
+            </div>
+        </div>
+
+        <!-- Header Search Section -->
+        <div class="header-search-section" id="headerSearchSection">
+            <div class="container">
+                <div class="header-search-container">
+                    <div class="header-search-box">
+                        <input type="text" class="header-search-input" id="headerSearchInput" 
+                               placeholder="Search by service, business, location, or name...">
+                        <button class="header-search-btn" id="headerSearchBtn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -706,15 +942,14 @@
     <div class="main-content">
         <div class="container">
             <!-- Page Header - Updated to show business title -->
-            <div class="page-header">
-                <h2>{{ owner.title }}</h2>
-                <p>Browse and book services from this professional business</p>
-            </div>
+        
 
             <!-- Owner Information -->
             <div class="owner-card">
                 <div class="owner-header">
-                    <div class="owner-business">Managed by {{ owner.user.name }} {{ owner.user.surname }}</div>
+                    <div class="owner-business"><strong>{{ owner.title }}</strong></div>
+                    <div class="owner-business"><strong>Owned by: </strong><i>{{ owner.user.name }} {{ owner.user.surname }}</i></div>
+                
                 </div>
                 
                 <div class="owner-details">
@@ -746,26 +981,26 @@
                 </div>
             </div>
 
+            <!-- Search Results Info -->
+            <div class="search-results-info" id="searchResultsInfo">
+                Showing all services from {{ owner.title }}
+            </div>
+
             <!-- Services Section -->
             <div class="services-section">
-                <h2 class="section-title">Available Services</h2>
+              
 
                 {% if services %}
-                    <div class="services-grid">
+                    <div class="services-grid" id="services-grid">
                         {% for service in services %}
-                        <div class="service-card">
+                        <div class="service-card" 
+                             data-service-name="{{ service.service_category|lower }}"
+                             data-business-name="{{ owner.title|lower }}"
+                             data-location="{{ owner.location|lower }}"
+                             data-owner-name="{{ owner.user.name|lower }} {{ owner.user.surname|lower }}">
                             <div class="service-header">
                                 <div>
                                     <h3 class="service-title">{{ service.service_category }}</h3>
-                                    {% if service.is_active %}
-                                    <span class="status active">
-                                        <i class="fas fa-check-circle"></i> Active
-                                    </span>
-                                    {% else %}
-                                    <span class="status inactive">
-                                        <i class="fas fa-times-circle"></i> Inactive
-                                    </span>
-                                    {% endif %}
                                 </div>
                                 <div class="service-price">R{{ "%.2f"|format(service.range_price) }}</div>
                             </div>
@@ -814,15 +1049,15 @@
 
             <div class="action-center">
                 <a href="{{ url_for('view_businesses') }}" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Back
+                    <i class="fas fa-arrow-left"></i> Back to All Businesses
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // Mobile sidebar functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar functionality
             const hamburger = document.getElementById('hamburger');
             const navMenu = document.getElementById('nav-menu');
             const overlay = document.getElementById('overlay');
@@ -840,7 +1075,6 @@
                     overlay.classList.remove('active');
                 });
 
-                // Close menu when clicking on links
                 const navLinks = document.querySelectorAll('nav a');
                 navLinks.forEach(link => {
                     link.addEventListener('click', () => {
@@ -849,6 +1083,71 @@
                         overlay.classList.remove('active');
                     });
                 });
+            }
+
+            // Header Search Toggle
+            const toggleSearchBtn = document.getElementById('toggleSearchBtn');
+            const headerSearchSection = document.getElementById('headerSearchSection');
+            const headerSearchInput = document.getElementById('headerSearchInput');
+            const headerSearchBtn = document.getElementById('headerSearchBtn');
+            const searchResultsInfo = document.getElementById('searchResultsInfo');
+
+            toggleSearchBtn.addEventListener('click', function() {
+                headerSearchSection.classList.toggle('active');
+                if (headerSearchSection.classList.contains('active')) {
+                    headerSearchInput.focus();
+                }
+            });
+
+            // Search Functionality
+            headerSearchBtn.addEventListener('click', performSearch);
+            headerSearchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            function performSearch() {
+                const query = headerSearchInput.value.trim().toLowerCase();
+                filterServices(query);
+            }
+
+            function filterServices(query) {
+                const serviceCards = document.querySelectorAll('.service-card');
+                let resultsCount = 0;
+
+                serviceCards.forEach(card => {
+                    const serviceName = card.getAttribute('data-service-name');
+                    const businessName = card.getAttribute('data-business-name');
+                    const location = card.getAttribute('data-location');
+                    const ownerName = card.getAttribute('data-owner-name');
+
+                    let matches = false;
+
+                    if (query === '') {
+                        matches = true;
+                    } else {
+                        // Search across all fields (case-insensitive)
+                        matches = serviceName.includes(query) ||
+                                 businessName.includes(query) ||
+                                 location.includes(query) ||
+                                 ownerName.includes(query);
+                    }
+
+                    if (matches) {
+                        card.style.display = 'flex';
+                        resultsCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Update search results info
+                if (query === '') {
+                    searchResultsInfo.textContent = `Showing all services from ${document.querySelector('.page-header h2').textContent}`;
+                } else {
+                    searchResultsInfo.textContent = `Found ${resultsCount} service(s) matching "${query}"`;
+                }
             }
 
             // Single Modal Image Gallery Functionality
