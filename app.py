@@ -1528,6 +1528,10 @@ def customer_view_services(owner_id):
     services = Service.query.filter_by(owner_id=owner_id).all()
     return render_template("customer_view_services.html", owner=owner, services=services)
 
+# Add this route to your Customer Routes section
+
+
+
 @app.route("/customer/booking/success")
 def booking_success():
     return render_template("booking_success.html")
