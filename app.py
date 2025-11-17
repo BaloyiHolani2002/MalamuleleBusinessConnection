@@ -1519,8 +1519,19 @@ def customer_dashboard():
 
     user = User.query.get(session["user_id"])
     services = Service.query.filter_by(is_active=True).all()
-
-    return render_template("customer_dashboard.html", user=user, services=services)
+    
+    # Get all business owners
+    owners = {}
+    for service in services:
+        if service.owner_id not in owners:
+            owner = BusinessOwner.query.get(service.owner_id)
+            if owner:
+                owners[service.owner_id] = {
+                    'owner': owner,
+                    'user': User.query.get(owner.user_id)
+                }
+    
+    return render_template("customer_dashboard.html", user=user, services=services, owners=owners)
 
 @app.route("/customer/view_services/<int:owner_id>")
 def customer_view_services(owner_id):
@@ -1528,7 +1539,7 @@ def customer_view_services(owner_id):
     services = Service.query.filter_by(owner_id=owner_id).all()
     return render_template("customer_view_services.html", owner=owner, services=services)
 
-# Add this route to your Customer Routes section
+
 
 
 
@@ -1642,6 +1653,9 @@ def view_my_bookings(customer_id):
 
     bookings = Booking.query.filter_by(user_id=customer_id).all()
     return render_template("my_bookings.html", bookings=bookings, user=user)
+
+
+    
 
 
 

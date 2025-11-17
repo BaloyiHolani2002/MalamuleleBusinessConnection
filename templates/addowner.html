@@ -4,61 +4,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Business Owner - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --gray-light: #bdc3c7;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
-            margin: 0;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
+
         .container {
             max-width: 500px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
         }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: var(--secondary);
             margin-bottom: 30px;
+            font-size: 28px;
+            position: relative;
+            padding-bottom: 15px;
         }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--success));
+            border-radius: 2px;
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 0.5s ease forwards;
         }
+
+        .form-group:nth-child(1) { animation-delay: 0.2s; }
+        .form-group:nth-child(2) { animation-delay: 0.3s; }
+        .form-group:nth-child(3) { animation-delay: 0.4s; }
+        .form-group:nth-child(4) { animation-delay: 0.5s; }
+        .form-group:nth-child(5) { animation-delay: 0.6s; }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
+        .input-container {
+            position: relative;
+        }
+
         input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 14px 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius);
             font-size: 16px;
+            transition: var(--transition);
+            background: var(--white);
         }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        input:focus + .input-icon {
+            color: var(--primary);
+        }
+
         button {
             width: 100%;
-            padding: 12px;
-            background: #3498db;
-            color: white;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
             border: none;
-            border-radius: 4px;
+            border-radius: var(--radius);
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 0.7s forwards;
         }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
         button:hover {
-            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(52, 152, 219, 0.3);
         }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
         .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            opacity: 0;
+            animation: fadeIn 0.5s ease 0.8s forwards;
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+            transform: translateX(-5px);
+        }
+
+        .back-link i {
+            margin-right: 8px;
+            transition: var(--transition);
+        }
+
+        .back-link:hover i {
+            transform: translateX(-3px);
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 0.1s forwards;
+        }
+
+        .flash-message {
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            margin-bottom: 10px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            animation: slideInRight 0.5s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .flash-success {
+            background: rgba(39, 174, 96, 0.1);
+            color: #155724;
+            border-left: 4px solid var(--success);
+        }
+
+        .flash-error {
+            background: rgba(231, 76, 60, 0.1);
+            color: #721c24;
+            border-left: 4px solid var(--accent);
+        }
+
+        .flash-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Form validation styles */
+        .input-error {
+            border-color: var(--accent) !important;
+        }
+
+        .error-message {
+            color: var(--accent);
+            font-size: 14px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .error-message i {
+            margin-right: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 576px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            input {
+                padding: 12px 15px;
+            }
+            
+            button {
+                padding: 14px;
+            }
         }
     </style>
 </head>
@@ -67,43 +330,145 @@
         <h1>Add New Business Owner</h1>
         
         <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div style="background: {% if category == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; 
-                                color: {% if category == 'success' %}#155724{% else %}#721c24{% endif %}; 
-                                padding: 10px; border-radius: 4px; margin-bottom: 20px;">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %} flash-icon"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
         <form method="POST">
             <div class="form-group">
-                <label>Name:</label>
-                <input type="text" name="name" required>
+                <label for="name">Name:</label>
+                <div class="input-container">
+                    <input type="text" id="name" name="name" required>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
             </div>
+            
             <div class="form-group">
-                <label>Surname:</label>
-                <input type="text" name="surname" required>
+                <label for="surname">Surname:</label>
+                <div class="input-container">
+                    <input type="text" id="surname" name="surname" required>
+                    <i class="fas fa-user-tag input-icon"></i>
+                </div>
             </div>
+            
             <div class="form-group">
-                <label>Email:</label>
-                <input type="email" name="email" required>
+                <label for="email">Email:</label>
+                <div class="input-container">
+                    <input type="email" id="email" name="email" required>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
             </div>
+            
             <div class="form-group">
-                <label>Phone Number:</label>
-                <input type="text" name="phone_num">
+                <label for="phone">Phone Number:</label>
+                <div class="input-container">
+                    <input type="text" id="phone" name="phone_num">
+                    <i class="fas fa-phone input-icon"></i>
+                </div>
             </div>
+            
             <div class="form-group">
-                <label>Password:</label>
-                <input type="password" name="password" required>
+                <label for="password">Password:</label>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
             </div>
-            <button type="submit">Add Business Owner</button>
+            
+            <button type="submit">
+                <i class="fas fa-user-plus" style="margin-right: 8px;"></i>
+                Add Business Owner
+            </button>
         </form>
         
-        <a href="{{ url_for('admin_dashboard') }}" class="back-link">← Back to Dashboard</a>
+        <a href="{{ url_for('admin_dashboard') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to Dashboard
+        </a>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add form validation with animations
+            const form = document.querySelector('form');
+            const inputs = document.querySelectorAll('input[required]');
+            
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        showError(input, 'This field is required');
+                    } else {
+                        clearError(input);
+                    }
+                });
+                
+                // Email validation
+                const emailInput = document.getElementById('email');
+                if (emailInput.value && !isValidEmail(emailInput.value)) {
+                    isValid = false;
+                    showError(emailInput, 'Please enter a valid email address');
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+            
+            function showError(input, message) {
+                // Remove any existing error
+                clearError(input);
+                
+                // Add error class to input
+                input.classList.add('input-error');
+                
+                // Create error message element
+                const errorElement = document.createElement('div');
+                errorElement.className = 'error-message';
+                errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                
+                // Insert error message after input container
+                input.parentNode.parentNode.appendChild(errorElement);
+            }
+            
+            function clearError(input) {
+                input.classList.remove('input-error');
+                
+                const errorElement = input.parentNode.parentNode.querySelector('.error-message');
+                if (errorElement) {
+                    errorElement.remove();
+                }
+            }
+            
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            // Add focus effects
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentNode.querySelector('.input-icon').style.color = 'var(--primary)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.parentNode.querySelector('.input-icon').style.color = 'var(--gray)';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

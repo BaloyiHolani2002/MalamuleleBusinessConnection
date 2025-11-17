@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +39,8 @@
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/logoonly.png') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            padding-top: 140px; /* Increased for header search */
+            padding-top: 140px;
+            /* Increased for header search */
         }
 
         /* Header Styles */
@@ -132,6 +134,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -209,7 +212,7 @@
         }
 
         .toggle-search-btn {
-           background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -223,7 +226,7 @@
         }
 
         .toggle-search-btn:hover {
-           background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
             transform: translateY(-2px);
         }
 
@@ -270,13 +273,14 @@
         /* Mobile Sidebar */
         @media (max-width: 768px) {
             body {
-                padding-top: 180px; /* Further increased for mobile */
+                padding-top: 180px;
+                /* Further increased for mobile */
             }
 
             .hamburger {
                 display: flex;
             }
-            
+
             nav {
                 position: fixed;
                 top: 0;
@@ -289,43 +293,43 @@
                 padding: 80px 20px 20px;
                 box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             }
-            
+
             nav.active {
                 right: 0;
             }
-            
+
             nav ul {
                 flex-direction: column;
                 gap: 0;
             }
-            
+
             nav li {
                 margin-bottom: 15px;
             }
-            
+
             nav a {
                 display: block;
                 padding: 12px 15px;
                 border-radius: 5px;
                 transition: background 0.3s;
             }
-            
+
             nav a:hover {
                 background: rgba(255, 255, 255, 0.2);
             }
-            
+
             .hamburger.active span:nth-child(1) {
                 transform: rotate(-45deg) translate(-5px, 6px);
             }
-            
+
             .hamburger.active span:nth-child(2) {
                 opacity: 0;
             }
-            
+
             .hamburger.active span:nth-child(3) {
                 transform: rotate(45deg) translate(-5px, -6px);
             }
-            
+
             .overlay {
                 display: none;
                 position: fixed;
@@ -336,9 +340,10 @@
                 background: rgba(0, 0, 0, 0.5);
                 z-index: 999;
             }
-            
+
             .overlay.active {
                 display: block;
+
             }
 
             .header-search-container {
@@ -839,6 +844,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Fixed Header -->
     <header>
@@ -853,27 +859,27 @@
                     </div>
                     <div class="logo-text">Business Connect</div>
                 </div>
-                
+
                 <!-- Search Toggle Button -->
                 <button class="toggle-search-btn" id="toggleSearchBtn">
                     <i class="fas fa-search"></i> Search
                 </button>
-                
+
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
-                
+
                 <nav id="nav-menu">
                     <ul>
                         <li><a href="{{ url_for('customer_dashboard') }}" class="active">Dashboard</a></li>
-                        <li><a href="{{ url_for('customer_profile') }}">View All Businesses</a></li>
+                      
                         <li><a href="{{ url_for('view_businesses') }}">View All Businesses</a></li>
                         <li><a href="{{ url_for('view_my_bookings', customer_id=user.user_id) }}">My Bookings</a></li>
                         <li><a href="{{ url_for('logout') }}">Logout</a></li>
-   
+
                     </ul>
                 </nav>
             </div>
@@ -884,15 +890,15 @@
             <div class="container">
                 <div class="header-search-container">
                     <div class="header-search-box">
-                        <input type="text" class="header-search-input" id="headerSearchInput" 
-                               placeholder="Search by service, location, or address...">
+                        <input type="text" class="header-search-input" id="headerSearchInput"
+                            placeholder="Search by service, location, or address...">
                         <button class="header-search-btn" id="headerSearchBtn">
                             <i class="fas fa-search"></i> Search
                         </button>
                     </div>
                     <div class="header-price-filter">
-                        <input type="number" class="header-price-input" id="headerPriceInput" 
-                               placeholder="Min price (R)...">
+                        <input type="number" class="header-price-input" id="headerPriceInput"
+                            placeholder="Min price (R)...">
                     </div>
                 </div>
             </div>
@@ -923,7 +929,7 @@
             <!-- Customer Profile -->
             <div class="profile-box">
                 <h2>Hello, {{ user.name }} {{ user.surname }}</h2>
-                
+
                 <div class="profile-details">
                     <div class="detail-item">
                         <i class="fas fa-envelope"></i>
@@ -944,96 +950,106 @@
             </div>
 
             <!-- Search Results Info -->
-           
-
             <!-- Services Section -->
             <div class="services-section">
-              
-
                 {% if services %}
-                    <div class="services-grid" id="services-grid">
-                        {% for service in services %}
-                            {% if service.owner and service.owner.user and service.owner.user.name and service.owner.user.surname and service.owner.location and service.owner.address and service.owner.user.phone_num and service.owner.user.email %}
-                                <div class="service-card" data-service-id="{{ service.service_id }}" 
-                                     data-service-name="{{ service.service_category|lower }}" 
-                                     data-service-price="{{ service.range_price }}" 
-                                     data-service-location="{{ service.owner.location|lower }}"
-                                     data-service-address="{{ service.owner.address|lower }}">
-                                    <div class="service-header">
-                                        <div>
-                                            <h3 class="service-title">{{ service.service_category }}</h3>
-                                        </div>
-                                        <div class="service-price">R{{ service.range_price }}</div>
-                                    </div>
+                <div class="services-grid" id="services-grid">
+                    {% for service in services %}
+                    {% if service.owner and service.owner.user and service.owner.title and service.owner.location and
+                    service.owner.address and service.owner.user.phone_num and service.owner.user.email %}
+                    <div class="service-card" data-service-id="{{ service.service_id }}"
+                        data-service-name="{{ service.service_category|lower }}"
+                        data-service-price="{{ service.range_price }}"
+                        data-service-location="{{ service.owner.location|lower }}"
+                        data-service-address="{{ service.owner.address|lower }}"
+                        data-business-name="{{ service.owner.title|lower }}">
+                        <div class="service-header">
+                            <div>
+                                
+                                <h3 class="service-title">{{ service.service_category }}</h3>
+                                
+                            </div>
+                            <div class="service-price">R{{ service.range_price }}</div>
+                        </div>
 
-                                    <div class="service-details">
-                                        <div class="detail-row">
-                                            <span class="detail-label"><strong>Owner: </strong><i>{{ service.owner.user.name }} {{ service.owner.user.surname }}</i>
-                                        </div>
-                                        <div class="detail-row">
-                                            <span class="detail-label"><strong>Location: </strong><i>{{ service.owner.location }}</i>
-                                        </div>
-                                        <div class="detail-row">
-                                            <span class="detail-label"><strong>Address: </strong><i>{{ service.owner.address }}</i>
-                                        </div>
-                                        <div class="detail-row">
-                                            <span class="detail-label"><strong>Contact: </strong><i>{{ service.owner.user.phone_num }}</i>
-                                        </div>
-                                        <div class="detail-row">
-                                            <span class="detail-label"><strong>Email: </strong><i>{{ service.owner.user.email }}</i>
-                                        </div>
-                                    </div>
+                        <div class="service-details">
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Business: </strong></span>
+                                <span class="detail-value"><i>{{ service.owner.title }}</i></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Owner: </strong></span>
+                                <span class="detail-value"><i>{{ service.owner.user.name }} {{
+                                        service.owner.user.surname }}</i></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Location: </strong></span>
+                                <span class="detail-value"><i>{{ service.owner.location }}</i></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Address: </strong></span>
+                                <span class="detail-value"><i>{{ service.owner.address }}</i></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Contact: </strong></span>
+                                <span class="detail-value"><i>{{ service.owner.user.phone_num }}</i></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Email: </strong></span>
+                                <span class="detail-value"><i>{{ service.owner.user.email }}</i></span>
+                            </div>
+                        </div>
 
-                                    {% if service.images %}
-                                    <div class="image-slider">
-                                        {% for img in service.images %}
-                                        <img src="{{ url_for('static', filename='uploads/' ~ img.filename) }}" 
-                                             alt="Service Image"
-                                             onerror="this.style.display='none'"
-                                             data-service-id="{{ service.service_id }}"
-                                             data-image-index="{{ loop.index0 }}">
-                                        {% endfor %}
-                                    </div>
-                                    {% endif %}
+                        {% if service.images %}
+                        <div class="image-slider">
+                            {% for img in service.images %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ img.filename) }}" alt="Service Image"
+                                onerror="this.style.display='none'" data-service-id="{{ service.service_id }}"
+                                data-image-index="{{ loop.index0 }}">
+                            {% endfor %}
+                        </div>
+                        {% endif %}
 
-                                    {% if service.is_active %}
-                                    <a href="/customer/book/{{ service.service_id }}" class="book-btn" id="bookBtn-{{ service.service_id }}">
-                                        <span class="btn-text">
-                                            <i class="fas fa-calendar-check"></i> Book Now
-                                        </span>
-                                        <span class="loading-text">
-                                            <i class="fas fa-spinner fa-spin"></i> Loading...
-                                        </span>
-                                    </a>
-                                    {% else %}
-                                    <button class="book-btn" style="background: var(--gray); cursor: not-allowed;" disabled>
-                                        <i class="fas fa-times-circle"></i> Service Unavailable
-                                    </button>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                        {% if service.is_active %}
+                        <a href="/customer/book/{{ service.service_id }}" class="book-btn"
+                            id="bookBtn-{{ service.service_id }}">
+                            <span class="btn-text">
+                                <i class="fas fa-calendar-check"></i> Book Now
+                            </span>
+                            <span class="loading-text">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </span>
+                        </a>
+                        {% else %}
+                        <button class="book-btn" style="background: var(--gray); cursor: not-allowed;" disabled>
+                            <i class="fas fa-times-circle"></i> Service Unavailable
+                        </button>
+                        {% endif %}
                     </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
                 {% else %}
-                    <div class="no-services">
-                        <i class="fas fa-concierge-bell no-services-icon"></i>
-                        <h3>No Services Available</h3>
-                        <p>There are currently no services available. Please check back later or search for specific services.</p>
-                    </div>
+                <div class="no-services">
+                    <i class="fas fa-concierge-bell no-services-icon"></i>
+                    <h3>No Services Available</h3>
+                    <p>There are currently no services available. Please check back later or search for specific
+                        services.</p>
+                </div>
                 {% endif %}
             </div>
         </div>
     </div>
-       <div class="search-options">
-               <a  href="{{ url_for('customer_dashboard') }}"> <button  class="sort-btn active" > R E F R E S H</button></a>
-                
-            </div>
+    <div class="search-options">
+        <a href="{{ url_for('customer_dashboard') }}"> <button class="sort-btn active"> R E F R E S H</button></a>
+
+    </div>
 
     <script>
 
 
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Mobile sidebar functionality
             const hamburger = document.getElementById('hamburger');
             const navMenu = document.getElementById('nav-menu');
@@ -1062,7 +1078,7 @@
                 });
             }
 
-            
+
 
             // Header Search Toggle
             const toggleSearchBtn = document.getElementById('toggleSearchBtn');
@@ -1071,7 +1087,7 @@
             const headerSearchBtn = document.getElementById('headerSearchBtn');
             const headerPriceInput = document.getElementById('headerPriceInput');
 
-            toggleSearchBtn.addEventListener('click', function() {
+            toggleSearchBtn.addEventListener('click', function () {
                 headerSearchSection.classList.toggle('active');
                 if (headerSearchSection.classList.contains('active')) {
                     headerSearchInput.focus();
@@ -1080,7 +1096,7 @@
 
 
 
-            
+
             // Search Functionality
             const sortBtns = document.querySelectorAll('.sort-btn');
             const searchResultsInfo = document.getElementById('searchResultsInfo');
@@ -1091,27 +1107,27 @@
 
             // Set up search button
             headerSearchBtn.addEventListener('click', performSearch);
-            
+
             // Set up Enter key for search
-            headerSearchInput.addEventListener('keyup', function(e) {
+            headerSearchInput.addEventListener('keyup', function (e) {
                 if (e.key === 'Enter') {
                     performSearch();
                 }
             });
 
             // Set up price filter input
-            headerPriceInput.addEventListener('keyup', function(e) {
+            headerPriceInput.addEventListener('keyup', function (e) {
                 if (e.key === 'Enter') {
                     performSearch();
                 }
             });
 
-    
+
 
 
             // Set up sort buttons
             sortBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     sortBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     currentSort = this.getAttribute('data-sort');
@@ -1128,27 +1144,27 @@
             function filterAndSortServices(query, minPrice) {
                 let serviceCards = Array.from(document.querySelectorAll('.service-card'));
                 let resultsCount = 0;
-                
+
                 serviceCards.forEach(card => {
                     const serviceName = card.getAttribute('data-service-name');
                     const servicePrice = parseFloat(card.getAttribute('data-service-price'));
                     const serviceLocation = card.getAttribute('data-service-location');
                     const serviceAddress = card.getAttribute('data-service-address');
-                    
+
                     let matches = true;
-                    
+
                     // Apply text search filter (case-insensitive)
                     if (query !== '') {
-                        matches = serviceName.includes(query) || 
-                                 serviceLocation.includes(query) || 
-                                 serviceAddress.includes(query);
+                        matches = serviceName.includes(query) ||
+                            serviceLocation.includes(query) ||
+                            serviceAddress.includes(query);
                     }
-                    
+
                     // Apply price filter
                     if (matches && minPrice !== null) {
                         matches = servicePrice >= minPrice;
                     }
-                    
+
                     if (matches) {
                         card.style.display = 'flex';
                         resultsCount++;
@@ -1156,11 +1172,11 @@
                         card.style.display = 'none';
                     }
                 });
-                
+
                 // Sort the visible cards
                 if (currentSort !== 'default') {
                     const visibleCards = serviceCards.filter(card => card.style.display !== 'none');
-                    
+
                     if (currentSort === 'price-low') {
                         visibleCards.sort((a, b) => {
                             const priceA = parseFloat(a.getAttribute('data-service-price'));
@@ -1174,18 +1190,18 @@
                             return priceB - priceA;
                         });
                     }
-                    
+
                     visibleCards.forEach(card => {
                         servicesGrid.appendChild(card);
                     });
                 }
-                
+
                 updateSearchResultsInfo(query, minPrice, resultsCount);
             }
 
             function updateSearchResultsInfo(query, minPrice, resultsCount) {
                 let infoText = '';
-                
+
                 if (query === '' && minPrice === null) {
                     if (currentSort === 'default') {
                         infoText = 'Showing all available services';
@@ -1196,7 +1212,7 @@
                     }
                 } else {
                     let filterText = '';
-                    
+
                     if (query !== '' && minPrice !== null) {
                         filterText = `matching "${query}" and priced from R${minPrice}`;
                     } else if (query !== '') {
@@ -1204,7 +1220,7 @@
                     } else if (minPrice !== null) {
                         filterText = `priced from R${minPrice}`;
                     }
-                    
+
                     if (currentSort === 'default') {
                         infoText = `Found ${resultsCount} service(s) ${filterText}`;
                     } else if (currentSort === 'price-low') {
@@ -1213,7 +1229,7 @@
                         infoText = `Found ${resultsCount} service(s) ${filterText} sorted by price (high to low)`;
                     }
                 }
-                
+
                 searchResultsInfo.textContent = infoText;
             }
 
@@ -1230,7 +1246,7 @@
             let currentImages = [];
 
             document.querySelectorAll('.image-slider img').forEach(img => {
-                img.addEventListener('click', function() {
+                img.addEventListener('click', function () {
                     const serviceId = this.getAttribute('data-service-id');
                     const imageIndex = parseInt(this.getAttribute('data-image-index'));
                     openImageModal(serviceId, imageIndex);
@@ -1241,7 +1257,7 @@
                 currentServiceId = serviceId;
                 currentImageIndex = imageIndex;
                 currentImages = Array.from(document.querySelectorAll(`.image-slider img[data-service-id="${serviceId}"]`));
-                
+
                 imageModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
                 updateModalImage();
@@ -1249,18 +1265,18 @@
 
             function updateModalImage() {
                 if (currentImages.length === 0) return;
-                
+
                 const currentImg = currentImages[currentImageIndex];
                 modalImage.src = currentImg.src;
                 imageCounter.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
-                
+
                 modalPrev.style.display = currentImages.length > 1 ? 'flex' : 'none';
                 modalNext.style.display = currentImages.length > 1 ? 'flex' : 'none';
             }
 
             modalClose.addEventListener('click', closeImageModal);
-            
-            imageModal.addEventListener('click', function(e) {
+
+            imageModal.addEventListener('click', function (e) {
                 if (e.target === imageModal) {
                     closeImageModal();
                 }
@@ -1271,19 +1287,19 @@
                 document.body.style.overflow = 'auto';
             }
 
-            modalPrev.addEventListener('click', function() {
+            modalPrev.addEventListener('click', function () {
                 if (currentImages.length === 0) return;
                 currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
                 updateModalImage();
             });
 
-            modalNext.addEventListener('click', function() {
+            modalNext.addEventListener('click', function () {
                 if (currentImages.length === 0) return;
                 currentImageIndex = (currentImageIndex + 1) % currentImages.length;
                 updateModalImage();
             });
 
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (imageModal.style.display === 'flex') {
                     if (e.key === 'Escape') {
                         closeImageModal();
@@ -1297,42 +1313,42 @@
 
 
 
-            
-function randomizeServices() {
-            const servicesGrid = document.getElementById('services-grid');
-            if (!servicesGrid) return;
-            
-            const serviceCards = Array.from(servicesGrid.querySelectorAll('.service-card'));
-            
-            // Shuffle the array using Fisher-Yates algorithm
-            for (let i = serviceCards.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                servicesGrid.appendChild(serviceCards[j]);
-            }
-            
-            // Reapply animations to shuffled cards
-            serviceCards.forEach((card, index) => {
-                card.style.animationDelay = `${(index % 2 === 0 ? 0.1 : 0.2)}s`;
-            });
-        }
 
-        // Call randomization on page load
-        randomizeServices();
+            function randomizeServices() {
+                const servicesGrid = document.getElementById('services-grid');
+                if (!servicesGrid) return;
+
+                const serviceCards = Array.from(servicesGrid.querySelectorAll('.service-card'));
+
+                // Shuffle the array using Fisher-Yates algorithm
+                for (let i = serviceCards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    servicesGrid.appendChild(serviceCards[j]);
+                }
+
+                // Reapply animations to shuffled cards
+                serviceCards.forEach((card, index) => {
+                    card.style.animationDelay = `${(index % 2 === 0 ? 0.1 : 0.2)}s`;
+                });
+            }
+
+            // Call randomization on page load
+            randomizeServices();
 
             // Book Button Loading State
             document.querySelectorAll('.book-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function (e) {
                     // Only apply loading state to active booking buttons (not disabled ones)
                     if (!this.disabled && this.classList.contains('book-btn') && !this.classList.contains('loading')) {
                         e.preventDefault();
-                        
+
                         // Show loading state
                         this.classList.add('loading');
                         this.disabled = true;
-                        
+
                         // Get the href to redirect after loading
                         const href = this.getAttribute('href');
-                        
+
                         // Simulate loading time (2 seconds) then redirect
                         setTimeout(() => {
                             window.location.href = href;
@@ -1343,4 +1359,6 @@ function randomizeServices() {
         });
     </script>
 </body>
+
 </html>
+

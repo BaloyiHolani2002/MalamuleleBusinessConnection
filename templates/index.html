@@ -792,7 +792,7 @@
                 <nav id="nav-menu">
                     <ul>
                         <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
-                        <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                        <li><a href="{{ url_for('listings') }}">Services</a></li>
                       
                         <li><a href="{{ url_for('about') }}" >About</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact</a></li>
@@ -841,7 +841,7 @@
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🏢</div>
-                    <h3>More Services</h3>
+                    <h3>More Services....</h3>
                     <p>Various local business services to meet your needs</p>
                 </div>
             </div>
@@ -865,24 +865,35 @@
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
+                    <h3>Create Account</h3>
+                    <p>Sign up to access services.<a href="{{ url_for('signup') }}">Click here </a></p>
+
+                </div>
+
+                
+
+                <div class="step">
+                    <div class="step-number">3</div>
                     <h3>Search Services</h3>
                     <p>Browse through various service categories</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">3</div>
+                    <div class="step-number">4</div>
                     <h3>Compare Options</h3>
-                    <p>View provider profiles, ratings, and availability</p>
+                    <p>View provider profiles, services, location and availability</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">4</div>
+                    <div class="step-number">5</div>
                     <h3>Book & Connect</h3>
                     <p>Make bookings or contact service providers directly</p>
                 </div>
                 <div class="step">
-                    <div class="step-number">5</div>
+                    <div class="step-number">6</div>
                     <h3>Get Service</h3>
                     <p>Receive quality service from trusted local providers</p>
                 </div>
+
+
             </div>
         </div>
     </section>
@@ -897,7 +908,7 @@
             <div class="listings-grid">
                 <div class="listing-card">
                     <div class="listing-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+                        style="background-image: url('/static/images/accomo.jpeg');">
                     </div>
                     <div class="listing-content">
                         <h3>Comfort Guest House</h3>
@@ -906,7 +917,7 @@
                 </div>
                 <div class="listing-card">
                     <div class="listing-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');">
+                        style="background-image: url('/static/images/plumber.jpeg');">
                     </div>
                     <div class="listing-content">
                         <h3>Plumbing Services</h3>
@@ -915,7 +926,7 @@
                 </div>
                 <div class="listing-card">
                     <div class="listing-image"
-                        style="background-image: url('https://images.unsplash.com/photo-1581092921461-eab62e97a780?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+                        style="background-image: url('/static/images/electr.jpeg');">
                     </div>
                     <div class="listing-content">
                         <h3>Safe Electrical Solutions</h3>
@@ -929,35 +940,29 @@
     <!-- Footer -->
     <footer id="contact">
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>Business Connect</h3>
-                <p>Connect with trusted local services and accommodations.</p>
-                <p>Empowering local businesses through digital visibility.</p>
-            </div>
+            
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="{{ url_for('home') }}">Home</a></li>
                     <li><a href="{{ url_for('listings') }}">Services</a></li>
-                    <li><a href="{{ url_for('listings') }}">Listings</a></li>
+                    
                     <li><a href="{{ url_for('about') }}">About</a></li>
                     <li><a href="{{ url_for('contact') }}">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Service Categories</h3>
+                 <h3>Follow Us</h3>
                 <ul>
-                    <li>Plumbing Services</li>
-                    <li>Electrical Work</li>
-                    <li>Guest Houses</li>
-                    <li>Room Rentals</li>
-                    <li>Local Businesses</li>
-                    <li>And Many More....</li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">WhatsApp</a></li>
+                    <li><a href="#">TikTok</a></li>
+                   
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p>📍 MALAMULELE, STAND No 1457 B-EXTENTION, LIMPOPO, SOUTH AFRICA</p>
+                <p>📍 MALAMULELE, STAND NO 1457 B-EXTENTION, LIMPOPO</p>
                 <p>📞 067 397 0212</p>
                 <p>✉️ businessconnectrsa@gmail.com</p>
             </div>
