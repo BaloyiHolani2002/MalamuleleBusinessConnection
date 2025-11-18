@@ -3562,9 +3562,7 @@ def admin_delete_business(business_id):
     return redirect(url_for('admin_view_businesses'))
 
 
-
-    # ------------------- logout -------------------
-    # -------------------LOGOUT-------------------
+# ------------------- LOGOUT -------------------
 @app.route('/logout')
 def logout():
     session.clear()
@@ -3575,15 +3573,7 @@ def logout():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
-    # -------------------LOGOUT-------------------
-@app.route('/logout')
-def logout():
-    session.clear()
-    flash("You have been logged out successfully.", "success")
-    return redirect(url_for('login'))
-
-# ------------------- RUN SERVER -------------------
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
+    
+    import os
+    port = int(os.environ.get("PORT", 5000))  # Use Railway's PORT or 5000 locally
+    app.run(host="0.0.0.0", port=port, debug=True)
