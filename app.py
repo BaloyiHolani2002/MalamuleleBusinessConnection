@@ -26,7 +26,8 @@ mail = Mail(app)
 
 # --------------- DATABASE CONFIG -----------------
 # Try to get hosted DB URL (e.g., from Railway / Render)
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
 
 # If no hosted DB found, use local DB
 if DATABASE_URL:
@@ -1857,7 +1858,7 @@ mail = Mail(app)
 
 # --------------- DATABASE CONFIG -----------------
 # Try to get hosted DB URL (e.g., from Railway / Render)
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 # If no hosted DB found, use local DB
 if DATABASE_URL:
@@ -3571,6 +3572,7 @@ def logout():
 
 # ------------------- RUN SERVER -------------------
 from waitress import serve
+import os
 
 if __name__ == '__main__':
     with app.app_context():
