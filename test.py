@@ -16,7 +16,7 @@ def test_database_url():
             print("URL format is correct")
     else:
         print("Using local database")
-        print("Local URL: postgresql://postgres:Admin123@localhost:5432/businessconnect")
+        print("Local URL: postgresql://postgres:Admin2023@localhost:5432/businessconnect")
 
 if __name__ == "__main__":
     test_database_url()
