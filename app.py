@@ -18,7 +18,7 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'businessconnectrsa@gmail.com'
-app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = 'businessconnectrsa@gmail.com'
 
 mail = Mail(app)
@@ -507,10 +507,10 @@ def signup():
             login_url=url_for('login', _external=True)
         )
         
-        if send_email("Welcome to Business Connect!", email, welcome_html):
-            flash("Account created successfully! Welcome email sent.", "success")
-        else:
-            flash("Account created successfully! Welcome email failed to send.", "warning")
+     #   if send_email("Welcome to Business Connect!", email, welcome_html):
+      #      flash("Account created successfully! Welcome email sent.", "success")
+       # else:
+       #     flash("Account created successfully! Welcome email failed to send.", "warning")
         
         return redirect(url_for('signup_successful'))
     
@@ -575,10 +575,10 @@ def register_business():
             dashboard_url=url_for('businessowner_dashboard', _external=True)
         )
         
-        if send_email("Business Profile Registered - Business Connect", user.email, business_html):
-            flash("Business profile created successfully! Confirmation email sent.", "success")
-        else:
-            flash("Business profile created successfully! But confirmation email failed to send.", "warning")
+        # if send_email("Business Profile Registered - Business Connect", user.email, business_html):
+        #    flash("Business profile created successfully! Confirmation email sent.", "success")
+        #else:
+        #    flash("Business profile created successfully! But confirmation email failed to send.", "warning")
 
         return redirect(url_for('businessowner_dashboard'))
 
@@ -882,17 +882,17 @@ def customer_book(service_id):
             dashboard_url=url_for('view_my_bookings', customer_id=user.user_id, _external=True)
         )
 
-        owner_email_sent = send_email("New Booking Received - Business Connect", owner.user.email, owner_html)
-        customer_email_sent = send_email("Booking Sent- Business Connect", user.email, customer_html)
+       # owner_email_sent = send_email("New Booking Received - Business Connect", owner.user.email, owner_html)
+       # customer_email_sent = send_email("Booking Sent- Business Connect", user.email, customer_html)
 
-        if owner_email_sent and customer_email_sent:
-            flash("Booking confirmed! Beautiful confirmation emails have been sent to both you and the business owner.", "success")
-        elif owner_email_sent:
-            flash("Booking confirmed! Email sent to business owner, but failed to send confirmation to you.", "warning")
-        elif customer_email_sent:
-            flash("Booking confirmed! Confirmation email sent to you, but failed to notify business owner.", "warning")
-        else:
-            flash("Booking confirmed! However, email notifications failed to send.", "warning")
+       # if owner_email_sent and customer_email_sent:
+       #     flash("Booking confirmed! Beautiful confirmation emails have been sent to both you and the business owner.", "success")
+       # elif owner_email_sent:
+       #     flash("Booking confirmed! Email sent to business owner, but failed to send confirmation to you.", "warning")
+       # elif customer_email_sent:
+       #     flash("Booking confirmed! Confirmation email sent to you, but failed to notify business owner.", "warning")
+       # else:
+       #     flash("Booking confirmed! However, email notifications failed to send.", "warning")
 
         return redirect(url_for("booking_success"))
 
