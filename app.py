@@ -34,7 +34,7 @@ if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
 if DATABASE_URL:
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Maxelo%402023@localhost:5432/businessconnect"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Admin2023@localhost:5432/businessconnect"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
