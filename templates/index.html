@@ -321,7 +321,27 @@
         /* Service Categories Section */
         .service-categories {
             padding: 4rem 2rem;
-            background: var(--white);
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                         url('/static/images/logoonly.png') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--white);
+            position: relative;
+        }
+
+        .service-categories::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .service-categories .container {
+            position: relative;
+            z-index: 2;
         }
 
         .section-title {
@@ -331,10 +351,11 @@
 
         .section-title h2 {
             font-size: 2.5rem;
-            color: var(--secondary);
+            color: var(--white);
             margin-bottom: 1rem;
             position: relative;
             display: inline-block;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .section-title h2::after {
@@ -350,10 +371,11 @@
         }
 
         .section-title p {
-            color: var(--gray);
+            color: var(--light);
             font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .categories-grid {
@@ -375,18 +397,20 @@
         }
 
         .category-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
             border: 2px solid transparent;
             height: 100%;
+            backdrop-filter: blur(10px);
         }
 
         .category-link:hover .category-card {
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
+            transform: scale(1.02);
         }
 
         .category-image {
@@ -865,6 +889,15 @@
                 max-width: 250px;
                 text-align: center;
             }
+
+            .service-categories {
+                background-attachment: scroll;
+                padding: 3rem 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -873,12 +906,16 @@
             }
 
             .section-title h2 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
 
             .service-card,
             .step {
                 padding: 1.5rem 1rem;
+            }
+
+            .category-content {
+                padding: 1rem;
             }
         }
     </style>
@@ -945,10 +982,7 @@
     <!-- Service Categories Section -->
     <section class="service-categories">
         <div class="container">
-            <div class="section-title">
-                <h2>Service Categories</h2>
-                <p>Click on a category to view available service providers</p>
-            </div>
+            
 
             <div class="categories-grid">
                 <!-- Plumbing Service -->
@@ -1086,10 +1120,6 @@
         </div>
     </section>
 
-    
-
-    
-
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -1102,7 +1132,6 @@
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
-                       
                         <li><a href="{{ url_for('about') }}">About</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact</a></li>
                     </ul>

@@ -6,95 +6,748 @@
     <title>{{ category.display_name }} - Business Connect</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Copy all your CSS styles from index.html here */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Base Styles */
         :root {
-            --primary: #3498db; --primary-dark: #2980b9; --secondary: #2c3e50;
-            --accent: #e74c3c; --success: #27ae60; --warning: #f39c12;
-            --light: #ecf0f1; --dark: #2c3e50; --gray: #95a5a6;
-            --gray-light: #bdc3c7; --white: #ffffff;
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --gray-light: #bdc3c7;
+            --white: #ffffff;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --radius: 8px; --transition: all 0.3s ease;
+            --radius: 8px;
+            --transition: all 0.3s ease;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); background-color: #f8f9fa; }
-        header { background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); color: white; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 1000; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo-container { display: flex; align-items: center; gap: 15px; }
-        .logo { width: 60px; height: 60px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2874a6; font-size: 24px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); overflow: hidden; position: relative; padding: 2px; }
-        .logo a { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; text-decoration: none; color: inherit; }
-        .logo-image { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 5px; background: white; }
-        .logo-text { font-size: 24px; font-weight: 700; color: white; }
-        .hamburger { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
-        .hamburger span { width: 25px; height: 3px; background: white; margin: 3px 0; transition: 0.3s; border-radius: 2px; }
-        nav ul { display: flex; list-style: none; gap: 30px; }
-        nav a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; padding: 5px 10px; border-radius: 4px; }
-        nav a:hover, nav a.active { color: #ffd700; background: rgba(255, 255, 255, 0.1); }
-        .category-header { background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); color: white; padding: 4rem 2rem; text-align: center; }
-        .category-header h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: 700; }
-        .category-header p { font-size: 1.3rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
-        .breadcrumb { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1rem; font-size: 1rem; }
-        .breadcrumb a { color: var(--warning); text-decoration: none; }
-        .breadcrumb a:hover { text-decoration: underline; }
-        .services-section { padding: 3rem 2rem; background: var(--light); min-height: 600px; }
-        .services-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
-        .services-title { font-size: 2rem; color: var(--secondary); margin: 0; }
-        .services-count { font-size: 1.2rem; color: var(--primary); font-weight: 600; }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
-        .service-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); transition: var(--transition); display: flex; flex-direction: column; gap: 1rem; }
-        .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-        .service-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
-        .service-title { font-size: 1.4rem; color: var(--secondary); margin: 0; flex: 1; }
-        .service-price { font-size: 1.3rem; font-weight: bold; color: var(--accent); white-space: nowrap; }
-        .service-details { display: flex; flex-direction: column; gap: 0.8rem; }
-        .detail-row { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.5rem; border-bottom: 1px solid var(--gray-light); }
-        .detail-row:last-child { border-bottom: none; }
-        .detail-label { font-weight: 600; color: var(--dark); min-width: 100px; }
-        .detail-value { color: var(--gray); text-align: right; flex: 1; }
-        .image-slider { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 0; }
-        .image-slider img { width: 120px; height: 90px; object-fit: cover; border-radius: var(--radius); cursor: pointer; transition: var(--transition); }
-        .image-slider img:hover { transform: scale(1.05); }
-        .book-btn { background: var(--primary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: var(--transition); text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto; }
-        .book-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); }
-        .book-btn:disabled { background: var(--gray); cursor: not-allowed; }
-        .no-services { text-align: center; padding: 3rem; color: var(--gray); grid-column: 1 / -1; }
-        .no-services-icon { font-size: 4rem; margin-bottom: 1rem; color: var(--gray-light); }
-        footer { background: var(--secondary); color: var(--white); padding: 4rem 2rem 1rem; }
-        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; margin-bottom: 2rem; }
-        .footer-section h3 { margin-bottom: 1.5rem; color: var(--warning); font-size: 1.3rem; position: relative; padding-bottom: 0.5rem; }
-        .footer-section h3::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 2px; background: var(--warning); }
-        .footer-section p { color: var(--gray-light); margin-bottom: 1rem; }
-        .footer-section ul { list-style: none; }
-        .footer-section ul li { margin-bottom: 0.7rem; }
-        .footer-section a { color: var(--gray-light); text-decoration: none; transition: var(--transition); }
-        .footer-section a:hover { color: var(--warning); padding-left: 5px; }
-        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #34495e; color: var(--gray-light); font-size: 0.9rem; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/images/logoonly.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+            color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #2874a6;
+            font-size: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: var(--radius);
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffd700;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Mobile Sidebar */
         @media (max-width: 768px) {
-            .hamburger { display: flex; }
-            nav { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); transition: right 0.3s ease; z-index: 1000; padding: 80px 20px 20px; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1); }
-            nav.active { right: 0; }
-            nav ul { flex-direction: column; gap: 0; }
-            nav li { margin-bottom: 15px; }
-            nav a { display: block; padding: 12px 15px; border-radius: 5px; transition: background 0.3s; }
-            nav a:hover { background: rgba(255, 255, 255, 0.2); }
-            .hamburger.active span:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
-            .hamburger.active span:nth-child(2) { opacity: 0; }
-            .hamburger.active span:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
-            .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999; }
-            .overlay.active { display: block; }
-            .category-header h1 { font-size: 2.5rem; }
-            .services-grid { grid-template-columns: 1fr; }
-            .services-header { flex-direction: column; align-items: flex-start; }
-            .service-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-            .detail-row { flex-direction: column; gap: 0.2rem; align-items: flex-start; }
-            .detail-value { text-align: left; }
+            body {
+                padding-top: 70px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding: 80px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+            }
+
+            nav.active {
+                right: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav a {
+                display: block;
+                padding: 12px 15px;
+                border-radius: var(--radius);
+                transition: background 0.3s;
+            }
+
+            nav a:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .overlay.active {
+                display: block;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Category Header */
+        .category-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 0;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .category-header .container {
+            text-align: center;
+        }
+
+        .category-header h1 {
+            font-size: 36px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .category-header p {
+            font-size: 18px;
+            color: var(--dark);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 20px 0 40px;
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .services-title {
+            font-size: 32px;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .services-count {
+            color: var(--light);
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* Service Card */
+        .service-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 25px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .service-title {
+            font-size: 20px;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            line-height: 1.3;
+            font-weight: 600;
+        }
+
+        .service-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .service-details {
+            margin: 15px 0;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--light);
+            font-size: 14px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--secondary);
+            min-width: 80px;
+        }
+
+        .detail-value {
+            color: var(--dark);
+            text-align: right;
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        /* Image Slider */
+        .image-slider {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 15px 0;
+            margin: 20px 0;
+            scrollbar-width: thin;
+        }
+
+        .image-slider::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .image-slider::-webkit-scrollbar-track {
+            background: var(--light);
+            border-radius: 3px;
+        }
+
+        .image-slider::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .image-slider img {
+            width: 100px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 5px;
+            flex-shrink: 0;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .image-slider img:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Book Button */
+        .book-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--success);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .book-btn:hover {
+            background: #219653;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .book-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* No Services Message */
+        .no-services {
+            text-align: center;
+            padding: 60px 30px;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .no-services-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .no-services h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .no-services p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .image-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            z-index: 1101;
+        }
+
+        .modal-nav:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        .image-counter {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.1rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .image-info {
+            color: white;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            color: var(--light);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .footer-section p,
+        .footer-section li {
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+
+        .footer-section a {
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .service-card {
+                padding: 20px;
+            }
+
+            .service-header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 12px;
+                gap: 8px;
+            }
+
+            .detail-row {
+                font-size: 13px;
+            }
+
+            .image-slider img {
+                width: 90px;
+                height: 68px;
+            }
+
+            .category-header h1 {
+                font-size: 28px;
+            }
+
+            .services-title {
+                font-size: 26px;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .modal-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .modal-prev {
+                left: 10px;
+            }
+
+            .modal-next {
+                right: 10px;
+            }
+
+            .modal-close {
+                top: -40px;
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-card {
+                padding: 18px;
+            }
+
+            .services-grid {
+                gap: 15px;
+            }
+
+            .image-slider img {
+                width: 80px;
+                height: 60px;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .category-header {
+                padding: 30px 0;
+            }
+
+            .category-header h1 {
+                font-size: 24px;
+            }
+
+            .category-header p {
+                font-size: 16px;
+            }
+
+            .image-modal {
+                padding: 10px;
+            }
+
+            .modal-content {
+                max-width: 95%;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Flash Messages -->
     <div class="flash-messages" id="flashMessages"></div>
+    
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="modal-nav modal-prev" id="modalPrev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="modal-nav modal-next" id="modalNext">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <img class="modal-image" id="modalImage" src="" alt="Service Image">
+            <div class="image-counter" id="imageCounter"></div>
+            <div class="image-info" id="imageInfo"></div>
+        </div>
+    </div>
     
     <!-- Header -->
     <header>
@@ -138,7 +791,6 @@
         <div class="container">
             <h1>{{ category.display_name }}</h1>
             <p>{{ category.description }}</p>
-           
         </div>
     </section>
 
@@ -164,27 +816,27 @@
 
                         <div class="service-details">
                             <div class="detail-row">
-                                <span class="detail-label"><strong>Business:</strong></span>
+                                <span class="detail-label">Business:</span>
                                 <span class="detail-value">{{ service.owner.title }}</span>
                             </div>
                             <div class="detail-row">
-                                <span class="detail-label"><strong>Owner:</strong></span>
+                                <span class="detail-label">Owner:</span>
                                 <span class="detail-value">{{ service.owner.user.name }} {{ service.owner.user.surname }}</span>
                             </div>
                             <div class="detail-row">
-                                <span class="detail-label"><strong>Location:</strong></span>
+                                <span class="detail-label">Location:</span>
                                 <span class="detail-value">{{ service.owner.location }}</span>
                             </div>
                             <div class="detail-row">
-                                <span class="detail-label"><strong>Address:</strong></span>
+                                <span class="detail-label">Address:</span>
                                 <span class="detail-value">{{ service.owner.address }}</span>
                             </div>
                             <div class="detail-row">
-                                <span class="detail-label"><strong>Contact:</strong></span>
+                                <span class="detail-label">Contact:</span>
                                 <span class="detail-value">{{ service.owner.user.phone_num }}</span>
                             </div>
                             <div class="detail-row">
-                                <span class="detail-label"><strong>Email:</strong></span>
+                                <span class="detail-label">Email:</span>
                                 <span class="detail-value">{{ service.owner.user.email }}</span>
                             </div>
                         </div>
@@ -193,14 +845,18 @@
                         <div class="image-slider">
                             {% for img in service.images %}
                             <img src="{{ url_for('static', filename='uploads/' ~ img.filename) }}" alt="Service Image"
-                                onerror="this.style.display='none'" data-service-id="{{ service.service_id }}"
-                                data-image-index="{{ loop.index0 }}">
+                                onerror="this.style.display='none'" 
+                                data-service-id="{{ service.service_id }}"
+                                data-image-index="{{ loop.index0 }}"
+                                data-service-name="{{ service.service_category }}"
+                                data-business-name="{{ service.owner.title }}"
+                                class="clickable-image">
                             {% endfor %}
                         </div>
                         {% endif %}
 
                         {% if service.is_active %}
-                        
+                        <!-- Book button would go here -->
                         {% else %}
                         <button class="book-btn" style="background: var(--gray); cursor: not-allowed;" disabled>
                             <i class="fas fa-times-circle"></i> Service Unavailable
@@ -214,7 +870,7 @@
                     <i class="fas fa-concierge-bell no-services-icon"></i>
                     <h3>No {{ category.display_name }} Services Available</h3>
                     <p>There are currently no {{ category.display_name|lower }} services available. Please check back later or browse other service categories.</p>
-                    <a href="{{ url_for('home') }}" class="book-btn" style="margin-top: 1rem;">
+                    <a href="{{ url_for('home') }}" class="book-btn" style="margin-top: 1rem; background: var(--primary);">
                         <i class="fas fa-arrow-left"></i> Back to All Services
                     </a>
                 </div>
@@ -289,17 +945,129 @@
             });
         }
 
-        // Book Button Loading State
-        document.querySelectorAll('.book-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                if (!this.disabled) {
-                    e.preventDefault();
-                    this.disabled = true;
-                    const href = this.getAttribute('href');
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 1000);
-                }
+        // Image Modal Functionality
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.getElementById('modalClose');
+        const modalPrev = document.getElementById('modalPrev');
+        const modalNext = document.getElementById('modalNext');
+        const imageCounter = document.getElementById('imageCounter');
+        const imageInfo = document.getElementById('imageInfo');
+
+        let currentImages = [];
+        let currentIndex = 0;
+        let currentServiceId = null;
+
+        // Click event for all service images
+        document.querySelectorAll('.clickable-image').forEach(img => {
+            img.addEventListener('click', function() {
+                const serviceId = this.getAttribute('data-service-id');
+                const imageIndex = parseInt(this.getAttribute('data-image-index'));
+                const serviceName = this.getAttribute('data-service-name');
+                const businessName = this.getAttribute('data-business-name');
+                
+                openImageModal(serviceId, imageIndex, serviceName, businessName);
+            });
+        });
+
+        function openImageModal(serviceId, startIndex, serviceName, businessName) {
+            // Get all images for this service
+            const serviceImages = document.querySelectorAll(`.clickable-image[data-service-id="${serviceId}"]`);
+            currentImages = Array.from(serviceImages).map(img => ({
+                src: img.src,
+                serviceName: img.getAttribute('data-service-name'),
+                businessName: img.getAttribute('data-business-name')
+            }));
+            
+            currentIndex = startIndex;
+            currentServiceId = serviceId;
+            
+            // Update modal content
+            updateModalContent();
+            
+            // Show modal
+            imageModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function updateModalContent() {
+            if (currentImages.length === 0) return;
+            
+            const currentImage = currentImages[currentIndex];
+            modalImage.src = currentImage.src;
+            imageCounter.textContent = `${currentIndex + 1} / ${currentImages.length}`;
+            imageInfo.textContent = `${currentImage.serviceName} - ${currentImage.businessName}`;
+            
+            // Show/hide navigation buttons
+            modalPrev.style.display = currentImages.length > 1 ? 'flex' : 'none';
+            modalNext.style.display = currentImages.length > 1 ? 'flex' : 'none';
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % currentImages.length;
+            updateModalContent();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+            updateModalContent();
+        }
+
+        function closeModal() {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+            currentImages = [];
+            currentIndex = 0;
+            currentServiceId = null;
+        }
+
+        // Event listeners for modal controls
+        modalClose.addEventListener('click', closeModal);
+        modalNext.addEventListener('click', nextImage);
+        modalPrev.addEventListener('click', prevImage);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!imageModal.classList.contains('active')) return;
+            
+            switch(e.key) {
+                case 'Escape':
+                    closeModal();
+                    break;
+                case 'ArrowLeft':
+                    prevImage();
+                    break;
+                case 'ArrowRight':
+                    nextImage();
+                    break;
+            }
+        });
+
+        // Close modal when clicking on backdrop
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                closeModal();
+            }
+        });
+
+        // Add scroll animation for service cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            serviceCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
             });
         });
     </script>
