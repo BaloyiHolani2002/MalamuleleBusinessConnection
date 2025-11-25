@@ -244,7 +244,7 @@
             box-shadow: var(--shadow-lg);
             overflow: hidden;
             width: 100%;
-            max-width: 500px;
+            max-width: 800px;
             margin: 20px;
             opacity: 0;
             transform: translateY(30px);
@@ -560,6 +560,83 @@
             box-shadow: var(--shadow);
         }
 
+        /* Service List Styles */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--light);
+        }
+
+        .service-content {
+            padding: 20px;
+        }
+
+        .service-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+
+        .service-description {
+            color: var(--dark);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .service-category {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 40px 0 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -580,6 +657,15 @@
 
             .form-actions .btn {
                 width: 100%;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .service-image {
+                height: 160px;
             }
         }
 
@@ -610,6 +696,14 @@
 
             .success-icon {
                 font-size: 48px;
+            }
+
+            .service-content {
+                padding: 15px;
+            }
+
+            .service-name {
+                font-size: 18px;
             }
         }
     </style>
@@ -682,8 +776,21 @@
                 <form method="POST" id="addServiceForm">
                     <div class="form-group">
                         <label class="form-label required">Service Category</label>
-                        <input type="text" name="service_category" class="form-control" 
-                               placeholder="e.g. Accommodation / Catering / Transport" required>
+                        <select name="service_category" class="form-control" required>
+                            <option value="">Select a category</option>
+                            <option value="Plumbing">Plumbing Services</option>
+                            <option value="Accommodation">Accommodation</option>
+                            <option value="Rooms">Rooms to Rent</option>
+                            <option value="Houses">Houses to Rent</option>
+                            <option value="Electrical">Electrician Services</option>
+                            <option value="Tiling">Tiling Services</option>
+                            <option value="Building">Building Services</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Property">Property Sales</option>
+                            <option value="Bakkie">Bakkie For Hire</option>
+                            <option value="Landscaping">Landscaping</option>
+                            <option value="Cleaning">Cleaning Services</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -711,6 +818,12 @@
                         </button>
                     </div>
                 </form>
+
+                <!-- Available Services List -->
+                <h3 class="section-title">Available Service Categories</h3>
+                <div class="services-grid" id="availableServices">
+                    <!-- Services will be populated dynamically -->
+                </div>
             </div>
         </div>
     </div>
@@ -754,6 +867,128 @@
             const addServiceBtn = document.getElementById('addServiceBtn');
             const successModal = document.getElementById('successModal');
             const continueBtn = document.getElementById('continueBtn');
+            const availableServices = document.getElementById('availableServices');
+
+            // All available services data
+            const allServices = [
+                {
+                    name: 'Plumbing',
+                    display_name: 'Plumbing Services',
+                    description: 'Professional plumbers for repairs, installations, and maintenance',
+                    image: '/static/images/plumber.jpeg'
+                },
+                {
+                    name: 'Accommodation',
+                    display_name: 'Accommodation',
+                    description: 'Comfortable guest houses and hotels for your stay',
+                    image: '/static/images/accomo.jpeg'
+                },
+                {
+                    name: 'Rooms',
+                    display_name: 'Rooms to Rent',
+                    description: 'Affordable rooms for rent with various amenities',
+                    image: '/static/images/room.jpeg'
+                },
+                {
+                    name: 'Houses',
+                    display_name: 'Houses to Rent',
+                    description: 'Complete houses available for short and long term rental',
+                    image: '/static/images/house.jpeg'
+                },
+                {
+                    name: 'Electrical',
+                    display_name: 'Electrician Services',
+                    description: 'Certified electricians for all your electrical needs',
+                    image: '/static/images/electr.jpeg'
+                },
+                {
+                    name: 'Tiling',
+                    display_name: 'Tiling Services',
+                    description: 'Professional tile installation for floors and walls',
+                    image: '/static/images/tiles.jpeg'
+                },
+                {
+                    name: 'Building',
+                    display_name: 'Building Services',
+                    description: 'Construction and renovation experts for your projects',
+                    image: '/static/images/builder.jpg'
+                },
+                {
+                    name: 'Transportation',
+                    display_name: 'Transportation',
+                    description: 'Reliable transport services including ride-hailing',
+                    image: '/static/images/transport.jpeg'
+                },
+                {
+                    name: 'Property',
+                    display_name: 'Property Sales',
+                    description: 'Find your dream home with our real estate partners',
+                    image: '/static/images/housesale.jpeg'
+                },
+                {
+                    name: 'Bakkie',
+                    display_name: 'Bakkie For Hire',
+                    description: 'Light delivery vehicles available for moving and transport',
+                    image: '/static/images/bakkie.jpg'
+                },
+                {
+                    name: 'Landscaping',
+                    display_name: 'Landscaping',
+                    description: 'Professional garden and outdoor space design services',
+                    image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80'
+                },
+                {
+                    name: 'Cleaning',
+                    display_name: 'Cleaning Services',
+                    description: 'Professional cleaning for homes and offices',
+                    image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+                }
+            ];
+
+            // Function to render available services
+            function renderAvailableServices() {
+                if (availableServices) {
+                    let servicesHTML = '';
+                    
+                    allServices.forEach(service => {
+                        servicesHTML += `
+                            <div class="service-card" onclick="selectService('${service.name}')">
+                                <img src="${service.image}" alt="${service.display_name}" class="service-image"
+                                     onerror="this.src='https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2060&q=80'">
+                                <div class="service-content">
+                                    <div class="service-name">${service.display_name}</div>
+                                    <div class="service-description">${service.description}</div>
+                                    <span class="service-category">${service.name}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    availableServices.innerHTML = servicesHTML;
+                }
+            }
+
+            // Function to select service from the grid
+            window.selectService = function(serviceName) {
+                const selectElement = document.querySelector('select[name="service_category"]');
+                if (selectElement) {
+                    selectElement.value = serviceName;
+                    // Scroll to the form
+                    selectElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Add focus effect
+                    selectElement.focus();
+                    selectElement.style.borderColor = 'var(--success)';
+                    selectElement.style.boxShadow = '0 0 0 3px rgba(39, 174, 96, 0.2)';
+                    
+                    setTimeout(() => {
+                        selectElement.style.borderColor = '';
+                        selectElement.style.boxShadow = '';
+                    }, 2000);
+                }
+            };
+
+            // Initialize available services
+            renderAvailableServices();
 
             if (addServiceForm && addServiceBtn) {
                 addServiceForm.addEventListener('submit', function(e) {

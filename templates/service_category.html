@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.display_name }} - Business Connect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Copy all your CSS styles from index.html here */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #3498db; --primary-dark: #2980b9; --secondary: #2c3e50;
+            --accent: #e74c3c; --success: #27ae60; --warning: #f39c12;
+            --light: #ecf0f1; --dark: #2c3e50; --gray: #95a5a6;
+            --gray-light: #bdc3c7; --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px; --transition: all 0.3s ease;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); background-color: #f8f9fa; }
+        header { background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); color: white; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 1000; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; gap: 15px; }
+        .logo { width: 60px; height: 60px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2874a6; font-size: 24px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); overflow: hidden; position: relative; padding: 2px; }
+        .logo a { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; text-decoration: none; color: inherit; }
+        .logo-image { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 5px; background: white; }
+        .logo-text { font-size: 24px; font-weight: 700; color: white; }
+        .hamburger { display: none; flex-direction: column; cursor: pointer; padding: 5px; }
+        .hamburger span { width: 25px; height: 3px; background: white; margin: 3px 0; transition: 0.3s; border-radius: 2px; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; padding: 5px 10px; border-radius: 4px; }
+        nav a:hover, nav a.active { color: #ffd700; background: rgba(255, 255, 255, 0.1); }
+        .category-header { background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); color: white; padding: 4rem 2rem; text-align: center; }
+        .category-header h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: 700; }
+        .category-header p { font-size: 1.3rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        .breadcrumb { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1rem; font-size: 1rem; }
+        .breadcrumb a { color: var(--warning); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .services-section { padding: 3rem 2rem; background: var(--light); min-height: 600px; }
+        .services-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .services-title { font-size: 2rem; color: var(--secondary); margin: 0; }
+        .services-count { font-size: 1.2rem; color: var(--primary); font-weight: 600; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .service-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); transition: var(--transition); display: flex; flex-direction: column; gap: 1rem; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+        .service-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+        .service-title { font-size: 1.4rem; color: var(--secondary); margin: 0; flex: 1; }
+        .service-price { font-size: 1.3rem; font-weight: bold; color: var(--accent); white-space: nowrap; }
+        .service-details { display: flex; flex-direction: column; gap: 0.8rem; }
+        .detail-row { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.5rem; border-bottom: 1px solid var(--gray-light); }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { font-weight: 600; color: var(--dark); min-width: 100px; }
+        .detail-value { color: var(--gray); text-align: right; flex: 1; }
+        .image-slider { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 0; }
+        .image-slider img { width: 120px; height: 90px; object-fit: cover; border-radius: var(--radius); cursor: pointer; transition: var(--transition); }
+        .image-slider img:hover { transform: scale(1.05); }
+        .book-btn { background: var(--primary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: var(--transition); text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto; }
+        .book-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); }
+        .book-btn:disabled { background: var(--gray); cursor: not-allowed; }
+        .no-services { text-align: center; padding: 3rem; color: var(--gray); grid-column: 1 / -1; }
+        .no-services-icon { font-size: 4rem; margin-bottom: 1rem; color: var(--gray-light); }
+        footer { background: var(--secondary); color: var(--white); padding: 4rem 2rem 1rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; margin-bottom: 2rem; }
+        .footer-section h3 { margin-bottom: 1.5rem; color: var(--warning); font-size: 1.3rem; position: relative; padding-bottom: 0.5rem; }
+        .footer-section h3::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 2px; background: var(--warning); }
+        .footer-section p { color: var(--gray-light); margin-bottom: 1rem; }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 0.7rem; }
+        .footer-section a { color: var(--gray-light); text-decoration: none; transition: var(--transition); }
+        .footer-section a:hover { color: var(--warning); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #34495e; color: var(--gray-light); font-size: 0.9rem; }
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            nav { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%); transition: right 0.3s ease; z-index: 1000; padding: 80px 20px 20px; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1); }
+            nav.active { right: 0; }
+            nav ul { flex-direction: column; gap: 0; }
+            nav li { margin-bottom: 15px; }
+            nav a { display: block; padding: 12px 15px; border-radius: 5px; transition: background 0.3s; }
+            nav a:hover { background: rgba(255, 255, 255, 0.2); }
+            .hamburger.active span:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999; }
+            .overlay.active { display: block; }
+            .category-header h1 { font-size: 2.5rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .services-header { flex-direction: column; align-items: flex-start; }
+            .service-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .detail-row { flex-direction: column; gap: 0.2rem; align-items: flex-start; }
+            .detail-value { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    <div class="flash-messages" id="flashMessages"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <a href="{{ url_for('home') }}">
+                            <img src="/static/images/bslogo.png" alt="Business Connect Logo" class="logo-image"
+                                onerror="this.style.display='none'; this.parentNode.innerHTML='BC';">
+                        </a>
+                    </div>
+                    <div class="logo-text">Business Connect</div>
+                </div>
+
+                <!-- Hamburger Menu -->
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <nav id="nav-menu">
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('signup') }}">Signup</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Category Header -->
+    <section class="category-header">
+        <div class="container">
+            <h1>{{ category.display_name }}</h1>
+            <p>{{ category.description }}</p>
+           
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="services-header">
+                <h2 class="services-title">Available {{ category.display_name }} Services</h2>
+                <div class="services-count">{{ services|length }} Service(s) Found</div>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="services-grid" id="servicesGrid">
+                {% if services %}
+                    {% for service in services %}
+                    {% if service.owner and service.owner.user and service.owner.title and service.owner.location and
+                    service.owner.address and service.owner.user.phone_num and service.owner.user.email %}
+                    <div class="service-card" data-service-id="{{ service.service_id }}">
+                        <div class="service-header">
+                            <h3 class="service-title">{{ service.service_category }}</h3>
+                            <div class="service-price">R{{ service.range_price }}</div>
+                        </div>
+
+                        <div class="service-details">
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Business:</strong></span>
+                                <span class="detail-value">{{ service.owner.title }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Owner:</strong></span>
+                                <span class="detail-value">{{ service.owner.user.name }} {{ service.owner.user.surname }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Location:</strong></span>
+                                <span class="detail-value">{{ service.owner.location }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Address:</strong></span>
+                                <span class="detail-value">{{ service.owner.address }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Contact:</strong></span>
+                                <span class="detail-value">{{ service.owner.user.phone_num }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label"><strong>Email:</strong></span>
+                                <span class="detail-value">{{ service.owner.user.email }}</span>
+                            </div>
+                        </div>
+
+                        {% if service.images %}
+                        <div class="image-slider">
+                            {% for img in service.images %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ img.filename) }}" alt="Service Image"
+                                onerror="this.style.display='none'" data-service-id="{{ service.service_id }}"
+                                data-image-index="{{ loop.index0 }}">
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        {% if service.is_active %}
+                        
+                        {% else %}
+                        <button class="book-btn" style="background: var(--gray); cursor: not-allowed;" disabled>
+                            <i class="fas fa-times-circle"></i> Service Unavailable
+                        </button>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                {% else %}
+                <div class="no-services">
+                    <i class="fas fa-concierge-bell no-services-icon"></i>
+                    <h3>No {{ category.display_name }} Services Available</h3>
+                    <p>There are currently no {{ category.display_name|lower }} services available. Please check back later or browse other service categories.</p>
+                    <a href="{{ url_for('home') }}" class="book-btn" style="margin-top: 1rem;">
+                        <i class="fas fa-arrow-left"></i> Back to All Services
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>Business Connect is a platform dedicated to connecting service providers with customers in a dignified and efficient manner.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">WhatsApp</a></li>
+                        <li><a href="#">TikTok</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📍 MALAMULELE, STAND NO 1457 B-EXTENTION, LIMPOPO</p>
+                    <p>📞 067 397 0212</p>
+                    <p>✉️ businessconnectrsa@gmail.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Business Connect. A Maxelo Business Solutions Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile sidebar functionality
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
+
+        if (hamburger && navMenu && overlay) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
+
+            overlay.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            });
+        }
+
+        // Book Button Loading State
+        document.querySelectorAll('.book-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                if (!this.disabled) {
+                    e.preventDefault();
+                    this.disabled = true;
+                    const href = this.getAttribute('href');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

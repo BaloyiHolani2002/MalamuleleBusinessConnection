@@ -320,6 +320,83 @@ BOOKING_CONFIRMATION_HTML = """
 </html>
 """
 
+# Service categories data - ADD THIS AFTER YOUR EMAIL TEMPLATES
+SERVICE_CATEGORIES = [
+    {
+        'name': 'Plumbing',
+        'display_name': 'Plumbing Services',
+        'description': 'Professional plumbers for repairs, installations, and maintenance',
+        'image': '/static/images/plumber.jpeg'
+    },
+    {
+        'name': 'Accommodation',
+        'display_name': 'Accommodation',
+        'description': 'Comfortable guest houses and hotels for your stay',
+        'image': '/static/images/accomo.jpeg'
+    },
+    {
+        'name': 'Rooms',
+        'display_name': 'Rooms to Rent',
+        'description': 'Affordable rooms for rent with various amenities',
+        'image': '/static/images/room.jpeg'
+    },
+    {
+        'name': 'Houses',
+        'display_name': 'Houses to Rent',
+        'description': 'Complete houses available for short and long term rental',
+        'image': '/static/images/house.jpeg'
+    },
+    {
+        'name': 'Electrical',
+        'display_name': 'Electrician Services',
+        'description': 'Certified electricians for all your electrical needs',
+        'image': '/static/images/electr.jpeg'
+    },
+    {
+        'name': 'Tiling',
+        'display_name': 'Tiling Services',
+        'description': 'Professional tile installation for floors and walls',
+        'image': '/static/images/tiles.jpeg'
+    },
+    {
+        'name': 'Building',
+        'display_name': 'Building Services',
+        'description': 'Construction and renovation experts for your projects',
+        'image': '/static/images/builder.jpg'
+    },
+    {
+        'name': 'Transportation',
+        'display_name': 'Transportation',
+        'description': 'Reliable transport services including ride-hailing',
+        'image': '/static/images/transport.jpeg'
+    },
+    {
+        'name': 'Property',
+        'display_name': 'Property Sales',
+        'description': 'Find your dream home with our real estate partners',
+        'image': '/static/images/housesale.jpeg'
+    },
+    {
+        'name': 'Bakkie',
+        'display_name': 'Bakkie For Hire',
+        'description': 'Light delivery vehicles available for moving and transport',
+        'image': '/static/images/bakkie.jpg'
+    },
+    {
+        'name': 'Landscaping',
+        'display_name': 'Landscaping',
+        'description': 'Professional garden and outdoor space design services',
+        'image': 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80'
+    },
+    {
+        'name': 'Cleaning',
+        'display_name': 'Cleaning Services',
+        'description': 'Professional cleaning for homes and offices',
+        'image': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+    }
+]
+
+
 # Database Models
 class User(db.Model):
     __tablename__ = "User"
@@ -398,10 +475,116 @@ def send_email(subject, recipient, html_body):
         print(f"❌ Failed to send email to {recipient}: {e}")
         return False
 
-# Routes
+# Helper function to get services with filtering - UPDATE THIS FUNCTION
+def get_filtered_services(category=None, search_query=None, sort_by='default'):
+    """Get services with optional filtering and sorting"""
+    query = Service.query.filter_by(is_active=True)
+    
+    # Filter by category
+    if category and category != 'all':
+        query = query.filter(Service.service_category.ilike(f'%{category}%'))
+    
+    # Filter by search query
+    if search_query:
+        search_filter = db.or_(
+            Service.service_category.ilike(f'%{search_query}%'),
+            BusinessOwner.title.ilike(f'%{search_query}%'),
+            BusinessOwner.location.ilike(f'%{search_query}%'),
+            BusinessOwner.address.ilike(f'%{search_query}%')
+        )
+        query = query.join(BusinessOwner).filter(search_filter)
+    else:
+        query = query.join(BusinessOwner)
+    
+    # Sort results
+    if sort_by == 'price-low':
+        query = query.order_by(Service.range_price.asc())
+    elif sort_by == 'price-high':
+        query = query.order_by(Service.range_price.desc())
+    else:
+        query = query.order_by(Service.service_id.desc())
+    
+    services = query.all()
+    
+    # Ensure we have all the required relationships
+    result = []
+    for service in services:
+        if (service.owner and service.owner.user and 
+            service.owner.title and service.owner.location and 
+            service.owner.address and service.owner.user.phone_num and 
+            service.owner.user.email):
+            result.append(service)
+    
+    return result
+
+
+# Add this route for individual category pages
+@app.route('/services/<category_name>')
+def service_category(category_name):
+    """Individual category page showing only services from that category"""
+    # Map URL-friendly names to actual category names in database
+    category_map = {
+        'plumbing': 'Plumbing',
+        'accommodation': 'Accommodation',
+        'rooms': 'Rooms',
+        'houses': 'Houses',
+        'electrical': 'Electrical',
+        'tiling': 'Tiling',
+        'building': 'Building',
+        'transportation': 'Transportation',
+        'property': 'Property',
+        'bakkie': 'Bakkie',
+        'landscaping': 'Landscaping',
+        'cleaning': 'Cleaning'
+    }
+    
+    actual_category = category_map.get(category_name)
+    if not actual_category:
+        flash("Category not found", "error")
+        return redirect(url_for('home'))
+    
+    # Get services for this specific category
+    services = Service.query.filter(
+        Service.service_category.ilike(f'%{actual_category}%'),
+        Service.is_active == True
+    ).join(BusinessOwner).all()
+    
+    # Filter services with complete owner info
+    filtered_services = []
+    for service in services:
+        if (service.owner and service.owner.user and 
+            service.owner.title and service.owner.location and 
+            service.owner.address and service.owner.user.phone_num and 
+            service.owner.user.email):
+            filtered_services.append(service)
+    
+    # Get category display info
+    category_info = None
+    for cat in SERVICE_CATEGORIES:
+        if cat['name'].lower() == actual_category.lower():
+            category_info = cat
+            break
+    
+    return render_template('service_category.html', 
+                         services=filtered_services,
+                         category=category_info,
+                         current_category=actual_category)
+
+# Update the home route to remove category filtering from URL parameters
 @app.route('/')
 def home():
-    return render_template('index.html')
+    """Home page with all active services"""
+    search = request.args.get('search', '')
+    sort = request.args.get('sort', 'default')
+    
+    services = get_filtered_services(search_query=search, sort_by=sort)
+    
+    return render_template('index.html', 
+                         services=services,
+                         categories=SERVICE_CATEGORIES,
+                         current_search=search,
+                         current_sort=sort)
+
 
 @app.route('/reset-password', methods=['GET', 'POST'])
 def reset_password():
@@ -447,7 +630,8 @@ def services():
 
 @app.route('/listings')
 def listings():
-    return render_template('listings.html')
+    """Services listings page - same as home but with different URL"""
+    return home()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

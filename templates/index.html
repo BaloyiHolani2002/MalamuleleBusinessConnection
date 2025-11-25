@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Connect - Connecting services with dignity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Reset and Base Styles */
         * {
@@ -252,7 +253,6 @@
                 transform: translateX(100%);
                 opacity: 0;
             }
-
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -265,27 +265,18 @@
                 url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80') center/cover;
             color: var(--white);
             text-align: center;
-            padding: 8rem 2rem;
+            padding: 6rem 2rem;
             position: relative;
-            overflow: hidden;
         }
 
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s ease, transform 1s ease;
-        }
-
-        .hero-content.animate {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
@@ -296,42 +287,46 @@
             opacity: 0.9;
         }
 
-        .cta-button {
-            display: inline-block;
+        .hero-search {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            gap: 0;
+        }
+
+        .hero-search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: var(--radius) 0 0 var(--radius);
+            font-size: 1.1rem;
+        }
+
+        .hero-search-btn {
             background: var(--primary);
             color: white;
-            padding: 0.8rem 2rem;
-            border-radius: var(--radius);
-            text-decoration: none;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            cursor: pointer;
             font-weight: 600;
             font-size: 1.1rem;
             transition: var(--transition);
-            box-shadow: var(--shadow);
         }
 
-        .cta-button:hover {
+        .hero-search-btn:hover {
             background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
         }
 
-        /* Services Section */
-        .services {
-            padding: 5rem 2rem;
+        /* Service Categories Section */
+        .service-categories {
+            padding: 4rem 2rem;
             background: var(--white);
         }
 
         .section-title {
             text-align: center;
             margin-bottom: 3rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s ease, transform 1s ease;
-        }
-
-        .section-title.animate {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .section-title h2 {
@@ -361,87 +356,270 @@
             margin: 0 auto;
         }
 
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .category-link:hover {
+            transform: translateY(-5px);
+            text-decoration: none;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            height: 100%;
+        }
+
+        .category-link:hover .category-card {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .category-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            transition: var(--transition);
+        }
+
+        .category-link:hover .category-image {
+            transform: scale(1.05);
+        }
+
+        .category-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .category-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .category-content p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 4rem 2rem;
+            background: var(--light);
+        }
+
+        .services-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .services-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin: 0;
+        }
+
+        .active-category {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .search-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .sort-btn {
+            background: var(--white);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .sort-btn:hover {
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+        }
+
+        .sort-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
         .service-card {
             background: var(--white);
             border-radius: var(--radius);
-            padding: 2.5rem 1.5rem;
-            text-align: center;
+            padding: 1.5rem;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            border: 1px solid var(--gray-light);
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.3s ease;
-        }
-
-        /* Animation from sides for service cards */
-        .service-card:nth-child(odd) {
-            transform: translateX(-50px);
-        }
-
-        .service-card:nth-child(even) {
-            transform: translateX(50px);
-        }
-
-        .service-card.animate {
-            opacity: 1;
-            transform: translateX(0) translateY(0);
-        }
-
-        /* Add delay for staggered effect */
-        .service-card:nth-child(1) { transition-delay: 0.1s; }
-        .service-card:nth-child(2) { transition-delay: 0.2s; }
-        .service-card:nth-child(3) { transition-delay: 0.3s; }
-        .service-card:nth-child(4) { transition-delay: 0.4s; }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--primary);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
 
-        .service-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
         }
 
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        .service-title {
+            font-size: 1.4rem;
             color: var(--secondary);
+            margin: 0;
+            flex: 1;
         }
 
-        .service-card p {
+        .service-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .service-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 100px;
+        }
+
+        .detail-value {
             color: var(--gray);
+            text-align: right;
+            flex: 1;
+        }
+
+        .image-slider {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+
+        .image-slider img {
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .image-slider img:hover {
+            transform: scale(1.05);
+        }
+
+        .book-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .book-btn:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: white;
+        }
+
+        .book-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .no-services {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+            grid-column: 1 / -1;
+        }
+
+        .no-services-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--gray-light);
         }
 
         /* How It Works */
         .how-it-works {
             padding: 5rem 2rem;
-            background: var(--light);
+            background: var(--white);
         }
 
         .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             text-align: center;
         }
@@ -452,32 +630,7 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             transition: var(--transition);
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
         }
-
-        /* Apply staggered animations to steps */
-        .step:nth-child(odd) {
-            transform: translateX(-50px);
-        }
-
-        .step:nth-child(even) {
-            transform: translateX(50px);
-        }
-
-        .step.animate {
-            opacity: 1;
-            transform: translateX(0) translateY(0);
-        }
-
-        /* Add delay for staggered effect */
-        .step:nth-child(1) { transition-delay: 0.1s; }
-        .step:nth-child(2) { transition-delay: 0.2s; }
-        .step:nth-child(3) { transition-delay: 0.3s; }
-        .step:nth-child(4) { transition-delay: 0.4s; }
-        .step:nth-child(5) { transition-delay: 0.5s; }
 
         .step:hover {
             transform: translateY(-5px);
@@ -508,135 +661,19 @@
             color: var(--gray);
         }
 
-        /* Featured Listings */
-        .featured-listings {
-            padding: 5rem 2rem;
-            background: var(--white);
-        }
-
-        .listings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .listing-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        /* Apply staggered animations to listings */
-        .listing-card:nth-child(odd) {
-            transform: translateX(-50px);
-        }
-
-        .listing-card:nth-child(even) {
-            transform: translateX(50px);
-        }
-
-        .listing-card.animate {
-            opacity: 1;
-            transform: translateX(0) translateY(0);
-        }
-
-        /* Add delay for staggered effect */
-        .listing-card:nth-child(1) { transition-delay: 0.1s; }
-        .listing-card:nth-child(2) { transition-delay: 0.2s; }
-        .listing-card:nth-child(3) { transition-delay: 0.3s; }
-
-        .listing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .listing-image {
-            height: 220px;
-            background-size: cover;
-            background-position: center;
-            transition: var(--transition);
-        }
-
-        .listing-card:hover .listing-image {
-            transform: scale(1.05);
-        }
-
-        .listing-content {
-            padding: 1.5rem;
-        }
-
-        .listing-content h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
-
-        .listing-price {
-            color: var(--accent);
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 0.5rem 0;
-        }
-
-        .rating {
-            color: var(--warning);
-            margin: 0.5rem 0;
-        }
-
-        .listing-content p {
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
-        .listing-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .listing-actions .btn {
-            flex: 1;
-            padding: 0.5rem;
-            font-size: 0.85rem;
-        }
-
         /* Footer */
         footer {
             background: var(--secondary);
             color: var(--white);
-            padding: 4rem 2rem 1rem;
+            padding: 4rem 2rem 2rem;
         }
 
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2.5rem;
             margin-bottom: 2rem;
         }
-
-        .footer-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .footer-section.animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Apply staggered animations to footer sections */
-        .footer-section:nth-child(1) { transition-delay: 0.1s; }
-        .footer-section:nth-child(2) { transition-delay: 0.2s; }
-        .footer-section:nth-child(3) { transition-delay: 0.3s; }
-        .footer-section:nth-child(4) { transition-delay: 0.4s; }
 
         .footer-section h3 {
             margin-bottom: 1.5rem;
@@ -686,59 +723,151 @@
             border-top: 1px solid #34495e;
             color: var(--gray-light);
             font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.8s ease 0.5s;
         }
 
-        .footer-bottom.animate {
-            opacity: 1;
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: var(--radius);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .modal-nav:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        .image-counter {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.1rem;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: row;
-                gap: 1rem;
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                padding: 4rem 1rem;
             }
 
             .hero h1 {
                 font-size: 2.5rem;
             }
 
-            .hero p {
-                font-size: 1.1rem;
+            .hero-search {
+                flex-direction: column;
             }
 
+            .hero-search-input {
+                border-radius: var(--radius);
+                margin-bottom: 0.5rem;
+            }
+
+            .hero-search-btn {
+                border-radius: var(--radius);
+            }
+
+            .categories-grid,
             .services-grid,
-            .steps,
-            .listings-grid {
+            .steps {
                 grid-template-columns: 1fr;
             }
 
-            .auth-buttons {
-                display: flex;
+            .services-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .service-header {
+                flex-direction: column;
+                align-items: flex-start;
                 gap: 0.5rem;
             }
 
-            /* For mobile, use fadeInUp animation for all cards */
-            .service-card,
-            .step,
-            .listing-card {
-                transform: translateY(30px) !important;
+            .detail-row {
+                flex-direction: column;
+                gap: 0.2rem;
+                align-items: flex-start;
             }
 
-            .service-card.animate,
-            .step.animate,
-            .listing-card.animate {
-                transform: translateY(0) !important;
+            .detail-value {
+                text-align: left;
+            }
+
+            .search-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .sort-btn {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
             }
         }
 
         @media (max-width: 480px) {
-            .hero {
-                padding: 4rem 1rem;
-            }
-
             .hero h1 {
                 font-size: 2rem;
             }
@@ -749,16 +878,7 @@
 
             .service-card,
             .step {
-                padding: 2rem 1rem;
-            }
-
-            .auth-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .auth-buttons .btn {
-                width: 100%;
+                padding: 1.5rem 1rem;
             }
         }
     </style>
@@ -781,7 +901,7 @@
                     </div>
                     <div class="logo-text">Business Connect</div>
                 </div>
-                
+
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -792,12 +912,10 @@
                 <nav id="nav-menu">
                     <ul>
                         <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
-                        <li><a href="{{ url_for('listings') }}">Services</a></li>
-                      
-                        <li><a href="{{ url_for('about') }}" >About</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
                         <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                          <li><a href="{{ url_for('login') }}">Login</a></li>
-                            <li><a href="{{ url_for('signup') }}">Signup</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('signup') }}">Signup</a></li>
                     </ul>
                 </nav>
             </div>
@@ -809,166 +927,204 @@
     
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-content animate">
+        <div class="hero-content">
             <h1>BUSINESS CONNECT</h1>
             <p>Connecting services with dignity</p>
-            <a href="{{ url_for('listings') }}" class="cta-button">Explore Services</a>
+            <form method="GET" action="{{ url_for('home') }}" class="hero-search">
+                <input type="text" class="hero-search-input" name="search" 
+                    placeholder="Search by service, location, or address..." 
+                    value="{{ current_search }}">
+                <input type="hidden" name="sort" value="{{ current_sort }}">
+                <button type="submit" class="hero-search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
+    <!-- Service Categories Section -->
+    <section class="service-categories">
         <div class="container">
             <div class="section-title">
-                <h2>Our Services</h2>
-                <p>Connect with trusted local service providers</p>
+                <h2>Service Categories</h2>
+                <p>Click on a category to view available service providers</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🏠</div>
-                    <h3>Accommodation</h3>
-                    <p>Find guest houses, room rentals, and temporary accommodation</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🔧</div>
-                    <h3>Plumbing Services</h3>
-                    <p>Professional plumbers for all your repair and installation needs</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">⚡</div>
-                    <h3>Electrical Work</h3>
-                    <p>Certified electricians for safe and reliable electrical services</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🏢</div>
-                    <h3>More Services....</h3>
-                    <p>Various local business services to meet your needs</p>
-                </div>
+
+            <div class="categories-grid">
+                <!-- Plumbing Service -->
+                <a href="{{ url_for('service_category', category_name='plumbing') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/plumber.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Plumbing Services</h3>
+                            <p>Professional plumbers for repairs, installations, and maintenance. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Accommodation Service -->
+                <a href="{{ url_for('service_category', category_name='accommodation') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/accomo.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Accommodation</h3>
+                            <p>Comfortable guest houses and hotels for your stay. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Rooms to Rent -->
+                <a href="{{ url_for('service_category', category_name='rooms') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/room.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Rooms to Rent</h3>
+                            <p>Affordable rooms for rent with various amenities. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Houses to Rent -->
+                <a href="{{ url_for('service_category', category_name='houses') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/house.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Houses to Rent</h3>
+                            <p>Complete houses available for short and long term rental. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Electrician Service -->
+                <a href="{{ url_for('service_category', category_name='electrical') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/electr.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Electrician Services</h3>
+                            <p>Certified electricians for all your electrical needs. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Tiling Service -->
+                <a href="{{ url_for('service_category', category_name='tiling') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/tiles.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Tiling Services</h3>
+                            <p>Professional tile installation for floors and walls. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Building Service -->
+                <a href="{{ url_for('service_category', category_name='building') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/builder.jpg');"></div>
+                        <div class="category-content">
+                            <h3>Building Services</h3>
+                            <p>Construction and renovation experts for your projects. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Transportation Service -->
+                <a href="{{ url_for('service_category', category_name='transportation') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/transport.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Transportation</h3>
+                            <p>Reliable transport services including ride-hailing. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Property Sales -->
+                <a href="{{ url_for('service_category', category_name='property') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/housesale.jpeg');"></div>
+                        <div class="category-content">
+                            <h3>Property Sales</h3>
+                            <p>Find your dream home with our real estate partners. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Bakkie Hire -->
+                <a href="{{ url_for('service_category', category_name='bakkie') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('/static/images/bakkie.jpg');"></div>
+                        <div class="category-content">
+                            <h3>Bakkie For Hire</h3>
+                            <p>Light delivery vehicles available for moving and transport. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Landscaping Service -->
+                <a href="{{ url_for('service_category', category_name='landscaping') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80');"></div>
+                        <div class="category-content">
+                            <h3>Landscaping</h3>
+                            <p>Professional garden and outdoor space design services. Click here</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Cleaning Service -->
+                <a href="{{ url_for('service_category', category_name='cleaning') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                        <div class="category-content">
+                            <h3>Cleaning Services</h3>
+                            <p>Professional cleaning for homes and offices. Click here</p>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works">
-        <div class="container">
-            <div class="section-title">
-                <h2>How It Works</h2>
-                <p>Simple steps to find and book local services</p>
-            </div>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Display Your Business</h3>
-                    <p>Contact us to list your service</p>
-                    <p>✉️ businessconnectrsa@gmail.com</p>
-                    <p>📞 067 397 0212</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Create Account</h3>
-                    <p>Sign up to access services.<a href="{{ url_for('signup') }}">Click here </a></p>
+    
 
-                </div>
-
-                
-
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Search Services</h3>
-                    <p>Browse through various service categories</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Compare Options</h3>
-                    <p>View provider profiles, services, location and availability</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <h3>Book & Connect</h3>
-                    <p>Make bookings or contact service providers directly</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">6</div>
-                    <h3>Get Service</h3>
-                    <p>Receive quality service from trusted local providers</p>
-                </div>
-
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Listings -->
-    <section class="featured-listings" id="listings">
-        <div class="container">
-            <div class="section-title">
-                <h2>Featured Listings</h2>
-                <p>Popular services and accommodations</p>
-            </div>
-            <div class="listings-grid">
-                <div class="listing-card">
-                    <div class="listing-image"
-                        style="background-image: url('/static/images/accomo.jpeg');">
-                    </div>
-                    <div class="listing-content">
-                        <h3>Comfort Guest House</h3>
-                        <p>Luxury accommodation with all amenities</p>
-                    </div>
-                </div>
-                <div class="listing-card">
-                    <div class="listing-image"
-                        style="background-image: url('/static/images/plumber.jpeg');">
-                    </div>
-                    <div class="listing-content">
-                        <h3>Plumbing Services</h3>
-                        <p>24/7 emergency plumbing services with 10 years experience</p>
-                    </div>
-                </div>
-                <div class="listing-card">
-                    <div class="listing-image"
-                        style="background-image: url('/static/images/electr.jpeg');">
-                    </div>
-                    <div class="listing-content">
-                        <h3>Safe Electrical Solutions</h3>
-                        <p>Certified electrical installations and repairs</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
     <!-- Footer -->
-    <footer id="contact">
-        <div class="footer-content">
-            
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('listings') }}">Services</a></li>
-                    
-                    <li><a href="{{ url_for('about') }}">About</a></li>
-                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                </ul>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>Business Connect is a platform dedicated to connecting service providers with customers in a dignified and efficient manner.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                       
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">WhatsApp</a></li>
+                        <li><a href="#">TikTok</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📍 MALAMULELE, STAND NO 1457 B-EXTENTION, LIMPOPO</p>
+                    <p>📞 067 397 0212</p>
+                    <p>✉️ businessconnectrsa@gmail.com</p>
+                </div>
             </div>
-            <div class="footer-section">
-                 <h3>Follow Us</h3>
-                <ul>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">WhatsApp</a></li>
-                    <li><a href="#">TikTok</a></li>
-                   
-                </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Business Connect. A Maxelo Business Solutions Project. All rights reserved.</p>
             </div>
-            <div class="footer-section">
-                <h3>Contact Info</h3>
-                <p>📍 MALAMULELE, STAND NO 1457 B-EXTENTION, LIMPOPO</p>
-                <p>📞 067 397 0212</p>
-                <p>✉️ businessconnectrsa@gmail.com</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Business Connect. A Maxelo Business Solutions Project. All rights reserved.</p>
         </div>
     </footer>
 
@@ -991,7 +1147,6 @@
                 overlay.classList.remove('active');
             });
 
-            // Close menu when clicking on links
             const navLinks = document.querySelectorAll('nav a');
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
@@ -1001,92 +1156,6 @@
                 });
             });
         }
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Flash message handling
-        function showFlashMessage(message, type) {
-            const flashContainer = document.getElementById('flashMessages');
-            const flashElement = document.createElement('div');
-            flashElement.className = `flash-message flash-${type}`;
-            flashElement.textContent = message;
-
-            flashContainer.appendChild(flashElement);
-
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                flashElement.remove();
-            }, 5000);
-        }
-
-        // Check for URL parameters to show flash messages
-        window.addEventListener('load', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const message = urlParams.get('message');
-            const type = urlParams.get('type');
-
-            if (message && type) {
-                showFlashMessage(message, type);
-            }
-        });
-
-        // Add hover effects to cards
-        document.querySelectorAll('.service-card, .step, .listing-card').forEach(card => {
-            card.addEventListener('mouseenter', function () {
-                this.style.zIndex = '10';
-            });
-
-            card.addEventListener('mouseleave', function () {
-                this.style.zIndex = '1';
-            });
-        });
-
-        // Scroll-triggered animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elements to animate
-            const animatedElements = document.querySelectorAll(
-                '.section-title, .service-card, .step, .listing-card, .footer-section, .footer-bottom'
-            );
-            
-            // Hero elements are already visible
-            document.querySelector('.hero-content').classList.add('animate');
-            
-            // Function to check if element is in viewport
-            function isInViewport(element) {
-                const rect = element.getBoundingClientRect();
-                return (
-                    rect.top <= (window.innerHeight * 0.85) &&
-                    rect.bottom >= 0
-                );
-            }
-            
-            // Function to handle scroll events
-            function handleScroll() {
-                animatedElements.forEach(element => {
-                    if (isInViewport(element) && !element.classList.contains('animate')) {
-                        element.classList.add('animate');
-                    }
-                });
-            }
-            
-            // Initial check on page load
-            handleScroll();
-            
-            // Add scroll event listener
-            window.addEventListener('scroll', handleScroll);
-        });
     </script>
 </body>
 </html>
