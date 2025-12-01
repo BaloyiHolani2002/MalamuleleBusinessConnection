@@ -744,7 +744,7 @@ def register_business():
             description=description,
             address=address,
             num_years=num_years
-        )
+        ) 
 
         db.session.add(business)
         db.session.commit()
