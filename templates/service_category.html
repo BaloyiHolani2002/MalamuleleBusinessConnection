@@ -114,6 +114,189 @@
             color: white;
         }
 
+        /* Search Bar Styles */
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+
+        .search-box {
+            display: flex;
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+            background: transparent;
+        }
+
+        #searchInput::placeholder {
+            color: var(--gray);
+        }
+
+        #searchBtn, #clearSearchBtn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #searchBtn:hover {
+            background: var(--primary-dark);
+        }
+
+        #clearSearchBtn {
+            background: var(--gray-light);
+            display: none;
+        }
+
+        #clearSearchBtn:hover {
+            background: var(--gray);
+        }
+
+        /* Search Results Dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            margin-top: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            border: 1px solid var(--gray-light);
+        }
+
+        .search-results.active {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-result-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .result-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .result-detail {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .result-price {
+            color: var(--success);
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .no-results {
+            padding: 20px;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        /* Search info message */
+        .search-info {
+            text-align: center;
+            padding: 15px;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            margin: 15px 0;
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+
+        .search-info.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Search Toggle Button */
+        .search-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            padding: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-right: 10px;
+        }
+
+        .search-toggle:hover {
+            color: #ffd700;
+        }
+
+        /* Highlight matching text */
+        .highlight {
+            background-color: #fff3cd;
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
         /* Navigation */
         nav ul {
             display: flex;
@@ -222,6 +405,58 @@
 
             .overlay.active {
                 display: block;
+            }
+
+            /* Mobile Search */
+            .search-container {
+                order: 3;
+                width: 100%;
+                max-width: 100%;
+                margin: 15px 0 0;
+                display: none;
+            }
+
+            .search-container.active {
+                display: block;
+                animation: slideDown 0.3s ease;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .search-results {
+                position: fixed;
+                top: 70px;
+                left: 20px;
+                right: 20px;
+                max-height: calc(100vh - 150px);
+            }
+
+            .search-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #searchInput {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+
+            #searchBtn, #clearSearchBtn {
+                padding: 0 15px;
             }
         }
 
@@ -763,6 +998,25 @@
                     <div class="logo-text">Business Connect</div>
                 </div>
 
+                <!-- Search Bar -->
+                <div class="search-container" id="searchContainer">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search services, businesses, locations...">
+                        <button id="searchBtn" aria-label="Search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button id="clearSearchBtn" aria-label="Clear search">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+
+                <!-- Search Toggle for Mobile -->
+                <button class="search-toggle" id="searchToggle" aria-label="Toggle search">
+                    <i class="fas fa-search"></i>
+                </button>
+
                 <!-- Hamburger Menu -->
                 <div class="hamburger" id="hamburger">
                     <span></span>
@@ -1068,6 +1322,241 @@
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(card);
+            });
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const searchResults = document.getElementById('searchResults');
+        const searchToggle = document.getElementById('searchToggle');
+        const searchContainer = document.getElementById('searchContainer');
+        const servicesGrid = document.getElementById('servicesGrid');
+        const servicesTitle = document.querySelector('.services-title');
+        const servicesCount = document.querySelector('.services-count');
+
+        // Create search info message
+        const searchInfo = document.createElement('div');
+        searchInfo.className = 'search-info';
+        searchInfo.innerHTML = '<i class="fas fa-info-circle"></i> Showing search results. <a href="#" id="clearAllSearch">Clear search</a>';
+        servicesGrid.parentNode.insertBefore(searchInfo, servicesGrid);
+
+        let allServices = [];
+
+        // Initialize services data
+        function initializeServices() {
+            const serviceCards = document.querySelectorAll('.service-card');
+            allServices = Array.from(serviceCards).map(card => {
+                return {
+                    element: card,
+                    title: card.querySelector('.service-title').textContent,
+                    business: card.querySelector('.detail-row:nth-child(1) .detail-value').textContent,
+                    owner: card.querySelector('.detail-row:nth-child(2) .detail-value').textContent,
+                    location: card.querySelector('.detail-row:nth-child(3) .detail-value').textContent,
+                    address: card.querySelector('.detail-row:nth-child(4) .detail-value').textContent,
+                    contact: card.querySelector('.detail-row:nth-child(5) .detail-value').textContent,
+                    email: card.querySelector('.detail-row:nth-child(6) .detail-value').textContent,
+                    price: card.querySelector('.service-price').textContent,
+                    serviceId: card.getAttribute('data-service-id'),
+                    textContent: card.textContent.toLowerCase()
+                };
+            });
+        }
+
+        // Initialize services
+        initializeServices();
+
+        // Search function
+        function performSearch(query) {
+            query = query.toLowerCase().trim();
+            
+            if (query === '') {
+                clearSearch();
+                return;
+            }
+
+            // Filter services
+            const filteredServices = allServices.filter(service => {
+                return service.textContent.includes(query) ||
+                       service.title.toLowerCase().includes(query) ||
+                       service.business.toLowerCase().includes(query) ||
+                       service.location.toLowerCase().includes(query);
+            });
+
+            // Update UI
+            updateSearchResults(filteredServices, query);
+            updateServicesGrid(filteredServices);
+            
+            // Show search info
+            searchInfo.classList.add('active');
+            searchInfo.innerHTML = `<i class="fas fa-info-circle"></i> Found ${filteredServices.length} service(s) matching "${query}". <a href="#" id="clearAllSearch">Clear search</a>`;
+            
+            // Add event listener for clear all search
+            document.getElementById('clearAllSearch').addEventListener('click', function(e) {
+                e.preventDefault();
+                clearSearch();
+            });
+        }
+
+        // Update search results dropdown
+        function updateSearchResults(services, query) {
+            if (services.length === 0) {
+                searchResults.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <p>No services found for "${query}"</p>
+                    </div>
+                `;
+            } else {
+                searchResults.innerHTML = services.slice(0, 5).map(service => `
+                    <div class="search-result-item" data-service-id="${service.serviceId}">
+                        <div class="result-title">${highlightText(service.title, query)}</div>
+                        <div class="result-details">
+                            <span class="result-detail">
+                                <i class="fas fa-building"></i>
+                                ${highlightText(service.business, query)}
+                            </span>
+                            <span class="result-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${highlightText(service.location, query)}
+                            </span>
+                            <span class="result-price">${service.price}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Add click event to result items
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const serviceId = this.getAttribute('data-service-id');
+                        scrollToService(serviceId);
+                        closeSearchResults();
+                    });
+                });
+            }
+            
+            searchResults.classList.add('active');
+        }
+
+        // Highlight matching text
+        function highlightText(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Update services grid with filtered results
+        function updateServicesGrid(services) {
+            // Hide all services
+            allServices.forEach(service => {
+                service.element.style.display = 'none';
+            });
+            
+            // Show filtered services
+            services.forEach(service => {
+                service.element.style.display = 'flex';
+            });
+            
+            // Update count
+            if (servicesCount) {
+                servicesCount.textContent = `${services.length} Service(s) Found`;
+            }
+            
+            // Update title if needed
+            if (servicesTitle && query) {
+                servicesTitle.textContent = `Search Results for "${query}"`;
+            }
+        }
+
+        // Clear search
+        function clearSearch() {
+            searchInput.value = '';
+            clearSearchBtn.style.display = 'none';
+            searchResults.classList.remove('active');
+            searchInfo.classList.remove('active');
+            
+            // Show all services
+            allServices.forEach(service => {
+                service.element.style.display = 'flex';
+            });
+            
+            // Reset count and title
+            if (servicesCount) {
+                servicesCount.textContent = `${allServices.length} Service(s) Found`;
+            }
+            if (servicesTitle) {
+                servicesTitle.textContent = `Available {{ category.display_name }} Services`;
+            }
+        }
+
+        // Scroll to specific service
+        function scrollToService(serviceId) {
+            const serviceCard = document.querySelector(`.service-card[data-service-id="${serviceId}"]`);
+            if (serviceCard) {
+                serviceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight effect
+                serviceCard.style.boxShadow = '0 0 0 3px var(--primary)';
+                setTimeout(() => {
+                    serviceCard.style.boxShadow = '';
+                }, 2000);
+            }
+        }
+
+        // Close search results
+        function closeSearchResults() {
+            searchResults.classList.remove('active');
+        }
+
+        // Event listeners
+        searchBtn.addEventListener('click', () => {
+            performSearch(searchInput.value);
+        });
+
+        searchInput.addEventListener('input', () => {
+            clearSearchBtn.style.display = searchInput.value ? 'flex' : 'none';
+            
+            // Show results as user types
+            if (searchInput.value.length >= 2) {
+                performSearch(searchInput.value);
+            } else {
+                searchResults.classList.remove('active');
+            }
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(searchInput.value);
+            }
+        });
+
+        clearSearchBtn.addEventListener('click', () => {
+            clearSearch();
+        });
+
+        // Toggle search on mobile
+        if (searchToggle) {
+            searchToggle.addEventListener('click', () => {
+                searchContainer.classList.toggle('active');
+                if (searchContainer.classList.contains('active')) {
+                    searchInput.focus();
+                }
+            });
+        }
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchContainer.contains(e.target) && !searchToggle.contains(e.target)) {
+                closeSearchResults();
+            }
+        });
+
+        // Close search on mobile when selecting a result
+        document.querySelectorAll('.search-result-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    searchContainer.classList.remove('active');
+                }
             });
         });
     </script>
