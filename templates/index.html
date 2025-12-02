@@ -974,9 +974,45 @@
     <!-- Service Categories Section -->
     <section class="service-categories">
         <div class="container">
-            
+            <div class="section-title">
+                <h2>Our Service Categories</h2>
+                <p>Browse through our wide range of professional services to find exactly what you need</p>
+            </div>
 
             <div class="categories-grid">
+                <!-- Printing Service -->
+                <a href="{{ url_for('service_category', category_name='printing') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+                        <div class="category-content">
+                            <h3>Printing Services? Click here</h3>
+                            <p>Professional printing services for business cards, flyers, banners, and more.</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Branding Service -->
+                <a href="{{ url_for('service_category', category_name='branding') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+                        <div class="category-content">
+                            <h3>Branding Services? Click here</h3>
+                            <p>Create a strong brand identity with professional branding and marketing services.</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Graphic Design Service -->
+                <a href="{{ url_for('service_category', category_name='graphic_design') }}" class="category-link">
+                    <div class="category-card">
+                        <div class="category-image" style="background-image: url('https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+                        <div class="category-content">
+                            <h3>Graphic Design? Click here</h3>
+                            <p>Creative graphic design for logos, marketing materials, and digital content.</p>
+                        </div>
+                    </div>
+                </a>
+
                 <!-- Plumbing Service -->
                 <a href="{{ url_for('service_category', category_name='plumbing') }}" class="category-link">
                     <div class="category-card">
