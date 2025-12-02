@@ -320,8 +320,26 @@ BOOKING_CONFIRMATION_HTML = """
 </html>
 """
 
-# Service categories data - ADD THIS AFTER YOUR EMAIL TEMPLATES
+# Service categories data - UPDATED WITH NEW CATEGORIES
 SERVICE_CATEGORIES = [
+    {
+        'name': 'Printing',
+        'display_name': 'Printing Services',
+        'description': 'Professional printing services for business cards, flyers, banners, and more',
+        'image': 'https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+    },
+    {
+        'name': 'Branding',
+        'display_name': 'Branding Services',
+        'description': 'Create a strong brand identity with professional branding and marketing services',
+        'image': 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+    },
+    {
+        'name': 'Graphic Design',
+        'display_name': 'Graphic Design',
+        'description': 'Creative graphic design for logos, marketing materials, and digital content',
+        'image': 'https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+    },
     {
         'name': 'Plumbing',
         'display_name': 'Plumbing Services',
@@ -395,7 +413,6 @@ SERVICE_CATEGORIES = [
         'image': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
     }
 ]
-
 
 # Database Models
 class User(db.Model):
@@ -518,12 +535,15 @@ def get_filtered_services(category=None, search_query=None, sort_by='default'):
     return result
 
 
-# Add this route for individual category pages
+# Add this route for individual category pages - UPDATED WITH NEW CATEGORIES
 @app.route('/services/<category_name>')
 def service_category(category_name):
     """Individual category page showing only services from that category"""
     # Map URL-friendly names to actual category names in database
     category_map = {
+        'printing': 'Printing',
+        'branding': 'Branding',
+        'graphic_design': 'Graphic Design',
         'plumbing': 'Plumbing',
         'accommodation': 'Accommodation',
         'rooms': 'Rooms',
