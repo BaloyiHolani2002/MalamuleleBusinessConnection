@@ -324,13 +324,13 @@ BOOKING_CONFIRMATION_HTML = """
 SERVICE_CATEGORIES = [
     {
         'name': 'Printing',
-        'display_name': 'Printing Services',
+        'display_name': 'Printing',
         'description': 'Professional printing services for business cards, flyers, banners, and more',
         'image': 'https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
     },
     {
         'name': 'Branding',
-        'display_name': 'Branding Services',
+        'display_name': 'Branding',
         'description': 'Create a strong brand identity with professional branding and marketing services',
         'image': 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
     },
@@ -342,7 +342,7 @@ SERVICE_CATEGORIES = [
     },
     {
         'name': 'Plumbing',
-        'display_name': 'Plumbing Services',
+        'display_name': 'Plumbing',
         'description': 'Professional plumbers for repairs, installations, and maintenance',
         'image': '/static/images/plumber.jpeg'
     },
@@ -366,19 +366,19 @@ SERVICE_CATEGORIES = [
     },
     {
         'name': 'Electrical',
-        'display_name': 'Electrician Services',
+        'display_name': 'Electrician',
         'description': 'Certified electricians for all your electrical needs',
         'image': '/static/images/electr.jpeg'
     },
     {
         'name': 'Tiling',
-        'display_name': 'Tiling Services',
+        'display_name': 'Tiling',
         'description': 'Professional tile installation for floors and walls',
         'image': '/static/images/tiles.jpeg'
     },
     {
         'name': 'Building',
-        'display_name': 'Building Services',
+        'display_name': 'Building',
         'description': 'Construction and renovation experts for your projects',
         'image': '/static/images/builder.jpg'
     },
@@ -408,7 +408,7 @@ SERVICE_CATEGORIES = [
     },
     {
         'name': 'Cleaning',
-        'display_name': 'Cleaning Services',
+        'display_name': 'Cleaning',
         'description': 'Professional cleaning for homes and offices',
         'image': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
     }
