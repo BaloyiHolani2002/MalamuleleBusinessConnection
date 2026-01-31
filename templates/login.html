@@ -550,8 +550,14 @@
             <div class="login-section">
                 <!-- Flash Messages -->
                 <div class="flash-messages">
-                    <!-- Flash messages would appear here -->
-                </div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
 
                 <!-- Alert Messages -->
                 <div class="alert alert-error" id="errorAlert"></div>
